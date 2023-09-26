@@ -1,4 +1,4 @@
-# YOUR PRODUCT/TEAM NAME
+# Boolean Boos
 > _Note:_ This document will evolve throughout your project. You commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). 
  > **This document will serve as a master plan between your team, your partner and your TA.**
 
@@ -6,6 +6,7 @@
  
 #### Q1: What is the product?
 
+We are creating a cross-mobile application that can be used for price-checking a variety of products and goods at grocery stores near the user. Our group is partnering with Kevin Lee from Penny, who is keen on the idea of helping people find more affordable products etc...
  > Short (1 - 2 min' read)
  * Start with a single sentence, high-level description of the product.
  * Be clear - Describe the problem you are solving in simple terms.
