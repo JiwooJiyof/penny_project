@@ -7,6 +7,13 @@
 #### Q1: What is the product?
 
 We are creating a cross-mobile application that can be used for price-checking a variety of products and goods at grocery stores near the user. Our group is partnering with Kevin Lee from Penny, who is keen on the idea of helping people find more affordable products etc...
+
+- cross-mobile application (ios, android, website)
+- finding the cheapest alternative/option for a grocery item
+- use cases: buying the cheapest fruit, cheapest eggs, finding a neighborhood that has a grocery store on average with the cheapest prices, etc.
+- necessary context...?
+- include any mockups (figma)
+
  > Short (1 - 2 min' read)
  * Start with a single sentence, high-level description of the product.
  * Be clear - Describe the problem you are solving in simple terms.
