@@ -1,6 +1,44 @@
 ** For Partner Meetings only!
 
 9/19
+Our first meeting with Kevin, where we had a round of introductions and an explanation of the scope of the project.
+
+We discussed two routes we could go for the project, web scraping and gamification:
+1. Web scraping
+    a. There is rate limiting to keep in mind
+        i. Documentation/JSON file for people who don’t contribute on daily basis for them to access for maintaining and updating it
+- Metro is best place to do a dev spike on web scraping, they explicitly state that their prices match the stores, actual data
+- Metro refreshes their prices every Thursday (either morning or night but shouldn’t really matter)
+- In case of any major updates, working with IDs
+- Use Puppeteer (Node.js) and Beautiful Soup (Python based classic web scraper)
+- Both rely on a library w/ a number of commands – based off of IDs on a website
+    - Puppeteer is a bit of a heavier load but loads javascript
+        - Beautiful Soup just pulls the Dom and you can look at the dom/ids and pull value based on that
+        - ChatGPT and GitHub copilot can web scrape
+2. Community aspect - gamification: using google maps/swarm like tools (the idea of everyone reviewing stuff and people who contribute the most are most visible and to find those people and build it off them)
+    a. Based in Dart/Flutter
+        i. Similar to Swift UI, not similar to Python/Node.js/Rails
+
+-Current Website for Application: http://app.shopwithpenny.com
+-Choose gamification if web scraping is too time consuming/too big of a task
+-Meeting twice a week until we don’t need to anymore – then once a week
+
 
 9/26
+Our second meeting with Kevin, where we made our decision on the route to go and asked questions regarding his app so far and expectations.
 
+- Chose webscraping
+    - Start off w/scraping 3 grocery stores
+- Kevin’s priority: enabling someone who’s not a developer to continue to provide value without either any major or developer intervention 
+    – He’s indifferent on how many groceries we web scrape from
+- Identify where throttling mechanism might occur and work around it when web scraping using ChatGPT
+- Uses Supabase for his databases
+    - Created a "generic name" category for each product to compare them from each different store
+- Talked about users and accounts
+    - Top contributers are users who have the most "points" in helping the app update its information regarding products and stores
+    - Looking for enthusiasts 
+    - Weekly or biweekly leaderboard
+    - Friends and communities on the app
+- Eventually wants prediction data
+    - Similar to Copper or Google Flights (wait a certain period and you save more money)
+    - In-season products and lower prices
