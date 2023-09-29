@@ -178,6 +178,12 @@ We had an nice group zoom party! We all wore the same glasses! Some fun facts ab
 
 #### Q7: What are the roles & responsibilities on the team?
 
+Shlomo Alon: Backend/Database Developer. He has an interest in backend development and enjoys writing SQL. Will potentially help out wherever the project needs it but prefers backend.
+Dana Al Shekerchi: Development Manager and Software Developer. She has expressed interest in being involved with everything and enjoys a management role.
+Kelly Le, Jay Jung, Prithee Roy: Software developer. All three of them have expressed their interest in being involved in the entire project and working on whatever part is necessary, none of them have any preference to specialize in anything.
+Dravin Nagalingam:  Product manager/Partier Liaison and Software developer. He is in charge of communicating between the team and the partner, as well as being involved in the entire development side of the project, with no preference in specializing in a specific area. 
+
+
 Describe the different roles on the team and the responsibilities associated with each role. 
  * Roles should reflect the structure of your team and be appropriate for your project. One person may have multiple roles.  
  * Add role(s) to your Team-[Team_Number]-[Team_Name].csv file on the main folder.
@@ -198,6 +204,11 @@ Describe meetings (and other events) you are planning to have.
  * You should have 2 meetings with your project partner (if you have one) before D1 is due. Describe them here:
    * You must keep track of meeting minutes and add them to your repo under "deliverables/minutes" folder
    * You must have a regular meeting schedule established for the rest of the term.  
+
+Our group meets multiple times a week for different types of meetings. We have meetings every Tuesday from 7:00 to 9:30. We spend the first hour amongst ourselves to provide updates and get all on the same page, and to solve any issues internally before bringing them to our partner. The last hour and a half to meet with our partner. As the project ramps up or ramps down we will change the meeting schedule to match our project expectations. We meet often to keep ourselves on track and learn what our partner requires of us.
+
+We have had two meetings with our partner as of the date of this deliverable's due date. The first meeting we introduced ourselves and got to know our partner. He introduced us to his ideas and his intentions behind it. This was much more of a chill get to know you session then a serious project meeting. For the second meeting we discussed meeting logistics and got to know more about what he is envisioning for the app, and got some further clarification about what we were supposed to be doing in certain scenarios. We also discussed some implementation details like technology stack as well as the details surrounding web scraping different grocery store websites.
+
   
 #### Q9: How will you organize your team?
 
