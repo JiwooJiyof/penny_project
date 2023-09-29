@@ -60,6 +60,56 @@ This app may exist in some shape or form, however, it is not widely known nor ac
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
  * User stories must contain acceptance criteria. Examples of user stories with different formats can be found here: https://www.justinmind.com/blog/user-story-examples/. **It is important that you provide a link to an artifact containing your user stories**.
  * If you have a partner, these must be reviewed and accepted by them. You need to include the evidence of partner approval (e.g., screenshot from email) or at least communication to the partner (e.g., email you sent)
+## User Story 1
+**As a budget-conscious shopper,**  
+I want to compare prices of specific grocery items from different stores  
+in order to find the cheapest options available.
+
+### Acceptance Criteria:
+- The app should allow users to enter or select the grocery items they are looking to purchase.
+- The app should display a list of stores where those items are available, with prices.
+- Prices should be updated in real-time or near real-time to ensure accuracy.
+- Users can sort or filter the stores based on the price of the items.
+
+## User Story 2
+**As a user who likes to plan ahead,**  
+I want to create and save a shopping list within the app  
+in order to have a pre-organized list of items to buy when I go shopping.
+
+### Acceptance Criteria:
+- The app should allow users to add items to a shopping list.
+- Users should be able to save, edit, and delete the shopping list.
+- The app should allow the sharing of the shopping list via email, message, or other sharing options.
+
+## User Story 3 
+**As a user who is new to an area,**  
+I want to find the closest grocery stores to my location  
+in order to save time and effort in finding a store.
+
+### Acceptance Criteria:
+- The app should use the user’s current location to identify the nearest grocery stores.
+- Users should be able to view the stores on a map and get directions.
+- The app should provide basic information about the store including opening hours, contact information, and address.
+
+## User Story 4
+**As a user with dietary restrictions,**  
+I want to filter grocery items based on dietary needs (like gluten-free, vegan, etc.)  
+in order to easily find products that I can consume.
+
+### Acceptance Criteria:
+- Users should be able to set dietary preferences in their profile or during the search.
+- The app should filter out items that do not meet the dietary restrictions and only show compatible products.
+- Users should have the option to save their dietary preferences for future searches.
+
+## User Story 5
+**As a user who values convenience,**  
+I want to get a cost-to-distance analysis for my selected grocery items  
+in order to balance the price and distance to get the best value.
+
+### Acceptance Criteria:
+- The app should display a cost-to-distance ratio for each store, considering the total price of the selected items and the distance to the store.
+- Users can sort or filter the stores based on this ratio to find the optimal store for their needs.
+- The app should provide directions to the selected store, with an option to choose different modes of transportation.
 
 #### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
@@ -68,6 +118,31 @@ This app may exist in some shape or form, however, it is not widely known nor ac
  * How will you deploy the application?
  * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
  * Will you be using third party applications or APIs? If so, what are they?
+## Technology Stack
+
+**Frontend:** Dart, along with the Flutter framework, will be pivotal for creating a cross-platform app that’s compatible with both iOS, Android, and a cross-browser web application.
+
+**Backend:** Python is chosen for web scraping due to its efficiency and the availability of libraries like Beautiful Soup, Scrapy, or Selenium for easy and effective data extraction.
+
+**Database:** PostgreSQL is the chosen database for storing the scraped data, given its robustness, reliability, and support for JSON data types which could be helpful for storing varied data structures that are scraped.
+
+## Deployment
+
+The application can be deployed using a combination of traditional web hosts, cloud services, or even serverless computing. For our project, we will continue the deployment with Supabase, an open source Firebase alternative. It provides support for the required runtime environments and databases.
+
+## Architecture
+
+1. **Web Scraping Module:** We will utilize Python scripts to scrape data, which are scheduled to run at regular intervals to update the database.
+2. **Database:** We will use PostgreSQL to store scraped data, ensuring it is structured and easily accessible.
+3. **Backend Logic:** We will implement APIs (possibly using a framework like Flask or FastAPI) to interface between the database and the frontend application.
+4. **Frontend Application:** We will use Dart with Flutter to build the UI, making API calls to fetch, display, and interact with the data.
+
+Here, the Python scripts ensure that the database is always up to date. Dart (Flutter) plays a crucial role in accessing and displaying this data to the end-users in a user-friendly manner.
+
+## Third Party Applications or APIs
+
+Given the nature of the application, the Google Maps API might be essential for calculating distances and offering map views for various grocery stores.
+
 
 ----
 ## Intellectual Property Confidentiality Agreement 
@@ -94,6 +169,8 @@ Do a team-building activity in-person or online. This can be playing an online g
 * Get to know each other on a more personal level.
 * Provide a few sentences on what you did and share a picture or other evidence of your team building activity.
 * Share at least three fun facts from members of you team (total not 3 for each member).
+
+
 
 
 #### Q7: What are the roles & responsibilities on the team?
