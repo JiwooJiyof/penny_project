@@ -1,10 +1,14 @@
-# YOUR PRODUCT/TEAM NAME
+# Penny/Boolean Boos
 > _Note:_ This document will evolve throughout your project. You commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). 
  > **This document will serve as a master plan between your team, your partner and your TA.**
 
 ## Product Details
  
 #### Q1: What is the product?
+
+Our team, in collaboration with Kevin Lee from Penny, is creating a cross-mobile application that can be utilized to price-check products amongst a user's local grocery stores. The drastic rise in inflation and overall cost of living has been causing financial strain on everyone. Worrying about affording basic needs such as food should not be an issue people have to deal with. 
+
+With this issue in mind, we are determined to tackle the need for locating cheaper grocery products, and grocery stores as a whole. Our team aims to alleviate the stress of grocery shopping on a tight financial and location-based budget, as well as make grocery shopping a seamless experience. This app will have a plethora of products from the user's closest grocery stores, allowing the user to be able to see the locations of the cheapest products, and how far away the grocery store holding them lies. The app would especially be useful for university students operating on a tight budget, and elderly individuals with health complications limiting their travel who are looking for the closest cheap grocery store.
 
  > Short (1 - 2 min' read)
  * Start with a single sentence, high-level description of the product.
@@ -21,11 +25,25 @@
 
 #### Q2: Who are your target users?
 
+Our price-checking app is flexible enough to be used by anyone. However, the user groups who we are primarily focusing on are students and the elderly. To be more specific, university students between their second and fourth year living off campus, and elderly individuals who live on their own and not in a retirement or old-age home or facility. These groups of people are most likely to use our app because of their circumstances. 
+
+University students, particularly those in their second to fourth year living off campus, face the challenge of budgeting for groceries without having the convenience of on-campus dining options such as meal halls and cafes. We intend on catering our application to this group of individuals because of such circumstances, university students living off campus needing to grocery shop at cheaper places because of their modest budgets and interests. 
+
+The second group of users we are targeting are the elderly, particularly elderly people not living in retirement or old-age facilities. These individuals are most likely living on their own, and are required to get their own groceries. The elderly are retired and often weaker and inhibitied by underlying health conditions and symptoms of old age. This limits them from being able to freely travel around to different grocery stores, regardless of whether a certain store has cheaper products. Therefore, this app will be used by this user group in the hopes of locating the closest cheapest grocery product. Elderly people living on their own and budgeting their retirement funds will be able to use our location feature on the app to find the closest products, and closest, on-average-cheapest grocery stores. 
+
+
   > Short (1 - 2 min' read max)
  * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
  * **Feel free to use personas. You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
+
+As stated earlier, our main goal is to alleviate the stress of grocery shopping on a financial and location-based budget. Our targeted user groups of off-campus second to fourth year university students, and elderly people living on their own with fixed incomes and limited mobility use are mainly impacted by this stress and the impact of the rising costs of living. With an easy-to-use interface that shows the costs of grocery products in the user's surrounding grocery locations, our users would choose this app to help with their grocery shopping. 
+
+Our app saves our users time of manually having to check their surrounding grocery stores to compare prices of products. Instead all users have to do is search a product on our application, and they will be presented all the different prices of this product, as well as the distance these grocery stores are from the user. This information presented to them will always be up to date with the grocery stores' prices and stock. These benefits will be a huge incentive for our targeted user groups to utilize our app, as it saves time and makes their grocery shopping process more convenient. 
+
+This app may exist in some shape or form, however, it is not widely known nor accessible to our targeted user groups. Our app will be easily accessible, and always updated with the latest data and information. Our app will align with Kevin's values and goals of helping people operate in a smarter, easier, and less stressful way. 
+
 
 > Short (1 - 2 min' read max)
  * We want you to "connect the dots" for us - Why does your product (as described in your answer to Q1) fits the needs of your users (as described in your answer to Q2)?
