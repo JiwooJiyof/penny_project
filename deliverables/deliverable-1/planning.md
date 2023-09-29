@@ -179,8 +179,11 @@ We had an nice group zoom party! We all wore the same glasses! Some fun facts ab
 #### Q7: What are the roles & responsibilities on the team?
 
 Shlomo Alon: Backend/Database Developer. He has an interest in backend development and enjoys writing SQL. Will potentially help out wherever the project needs it but prefers backend.
+
 Dana Al Shekerchi: Development Manager and Software Developer. She has expressed interest in being involved with everything and enjoys a management role.
+
 Kelly Le, Jay Jung, Prithee Roy: Software developer. All three of them have expressed their interest in being involved in the entire project and working on whatever part is necessary, none of them have any preference to specialize in anything.
+
 Dravin Nagalingam:  Product manager/Partier Liaison and Software developer. He is in charge of communicating between the team and the partner, as well as being involved in the entire development side of the project, with no preference in specializing in a specific area. 
 
 
