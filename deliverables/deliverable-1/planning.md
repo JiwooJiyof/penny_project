@@ -121,6 +121,16 @@ Describe meetings (and other events) you are planning to have.
   
 #### Q9: How will you organize your team?
 
+Our main source of communication will be scheduled weekly in-person meetings or online meetings through Zoom. There will be another meeting with our partner and another with our TA to address any questions and ensure we are on the right track.
+
+After each meeting, we will discuss everyone’s tasks for the week and what needs to be completed before the next meeting. This information will be updated on Notion, which will serve as our task board. If anyone encounters any difficulties, we have a group chat available for communication outside of our scheduled meetings.
+
+The group will prioritize tasks based on how we can ensure everyone works as efficiently as possible. If a particular task must be completed before other group members can proceed, we will give it priority.
+
+During our group meetings, tasks will be assigned based on each member's skillset. Additionally, we will take into consideration the availability of the members and their workload. If a group member wishes to learn a new skill or work on a different aspect of the project, we can discuss it during our group meetings.
+
+The status of work from inception to completion will be determined collectively by everyone working on that aspect of the project, with input from all other members. We aim for unanimous agreement and satisfaction with our collective progress. Once again, this can be addressed during our weekly meetings.
+
 List/describe the artifacts you will produce in order to organize your team.       
 
  * Artifacts can be To-Do lists, Task boards, schedule(s), meeting minutes, etc.
@@ -131,6 +141,10 @@ List/describe the artifacts you will produce in order to organize your team.
    * How do you determine the status of work from inception to completion?
 
 #### Q10: What are the rules regarding how your team works?
+
+We have scheduled regular weekly team meetings on Tuesdays, which can be conducted either offline on campus or online via Zoom. Additionally, there is a Discord group available for voice calls in case any members need to communicate for an urgent task. Every member is active and available for communication at least once every day if needed.
+
+Regarding our partner, we also hold a weekly hour-long meeting with them every Thursday. Communication with our partner can also occur through email. During busier phases of our project, we may increase the frequency of our meetings to twice a week. Moreover, our partner will be added to Notion, our chosen task board and to-do list platform, as well as to our GitHub repository. This will allow them to track our progress, and they can also reach out to us via email if necessary.
 
 **Communications:**
  * What is the expected frequency? What methods/channels will be used? 
