@@ -170,6 +170,9 @@ Do a team-building activity in-person or online. This can be playing an online g
 * Provide a few sentences on what you did and share a picture or other evidence of your team building activity.
 * Share at least three fun facts from members of you team (total not 3 for each member).
 
+We had an nice group zoom party! We all wore the same glasses! Some fun facts about members of our group are that Kathy and Dana are front-end masters, Shlomo is really good a riding a scooter, and Dravin is a great team lead!
+![zoom party!](deliverables/deliverable-1/Screen Shot 2023-09-28 at 8.22.25 PM.png)
+
 
 
 
