@@ -10,7 +10,7 @@ Our team, in collaboration with Kevin Lee from Penny, is creating a cross-mobile
 
 With this issue in mind, we are determined to tackle the need for locating cheaper grocery products, and grocery stores as a whole. Our team aims to alleviate the stress of grocery shopping on a tight financial and location-based budget, as well as make grocery shopping a seamless experience. This app will have a plethora of products from the user's closest grocery stores, allowing the user to be able to see the locations of the cheapest products, and how far away the grocery store holding them lies. The app would especially be useful for university students operating on a tight budget, and elderly individuals with health complications limiting their travel who are looking for the closest cheap grocery store.
 
- > Short (1 - 2 min' read)
+ <!-- > Short (1 - 2 min' read)
  * Start with a single sentence, high-level description of the product.
  * Be clear - Describe the problem you are solving in simple terms.
  * Specify if you have a partner and who they are.
@@ -20,7 +20,7 @@ With this issue in mind, we are determined to tackle the need for locating cheap
     * Assume your the reader knows nothing about the partner or the problem domain and provide the necessary context. 
  * Focus on *what* your product does, and avoid discussing *how* you're going to implement it.      
    For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
- * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
+ * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**. -->
 
 
 ### Q2: Who are your target users?
@@ -32,9 +32,9 @@ University students, particularly those in their second to fourth year living of
 The second group of users we are targeting are the elderly, particularly elderly people not living in retirement or old-age facilities. These individuals are most likely living on their own, and are required to get their own groceries. The elderly are retired and often weaker and inhibitied by underlying health conditions and symptoms of old age. This limits them from being able to freely travel around to different grocery stores, regardless of whether a certain store has cheaper products. Therefore, this app will be used by this user group in the hopes of locating the closest cheapest grocery product. Elderly people living on their own and budgeting their retirement funds will be able to use our location feature on the app to find the closest products, and closest, on-average-cheapest grocery stores. 
 
 
-  > Short (1 - 2 min' read max)
+  <!-- > Short (1 - 2 min' read max)
  * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
- * **Feel free to use personas. You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
+ * **Feel free to use personas. You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).** -->
 
 ### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
@@ -45,21 +45,21 @@ Our app saves our users time of manually having to check their surrounding groce
 This app may exist in some shape or form, however, it is not widely known nor accessible to our targeted user groups. Our app will be easily accessible, and always updated with the latest data and information. Our app will align with Kevin's values and goals of helping people operate in a smarter, easier, and less stressful way. 
 
 
-> Short (1 - 2 min' read max)
+<!-- > Short (1 - 2 min' read max)
  * We want you to "connect the dots" for us - Why does your product (as described in your answer to Q1) fits the needs of your users (as described in your answer to Q2)?
  * Explain the benefits of your product explicitly & clearly. For example:
     * Save users time (how and how much?)
     * Allow users to discover new information (which information? And, why couldn't they discover it before?)
     * Provide users with more accurate and/or informative data (what kind of data? Why is it useful to them?)
     * Does this application exist in another form? If so, how does your differ and provide value to the users?
-    * How does this align with your partner's organization's values/mission/mandate?
+    * How does this align with your partner's organization's values/mission/mandate? -->
 
 ### Q4: What are the user stories that make up the Minumum Viable Product (MVP)?
 
- * At least 5 user stories concerning the main features of the application - note that this can broken down further
+ <!-- * At least 5 user stories concerning the main features of the application - note that this can broken down further
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
  * User stories must contain acceptance criteria. Examples of user stories with different formats can be found here: https://www.justinmind.com/blog/user-story-examples/. **It is important that you provide a link to an artifact containing your user stories**.
- * If you have a partner, these must be reviewed and accepted by them. You need to include the evidence of partner approval (e.g., screenshot from email) or at least communication to the partner (e.g., email you sent)
+ * If you have a partner, these must be reviewed and accepted by them. You need to include the evidence of partner approval (e.g., screenshot from email) or at least communication to the partner (e.g., email you sent) -->
 
 #### User Story 1
 **As a budget-conscious shopper,** I want to compare prices of specific grocery items from different stores in order to find the cheapest options available.
@@ -104,11 +104,11 @@ This app may exist in some shape or form, however, it is not widely known nor ac
 
 ### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
-> Short (1-2 min' read max)
+<!-- > Short (1-2 min' read max)
  * What is the technology stack? Specify languages, frameworks, libraries, PaaS products or tools to be used or being considered. 
  * How will you deploy the application?
  * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
- * Will you be using third party applications or APIs? If so, what are they?
+ * Will you be using third party applications or APIs? If so, what are they? -->
  
 #### Technology Stack
 - **Frontend:** Dart, along with the Flutter framework, will be pivotal for creating a cross-platform app that’s compatible with both iOS, Android, and a cross-browser web application.
@@ -134,8 +134,8 @@ Here, the Python scripts ensure that the database is always up to date. Dart (Fl
 
 Given the nature of the application, the Google Maps API might be essential for calculating distances and offering map views for various grocery stores.
 
-
 ----
+
 ## Intellectual Property Confidentiality Agreement 
 > Note this section is **not marked** but must be completed briefly if you have a partner. If you have any questions, please ask on Piazza.
 >  
@@ -156,10 +156,10 @@ Briefly describe which option you have agreed to.
 
 ### Q6: Have you met with your team?
 
-Do a team-building activity in-person or online. This can be playing an online game, meeting for bubble tea, lunch, or any other activity you all enjoy.
+<!-- Do a team-building activity in-person or online. This can be playing an online game, meeting for bubble tea, lunch, or any other activity you all enjoy.
 * Get to know each other on a more personal level.
 * Provide a few sentences on what you did and share a picture or other evidence of your team building activity.
-* Share at least three fun facts from members of you team (total not 3 for each member).
+* Share at least three fun facts from members of you team (total not 3 for each member). -->
 
 We had an nice group zoom party! We all wore the same glasses! Some fun facts about members of our group are that Kathy and Dana are front-end masters, Shlomo is really good a riding a scooter, and Dravin is a great team lead!
 ![zoom party](zoomparty.png)
@@ -177,8 +177,7 @@ We had an nice group zoom party! We all wore the same glasses! Some fun facts ab
 
 **Kathy Lee:** Frontend Developer. She has an interest in frontend as well as UI/UX design, hoping to leverage these within the project. Open to working in other aspects of the project when neccessary.
 
-
-Describe the different roles on the team and the responsibilities associated with each role. 
+<!-- Describe the different roles on the team and the responsibilities associated with each role. 
  * Roles should reflect the structure of your team and be appropriate for your project. One person may have multiple roles.  
  * Add role(s) to your Team-[Team_Number]-[Team_Name].csv file on the main folder.
  * At least one person must be identified as the dedicated partner liaison. They need to have great organization and communication skills.
@@ -186,18 +185,18 @@ Describe the different roles on the team and the responsibilities associated wit
 
 List each team member and:
  * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
- * Why did you choose them to take that role? Specify if they are interested in learning that part, experienced in it, or any other reasons. Do no make things up. This part is not graded but may be reviewed later.
+ * Why did you choose them to take that role? Specify if they are interested in learning that part, experienced in it, or any other reasons. Do no make things up. This part is not graded but may be reviewed later. -->
 
 
 ### Q8: How will you work as a team?
 
-Describe meetings (and other events) you are planning to have. 
+<!-- Describe meetings (and other events) you are planning to have. 
  * When and where? Recurring or ad hoc? In-person or online?
  * What's the purpose of each meeting?
  * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
  * You should have 2 meetings with your project partner (if you have one) before D1 is due. Describe them here:
    * You must keep track of meeting minutes and add them to your repo under "deliverables/minutes" folder
-   * You must have a regular meeting schedule established for the rest of the term.  
+   * You must have a regular meeting schedule established for the rest of the term.   -->
 
 Our group meets multiple times a week for different types of meetings. We have meetings every Tuesday from 7:00 to 9:30. We spend the first hour amongst ourselves to provide updates and get all on the same page, and to solve any issues internally before bringing them to our partner. The last hour and a half to meet with our partner. As the project ramps up or ramps down we will change the meeting schedule to match our project expectations. We meet often to keep ourselves on track and learn what our partner requires of us.
 
@@ -216,14 +215,14 @@ During our group meetings, tasks will be assigned based on each member's skillse
 
 The status of work from inception to completion will be determined collectively by everyone working on that aspect of the project, with input from all other members. We aim for unanimous agreement and satisfaction with our collective progress. Once again, this can be addressed during our weekly meetings.
 
-List/describe the artifacts you will produce in order to organize your team.       
+<!-- List/describe the artifacts you will produce in order to organize your team.       
 
  * Artifacts can be To-Do lists, Task boards, schedule(s), meeting minutes, etc.
  * We want to understand:
    * How do you keep track of what needs to get done? (You must grant your TA and partner access to systems you use to manage work)
    * **How do you prioritize tasks?**
    * How do tasks get assigned to team members?
-   * How do you determine the status of work from inception to completion?
+   * How do you determine the status of work from inception to completion? -->
 
 ### Q10: What are the rules regarding how your team works?
 
@@ -231,10 +230,10 @@ We have scheduled regular weekly team meetings on Tuesdays, which can be conduct
 
 Regarding our partner, we also hold a weekly hour-long meeting with them every Thursday. Communication with our partner can also occur through email. During busier phases of our project, we may increase the frequency of our meetings to twice a week. Moreover, our partner will be added to Notion, our chosen task board and to-do list platform, as well as to our GitHub repository. This will allow them to track our progress, and they can also reach out to us via email if necessary.
 
-**Communications:**
+<!-- **Communications:**
  * What is the expected frequency? What methods/channels will be used? 
  * If you have a partner project, what is your process for communicating with your partner?
  
 **Collaboration: (Share your responses to Q8 & Q9 from A1)**
  * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
- * How will you address the issue if one person doesn't contribute or is not responsive? 
+ * How will you address the issue if one person doesn't contribute or is not responsive?  -->
