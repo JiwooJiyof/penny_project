@@ -4,7 +4,7 @@
 
 ## Product Details
  
-#### Q1: What is the product?
+### Q1: What is the product?
 
 Our team, in collaboration with Kevin Lee from Penny, is creating a cross-mobile application that can be utilized to price-check products amongst a user's local grocery stores. The drastic rise in inflation and overall cost of living has been causing financial strain on everyone. Worrying about affording basic needs such as food should not be an issue people have to deal with. 
 
@@ -23,7 +23,7 @@ With this issue in mind, we are determined to tackle the need for locating cheap
  * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
 
 
-#### Q2: Who are your target users?
+### Q2: Who are your target users?
 
 Our price-checking app is flexible enough to be used by anyone. However, the user groups who we are primarily focusing on are students and the elderly. To be more specific, university students between their second and fourth year living off campus, and elderly individuals who live on their own and not in a retirement or old-age home or facility. These groups of people are most likely to use our app because of their circumstances. 
 
@@ -36,7 +36,7 @@ The second group of users we are targeting are the elderly, particularly elderly
  * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
  * **Feel free to use personas. You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
 
-#### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
+### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
 As stated earlier, our main goal is to alleviate the stress of grocery shopping on a financial and location-based budget. Our targeted user groups of off-campus second to fourth year university students, and elderly people living on their own with fixed incomes and limited mobility use are mainly impacted by this stress and the impact of the rising costs of living. With an easy-to-use interface that shows the costs of grocery products in the user's surrounding grocery locations, our users would choose this app to help with their grocery shopping. 
 
@@ -54,83 +54,74 @@ This app may exist in some shape or form, however, it is not widely known nor ac
     * Does this application exist in another form? If so, how does your differ and provide value to the users?
     * How does this align with your partner's organization's values/mission/mandate?
 
-#### Q4: What are the user stories that make up the Minumum Viable Product (MVP)?
+### Q4: What are the user stories that make up the Minumum Viable Product (MVP)?
 
  * At least 5 user stories concerning the main features of the application - note that this can broken down further
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
  * User stories must contain acceptance criteria. Examples of user stories with different formats can be found here: https://www.justinmind.com/blog/user-story-examples/. **It is important that you provide a link to an artifact containing your user stories**.
  * If you have a partner, these must be reviewed and accepted by them. You need to include the evidence of partner approval (e.g., screenshot from email) or at least communication to the partner (e.g., email you sent)
-## User Story 1
-**As a budget-conscious shopper,**  
-I want to compare prices of specific grocery items from different stores  
-in order to find the cheapest options available.
 
-### Acceptance Criteria:
+#### User Story 1
+**As a budget-conscious shopper,** I want to compare prices of specific grocery items from different stores in order to find the cheapest options available.
+
+##### Acceptance Criteria:
 - The app should allow users to enter or select the grocery items they are looking to purchase.
 - The app should display a list of stores where those items are available, with prices.
 - Prices should be updated in real-time or near real-time to ensure accuracy.
 - Users can sort or filter the stores based on the price of the items.
 
-## User Story 2
-**As a user who likes to plan ahead,**  
-I want to create and save a shopping list within the app  
-in order to have a pre-organized list of items to buy when I go shopping.
+#### User Story 2
+**As a user who likes to plan ahead,** I want to create and save a shopping list within the app in order to have a pre-organized list of items to buy when I go shopping.
 
-### Acceptance Criteria:
+##### Acceptance Criteria:
 - The app should allow users to add items to a shopping list.
 - Users should be able to save, edit, and delete the shopping list.
 - The app should allow the sharing of the shopping list via email, message, or other sharing options.
 
-## User Story 3 
-**As a user who is new to an area,**  
-I want to find the closest grocery stores to my location  
-in order to save time and effort in finding a store.
+#### User Story 3 
+**As a user who is new to an area,** I want to find the closest grocery stores to my location in order to save time and effort in finding a store.
 
-### Acceptance Criteria:
+##### Acceptance Criteria:
 - The app should use the user’s current location to identify the nearest grocery stores.
 - Users should be able to view the stores on a map and get directions.
 - The app should provide basic information about the store including opening hours, contact information, and address.
 
-## User Story 4
-**As a user with dietary restrictions,**  
-I want to filter grocery items based on dietary needs (like gluten-free, vegan, etc.)  
-in order to easily find products that I can consume.
+#### User Story 4
+**As a user with dietary restrictions,** I want to filter grocery items based on dietary needs (like gluten-free, vegan, etc.) in order to easily find products that I can consume.
 
-### Acceptance Criteria:
+##### Acceptance Criteria:
 - Users should be able to set dietary preferences in their profile or during the search.
 - The app should filter out items that do not meet the dietary restrictions and only show compatible products.
 - Users should have the option to save their dietary preferences for future searches.
 
-## User Story 5
-**As a user who values convenience,**  
-I want to get a cost-to-distance analysis for my selected grocery items  
-in order to balance the price and distance to get the best value.
+#### User Story 5
+**As a user who values convenience,** I want to get a cost-to-distance analysis for my selected grocery items in order to balance the price and distance to get the best value.
 
-### Acceptance Criteria:
+##### Acceptance Criteria:
 - The app should display a cost-to-distance ratio for each store, considering the total price of the selected items and the distance to the store.
 - Users can sort or filter the stores based on this ratio to find the optimal store for their needs.
 - The app should provide directions to the selected store, with an option to choose different modes of transportation.
 
-#### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
+### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
 > Short (1-2 min' read max)
  * What is the technology stack? Specify languages, frameworks, libraries, PaaS products or tools to be used or being considered. 
  * How will you deploy the application?
  * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
  * Will you be using third party applications or APIs? If so, what are they?
-## Technology Stack
+ 
+#### Technology Stack
+- **Frontend:** Dart, along with the Flutter framework, will be pivotal for creating a cross-platform app that’s compatible with both iOS, Android, and a cross-browser web application.
 
-**Frontend:** Dart, along with the Flutter framework, will be pivotal for creating a cross-platform app that’s compatible with both iOS, Android, and a cross-browser web application.
+- **Backend:** Python is chosen for web scraping due to its efficiency and the availability of libraries like Beautiful Soup, Scrapy, or Selenium for easy and effective data extraction.
 
-**Backend:** Python is chosen for web scraping due to its efficiency and the availability of libraries like Beautiful Soup, Scrapy, or Selenium for easy and effective data extraction.
+- **Database:** PostgreSQL is the chosen database for storing the scraped data, given its robustness, reliability, and support for JSON data types which could be helpful for storing varied data structures that are scraped.
 
-**Database:** PostgreSQL is the chosen database for storing the scraped data, given its robustness, reliability, and support for JSON data types which could be helpful for storing varied data structures that are scraped.
-
-## Deployment
+#### Deployment
 
 The application can be deployed using a combination of traditional web hosts, cloud services, or even serverless computing. For our project, we will continue the deployment with Supabase, an open source Firebase alternative. It provides support for the required runtime environments and databases.
 
-## Architecture
+#### Architecture
 
 1. **Web Scraping Module:** We will utilize Python scripts to scrape data, which are scheduled to run at regular intervals to update the database.
 2. **Database:** We will use PostgreSQL to store scraped data, ensuring it is structured and easily accessible.
@@ -139,7 +130,7 @@ The application can be deployed using a combination of traditional web hosts, cl
 
 Here, the Python scripts ensure that the database is always up to date. Dart (Flutter) plays a crucial role in accessing and displaying this data to the end-users in a user-friendly manner.
 
-## Third Party Applications or APIs
+#### Third Party Applications or APIs
 
 Given the nature of the application, the Google Maps API might be essential for calculating distances and offering map views for various grocery stores.
 
@@ -163,7 +154,7 @@ Briefly describe which option you have agreed to.
 
 ## Teamwork Details
 
-#### Q6: Have you met with your team?
+### Q6: Have you met with your team?
 
 Do a team-building activity in-person or online. This can be playing an online game, meeting for bubble tea, lunch, or any other activity you all enjoy.
 * Get to know each other on a more personal level.
@@ -174,17 +165,17 @@ We had an nice group zoom party! We all wore the same glasses! Some fun facts ab
 ![zoom party](zoomparty.png)
 
 
+### Q7: What are the roles & responsibilities on the team?
 
+**Shlomo Alon:** Backend/Database Developer. He has an interest in backend development and enjoys writing SQL. Will potentially help out wherever the project needs it but prefers backend.
 
-#### Q7: What are the roles & responsibilities on the team?
+**Dana Al Shekerchi:** Development Manager and Software Developer. She has expressed interest in being involved with everything and enjoys a management role.
 
-Shlomo Alon: Backend/Database Developer. He has an interest in backend development and enjoys writing SQL. Will potentially help out wherever the project needs it but prefers backend.
+**Kelly Le, Jay Jung, Prithee Roy:** Software Developer. All three of them have expressed their interest in being involved in the entire project and working on whatever part is necessary, none of them have any preference to specialize in anything.
 
-Dana Al Shekerchi: Development Manager and Software Developer. She has expressed interest in being involved with everything and enjoys a management role.
+**Dravin Nagalingam:** Product Manager/Partier Liaison and Software developer. He is in charge of communicating between the team and the partner, as well as being involved in the entire development side of the project, with no preference in specializing in a specific area.
 
-Kelly Le, Jay Jung, Prithee Roy: Software developer. All three of them have expressed their interest in being involved in the entire project and working on whatever part is necessary, none of them have any preference to specialize in anything.
-
-Dravin Nagalingam:  Product manager/Partier Liaison and Software developer. He is in charge of communicating between the team and the partner, as well as being involved in the entire development side of the project, with no preference in specializing in a specific area. 
+**Kathy Lee:** Frontend Developer. She has an interest in frontend as well as UI/UX design, hoping to leverage these within the project. Open to working in other aspects of the project when neccessary.
 
 
 Describe the different roles on the team and the responsibilities associated with each role. 
@@ -198,7 +189,7 @@ List each team member and:
  * Why did you choose them to take that role? Specify if they are interested in learning that part, experienced in it, or any other reasons. Do no make things up. This part is not graded but may be reviewed later.
 
 
-#### Q8: How will you work as a team?
+### Q8: How will you work as a team?
 
 Describe meetings (and other events) you are planning to have. 
  * When and where? Recurring or ad hoc? In-person or online?
@@ -213,7 +204,7 @@ Our group meets multiple times a week for different types of meetings. We have m
 We have had two meetings with our partner as of the date of this deliverable's due date. The first meeting we introduced ourselves and got to know our partner. He introduced us to his ideas and his intentions behind it. This was much more of a chill get to know you session then a serious project meeting. For the second meeting we discussed meeting logistics and got to know more about what he is envisioning for the app, and got some further clarification about what we were supposed to be doing in certain scenarios. We also discussed some implementation details like technology stack as well as the details surrounding web scraping different grocery store websites.
 
   
-#### Q9: How will you organize your team?
+### Q9: How will you organize your team?
 
 Our main source of communication will be scheduled weekly in-person meetings or online meetings through Zoom. There will be another meeting with our partner and another with our TA to address any questions and ensure we are on the right track.
 
@@ -234,7 +225,7 @@ List/describe the artifacts you will produce in order to organize your team.
    * How do tasks get assigned to team members?
    * How do you determine the status of work from inception to completion?
 
-#### Q10: What are the rules regarding how your team works?
+### Q10: What are the rules regarding how your team works?
 
 We have scheduled regular weekly team meetings on Tuesdays, which can be conducted either offline on campus or online via Zoom. Additionally, there is a Discord group available for voice calls in case any members need to communicate for an urgent task. Every member is active and available for communication at least once every day if needed.
 
