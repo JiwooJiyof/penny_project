@@ -27,4 +27,19 @@ As stated earlier in the "Dividing the Project" section of our deliverable docum
 
 (Database)
 
+The database team is responsible for populating the database with information
+about the products and keep an up-to-date snapshot of the current prices
+of the products in the stores. This will allow the backend team to accurately 
+compare prices across different stores. Note the database already existed by
+the time we entered the project but this team is also responsible for any changes
+we will need to make to the database. We will use python as a library for most of the scraping
+portion. We will use Beautiful soup and selenium to scrape the data and then use psycopg2 
+to upload the data to the database.
+The team will also eventually be responsible
+for showing the backend team how to use and connect to the database. The biggest
+responsibility of the team for now is figuring out how to scrape the data from
+Metro and No Frills and uploading it to the database. This will eventually extend to other websites
+but for now we are focusing on these two. This task ended up being harder than expected
+due to the use of java-script and bot protection on both websites.
+
 
