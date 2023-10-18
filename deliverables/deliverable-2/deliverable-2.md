@@ -6,6 +6,7 @@
 a. One paragraph for the problem & partner (if applicable)
 
 b. One paragraph introducing any existing software/infrastructure (if applicable)
+Penny's infrastructure is built on a robust and diverse technological stack. It primarily utilizes Flutter and Dart, for efficient cross-platform development for both iOS and Android devices. The backend is enhanced by Supabase, ensuring scalability and real-time data handling. C++ and CMake are used and are integral for optimizing performance and managing the build process. Ruby is also used to facilitate streamlined scripting and Swift is used to ensure the iOS version is optimized. HTML is also employed for web implementation. The combination of these technologies ensures adaptability, performance, and scalability to meet evolving Penny's users' needs and technical demands.
 
 ## Dividing the Project
 1-4 paragraph(s) on how you decided to divide the project and why. Ideally, this will be accompanied by a software architecture diagram and how each component connects to the others.
@@ -13,7 +14,7 @@ b. One paragraph introducing any existing software/infrastructure (if applicable
 We divided our project into three distinct subteams: frontend, backend, and data. This division was aimed at promoting an efficient development process by allowing each team to leverage their respective strengths. We allocated 2, 3, and 2 team members to the frontend, backend, and data teams, respectively, after several considerations. We recognized that the backend would require a substantial team to manage core functionalities and handle server-side processing, making it the largest team. For the frontend and user-interaction aspects, we assigned team members with experience in Dart and Flutter, the framework we are using. Also, the database team was crucial for data collection and processing. Each subteam plays a vital role in achieving our project goals, and this structure ensures a balanced workload. Each team has at least one member to review their work and progress. Furthermore, we are maintaining communication across teams to make sure that the project connects together seamlessly at the end.
 
 
-The backend sub-team is responsible for all the backend features and functionalities that will help support Penny and allow the app to function as laid out in our user-stories. We decided to include this team as a part of our divided project, as the backend functionalities are imperative for Penny to work and function as intended. 
+The backend sub-team is responsible for all the backend features and functionalities that will help support Penny and allow the app to function as laid out in our user stories. We decided to include this team as a part of our divided project, as the backend functionalities are imperative for Penny to work and function as intended. 
 
 ## Software Architectural Diagram
 ![diagram.png](diagram.png)
