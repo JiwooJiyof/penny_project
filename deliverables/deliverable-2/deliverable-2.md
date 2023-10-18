@@ -16,7 +16,6 @@ We divided our project into three distinct subteams: frontend, backend, and data
 The backend sub-team is responsible for all the backend features and functionalities that will help support Penny and allow the app to function as laid out in our user-stories. We decided to include this team as a part of our divided project, as the backend functionalities are imperative for Penny to work and function as intended. 
 
 ## Software Architectural Diagram
-
 ![diagram.png](diagram.png)
 ## Sub-team Responsibilities
 One paragraph for part(s) each sub-team is responsible for
