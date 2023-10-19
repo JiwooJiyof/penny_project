@@ -1,12 +1,12 @@
-** For Partner Meetings only!
+# Partner Meeting Minutes
 
-9/19
+## Meeting #1 (09/21/23)
 Our first meeting with Kevin, where we had a round of introductions and an explanation of the scope of the project.
 
 We discussed two routes we could go for the project, web scraping and gamification:
 1. Web scraping
-    a. There is rate limiting to keep in mind
-        i. Documentation/JSON file for people who don’t contribute on daily basis for them to access for maintaining and updating it
+    1. There is rate limiting to keep in mind
+        1. Documentation/JSON file for people who don’t contribute on daily basis for them to access for maintaining and updating it
 - Metro is best place to do a dev spike on web scraping, they explicitly state that their prices match the stores, actual data
 - Metro refreshes their prices every Thursday (either morning or night but shouldn’t really matter)
 - In case of any major updates, working with IDs
@@ -16,15 +16,15 @@ We discussed two routes we could go for the project, web scraping and gamificati
         - Beautiful Soup just pulls the Dom and you can look at the dom/ids and pull value based on that
         - ChatGPT and GitHub copilot can web scrape
 2. Community aspect - gamification: using google maps/swarm like tools (the idea of everyone reviewing stuff and people who contribute the most are most visible and to find those people and build it off them)
-    a. Based in Dart/Flutter
-        i. Similar to Swift UI, not similar to Python/Node.js/Rails
+    1. Based in Dart/Flutter
+        1. Similar to Swift UI, not similar to Python/Node.js/Rails
 
--Current Website for Application: http://app.shopwithpenny.com
--Choose gamification if web scraping is too time consuming/too big of a task
--Meeting twice a week until we don’t need to anymore – then once a week
+- Current Website for Application: http://app.shopwithpenny.com
+- Choose gamification if web scraping is too time consuming/too big of a task
+- Meeting twice a week until we don’t need to anymore – then once a week
 
 
-9/26
+## Meeting #2 (09/26/23)
 Our second meeting with Kevin, where we made our decision on the route to go and asked questions regarding his app so far and expectations.
 
 - Chose webscraping
@@ -42,3 +42,7 @@ Our second meeting with Kevin, where we made our decision on the route to go and
 - Eventually wants prediction data
     - Similar to Copper or Google Flights (wait a certain period and you save more money)
     - In-season products and lower prices
+
+## Meeting #3 (10/03/23)
+
+## Meeting #4 (10/14/23)
