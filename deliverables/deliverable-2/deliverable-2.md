@@ -18,8 +18,7 @@ The **frontend sub-team** is primarily in charge of designing and implementing t
 
 The **backend sub-team** is responsible for all the backend features and functionalities that will help support Penny and allow the app to function as laid out in our user stories. We decided to include this team as a part of our divided project, as the backend functionalities are imperative for Penny to work and function as intended. 
 
-<!-- TODO: database -->
-The **database sub-team** ...
+Penny takes care of a large amount of data regarding grocery stores (products, sellers, etc.) so we decided to have a **database sub-team** to focus on scraping and ensuring all the data is stored and updated properly. The database then connects to the backend sub-team, which queries the database for any needed data.
 
 ### Software Architectural Diagram
 ![diagram.png](diagram.png)
