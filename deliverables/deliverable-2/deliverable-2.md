@@ -16,6 +16,8 @@ We divided our project into three distinct sub-teams: frontend, backend, and dat
 
 The **frontend sub-team** is primarily in charge of designing and implementing the user interface of the app. The responsbilities of this team plays an integral part of the project, as a client would be using and interacting with their work directly. Thoughout the semester, this group will collaborate closely with the partner to ensure the visual and interactive elements of the app align with the intended design specifications. Further into the project, this team will also be tasked with optimizing the app's performance across various devices and platforms, integrating with backend services, and ensuring the overall usability and user experience are seamless and intuitive.
 
+Penny takes care of a large amount of data regarding grocery stores (products, sellers, etc.) so we decided to have the **database sub-team** to focus on scraping and ensuring all the data is stored and updated properly. The database then connects to the backend sub-team, which queries the database for any needed data.
+
 The **backend sub-team** is responsible for all the backend features and functionalities that will help support Penny and allow the app to function as laid out in our user stories. We decided to include this team as a part of our divided project, as the backend functionalities are imperative for Penny to work and function as intended. 
 
 Penny takes care of a large amount of data regarding grocery stores (products, sellers, etc.) so we decided to have a **database sub-team** to focus on scraping and ensuring all the data is stored and updated properly. The database then connects to the backend sub-team, which queries the database for any needed data.
