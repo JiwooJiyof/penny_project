@@ -44,5 +44,30 @@ Our second meeting with Kevin, where we made our decision on the route to go and
     - In-season products and lower prices
 
 ## Meeting #3 (10/03/23)
-
+- Showing Kevin the Figma mockup of the webpage
+    - Sitemaps: write why a person is here (what they have to do on specific webpages) to frame thinking
+    - Kevin has been testing with beta testers, “price check” is not the correct terminology anymore, change it to “log price”
+    - Leaning towards what was recently logged (ex. Great Value Chicken Eggs) and what was shown in recents is “Chicken Eggs”
+        - Can jump back to market price page he has
+    - Location is awesome!
+    - Main suggestion: keep things in the same spot as much as possible (for example, the exit button for search and price checks not being in the same place)
+    - Merge shopping cart or have cart/list considered as navigation item
+        - Have a sidebar for cart/shopping list
+    - Simplify cart and list (merge them)
+        - Assume that if they check something off, then they are going to buy it
+- Discussing sub-teams (frontend, backend, database)
+    - Database
+        - Are we using pre-existing database? We are welcome to use it
+        - What are we putting in database? Leave it to team to make that call, Metro has a dedicated page for deals (scrape deals page because it’s a dedicated URL and will be scalable to categories for him to scale latterly), if it hits a hiccup then we can error-handle it
+            - Scrape information on Metro deals page where all values already appear (product name, unit price, etc.), but the only thing missing is category
+                - Go to categories → filter by deals → scrape
+        - On client-side, if scrapper can be in a state where he can scale it up, that would be ideal and important
+        - Has a survey on what is in-demand
+            - Wants to look at produce items more than packaged items (meat, vegetable, fruits, dairy)
+            - Weights are a problem area people want to price-check
+        - It might be beneficial to have a lightweight ML (anytime there’s “raspberries” and “aspberries”, the error is handled accordingly)
+        - Can go through DoS and submit SQL queries through API
+        - Keep in mind with Supabase, if you were to submit data through application, you might hit role level security (each table has policies set to them, like the seller table, only has access for users to read it), but through API credentials, we shouldn’t run into these issues
+        - He’s okay with us creating new databases and modifications to existing tables
+          
 ## Meeting #4 (10/14/23)
