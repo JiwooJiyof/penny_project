@@ -1,0 +1,51 @@
+{
+    "users": [
+        {
+            "name": "John Doe",
+            "username": "johndoe",
+            "password": "johnpassword",
+            "location": "Toronto"
+        },
+        {
+            "name": "Kevin Lee",
+            "username": "kevinlee",
+            "password": "kevinpassword",
+            "location": "Toronto"
+        },
+        {
+            "name": "Jay Jung",
+            "username": "jayjung",
+            "password": "jaypassword",
+            "location": "New York",
+            "email": null
+        },
+        {
+            "name": "Drav",
+            "username": "drav",
+            "password": "dravpassword",
+            "location": "Alberta",
+            "email": null
+        },
+        {
+            "name": "Prithee",
+            "username": "prithee",
+            "password": "pritheepassword",
+            "location": "Toronto",
+            "email": null
+        },
+        {
+            "name": "Bob",
+            "username": "bob1234",
+            "password": "1234",
+            "location": null,
+            "email": null
+        },
+        {
+            "name": "poop",
+            "username": "poop",
+            "password": "poop",
+            "location": null,
+            "email": null
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "stores": [
+        {
+            "store": "Metro",
+            "items": [
+                {"Apple": 0.34},
+                {"Banana": 0.29},
+                {"Pineapple": 4.99},
+                {"Broccoli": 3.99},
+                {"Onion": 1.78},
+                {"Carrot": 1.10},
+                {"Chicken Breast": 13.21},
+                {"Beef": 9.97},
+                {"Rice": 3.99},
+                {"Spaghetti": 3.49}
+            ]
+        },
+        {
+            "store": "No Frills",
+            "items": [
+                {"Strawberries": 3.99},
+                {"Banana": 1.5},
+                {"Pineapple": 3.99},
+                {"Broccoli": 2.99},
+                {"Onion": 2.03},
+                {"Carrot": 0.51},
+                {"Chicken Breast": 12.49},
+                {"Beef": 7.00},
+                {"Rice": 3.79},
+                {"Spaghetti": 1.25}
+            ]
+        },
+        {
+            "store": "City Market",
+            "items": [
+                {"Apple": 1.38},
+                {"Banana": 1.75},
+                {"Strawberries": 6.99},
+                {"Broccoli": 3.99},
+                {"Onion": 2.19},
+                {"Carrot": 0.71},
+                {"Chicken Thighs": 12.00},
+                {"Beef": 8.17},
+                {"Rice": 3.99},
+                {"Spaghetti": 3.49}
+            ]
+        }
+    ]
+}
