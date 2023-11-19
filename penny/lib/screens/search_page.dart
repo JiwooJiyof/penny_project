@@ -46,12 +46,12 @@ class _SearchPageState extends State<SearchPage> {
             right: 0,
             child: HomeNavBar(),
           ),
-          Positioned.fill(
-            child: Image.asset(
-              'assets/main_page.png',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Positioned.fill(
+          //   child: Image.asset(
+          //     'assets/main_page.png',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           Padding(
             padding: EdgeInsets.only(top: 60),
             child: ListView(
