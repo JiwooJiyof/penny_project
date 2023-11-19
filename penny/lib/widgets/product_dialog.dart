@@ -75,12 +75,59 @@ void showProductDetailsDialog(BuildContext context, int index) {
                       //   "/unit",
                       //   style: TextStyle(fontSize: 12, color: Colors.black),
                       // ),
-                      Text(
-                        "Available at",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Available at",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.sort,
+                                  color: Colors.amber), // prefix icon
+                              SizedBox(width: 8),
+                              // dropdown Button
+                              DropdownButton<String>(
+                                items: [
+                                  DropdownMenuItem<String>(
+                                    child: Text('Distance'),
+                                    value: 'distance',
+                                  ),
+                                  DropdownMenuItem<String>(
+                                    child: Text('Price: Low to High'),
+                                    value: 'lowToHigh',
+                                  ),
+                                  DropdownMenuItem<String>(
+                                    child: Text('Price: High to Low'),
+                                    value: 'highToLow',
+                                  ),
+                                ],
+                                onChanged: (String? value) {
+                                  // Handle dropdown value change here
+                                  // You can implement sorting logic based on the selected option
+                                },
+                                hint: Text('Sort by'),
+                                value:
+                                    'distance', // Set the default value to the first dropdown item
+                                dropdownColor: Colors
+                                    .white, // Set the dropdown background color
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors
+                                        .amber), // Set the dropdown arrow color
+                                underline: Container(
+                                  height: 2,
+                                  color:
+                                      Colors.amber, // Set the underline color
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       Wrap(
                         spacing: 20, // Horizontal spacing between children
