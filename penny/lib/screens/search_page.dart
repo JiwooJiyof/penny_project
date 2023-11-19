@@ -21,7 +21,7 @@ class _SearchPageState extends State<SearchPage> {
 
   final TextEditingController _controller = TextEditingController();
 
-  // Define sorting options here
+  // sorting options
   List<String> sortOptions = [
     'Lowest to Highest Price',
     'Highest to Lowest Price',
@@ -36,8 +36,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Existing build method...
-
     return Scaffold(
       body: Stack(
         children: [
@@ -66,7 +64,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   child: Column(
                     children: [
-                      // search bar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 100),
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -108,7 +106,7 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                       SizedBox(height: 40),
 
-                      // items widget!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      // items widget ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -120,6 +118,8 @@ class _SearchPageState extends State<SearchPage> {
                               color: Colors.black,
                             ),
                           ),
+
+                          // sort dropdown ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                           Padding(
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             child: Container(
@@ -138,32 +138,42 @@ class _SearchPageState extends State<SearchPage> {
                                   ),
                                 ],
                               ),
-                              child: DropdownButton<String>(
-                                dropdownColor: Colors.white,
-                                icon: Icon(Icons.sort, color: Colors.amber),
-                                value: selectedSortOption,
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      selectedSortOption = newValue;
-                                      // TODO: Add sorting logic
-                                    });
-                                  }
-                                },
-                                items: sortOptions.map((String option) {
-                                  return DropdownMenuItem<String>(
-                                    value: option,
-                                    child: Row(
-                                      children: [
-                                        Text(option,
-                                            style:
-                                                TextStyle(color: Colors.black)),
-                                        SizedBox(width: 8),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                                underline: SizedBox(),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.sort,
+                                      color: Colors.amber), // prefix icon
+                                  SizedBox(width: 8),
+                                  // dropdown Button
+                                  DropdownButton<String>(
+                                    dropdownColor: Colors.white,
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors
+                                            .amber), // Dropdown arrow to the right
+                                    value: selectedSortOption,
+                                    onChanged: (String? newValue) {
+                                      if (newValue != null) {
+                                        setState(() {
+                                          selectedSortOption = newValue;
+                                          // TODO: Add sorting logic
+                                        });
+                                      }
+                                    },
+                                    items: sortOptions.map((String option) {
+                                      return DropdownMenuItem<String>(
+                                        value: option,
+                                        child: Row(
+                                          children: [
+                                            Text(option,
+                                                style: TextStyle(
+                                                    color: Colors.black)),
+                                            SizedBox(width: 8),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                    underline: SizedBox(),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
