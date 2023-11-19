@@ -15,6 +15,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String inputText;
   String selectedSortOption;
+  int resultCount = 7; // change this
 
   _SearchPageState({required this.inputText})
       : selectedSortOption = 'Lowest to Highest Price';
@@ -117,7 +118,7 @@ class _SearchPageState extends State<SearchPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '7 results found',
+                            '${resultCount} results found', // TODO: change value :')
                             style: GoogleFonts.phudu(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
