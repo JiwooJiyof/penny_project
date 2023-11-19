@@ -79,10 +79,17 @@ class HomePage extends StatelessWidget {
                                 // Navigate to the SearchPage when the search icon is clicked
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SearchPage(
-                                            inputText: _searchController.text,
-                                          )),
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        SearchPage(
+                                      inputText: _searchController.text,
+                                    ),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      return child; // no animation, just return the child
+                                    },
+                                  ),
                                 );
                               },
                               child: Icon(Icons.search, color: Colors.amber),

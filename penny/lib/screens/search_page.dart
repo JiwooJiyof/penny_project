@@ -89,10 +89,16 @@ class _SearchPageState extends State<SearchPage> {
                                 // navigate to the SearchPage when the search icon is clicked
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SearchPage(
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        SearchPage(
                                       inputText: _controller.text,
                                     ),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      return child; // no animation, just return the child
+                                    },
                                   ),
                                 );
                               },
