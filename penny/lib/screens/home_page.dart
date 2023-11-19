@@ -7,42 +7,27 @@ import 'package:penny/screens/search_page.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: HomeNavBar(),
-          ),
-          Positioned.fill(
-            child: Image.asset(
-              'assets/main_page.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 60), // Adjust based on AppBar height
-            child: ListView(
-              padding: EdgeInsets.all(20),
+          HomeNavBar(), // Stationary AppBar
+          Expanded(
+            child: Stack(
               children: [
-                // HomeNavBar(),
-                SizedBox(height: 40),
-                Container(
-                  // temp height
-                  padding: EdgeInsets.only(top: 15),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    // borderRadius: BorderRadius.only(
-                    //   topLeft: Radius.circular(35),
-                    //   topRight: Radius.circular(35),
-                    // ),
+                Positioned.fill(
+                  child: Image.asset(
+                    'assets/main_page.png',
+                    fit: BoxFit.cover,
                   ),
+                ),
+                SingleChildScrollView(
+                  padding: EdgeInsets.only(top: 20),
                   child: Column(
                     children: [
+                      SizedBox(height: 40),
                       Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -54,7 +39,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
-                      // search bar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 100),
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -94,14 +78,10 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 80),
-                      // categories!!!!!!!!!!!!!!!!!!
                       CategoriesWidget(),
-
-                      // items!!!!!!!!!!!!
                       Container(
                         alignment: Alignment.centerLeft,
-                        margin:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Text(
                           "Today's Prices",
                           style: GoogleFonts.phudu(
@@ -111,8 +91,6 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                      // items widget!!!!!!!!!!!!!!!!!!!!!!!!!!!
                       ProductWidget(path: ""),
                     ],
                   ),
