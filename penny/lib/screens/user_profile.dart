@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class HelloWorldDialog extends StatelessWidget {
+class UserProfile extends StatelessWidget {
   final String address = "27 King's College Cir, Toronto, ON M5S 1A1"; // Default address
 
   @override
