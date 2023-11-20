@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:penny/widgets/categories.dart';
 import 'package:penny/widgets/home_nav_bar.dart';
 import 'package:penny/widgets/product.dart';
@@ -7,6 +8,9 @@ import 'package:penny/screens/search_page.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
+  final LocationData? locationData;
+
+  HomePage({Key? key, this.locationData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +92,8 @@ class HomePage extends StatelessWidget {
                       CategoriesWidget(),
                       Container(
                         alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Text(
                           "Today's Prices",
                           style: GoogleFonts.phudu(
