@@ -1,5 +1,5 @@
 
-# Your Team Number and Name
+# 26: Penny/Boolean Boos
 
  > _Note:_ This document is meant to be written during (or shortly after) your review meeting, which should happen fairly close to the due date.      
  >      
