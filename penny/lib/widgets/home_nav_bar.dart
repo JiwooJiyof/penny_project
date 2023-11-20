@@ -1,7 +1,8 @@
 // home_nav_bar.dart
 
 import 'package:flutter/material.dart';
-import 'package:penny/screens/user_profile.dart'; // Ensure this is the correct path
+import 'package:penny/screens/user_profile.dart'; 
+import 'package:penny/widgets/shopping_list.dart'; 
 
 class HomeNavBar extends StatelessWidget {
   @override
@@ -67,10 +68,18 @@ class HomeNavBar extends StatelessWidget {
       actions: [
         Padding(
           padding: EdgeInsets.all(15.0),
-          child: Icon(
-            Icons.shopping_cart,
-            color: Colors.black,
-            size: 40.0,
+          child: InkWell(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => ShoppingCartDialog(),
+              );
+            },
+            child: Icon(
+              Icons.shopping_cart,
+              color: Colors.black,
+              size: 40.0,
+            ),
           ),
         ),
       ],
