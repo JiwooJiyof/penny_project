@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, List
 
 from dotenv import load_dotenv
 from supabase import create_client, Client
@@ -25,7 +25,7 @@ class Product:
 
 def find_product_id(pruduct_name: str, store: str) -> Optional[int]:
     pass
-def add_products(products: Product):
+def add_products(products: List[Product]):
 
     for product in products:
         supabase.table('products').insert(
