@@ -10,9 +10,6 @@ from add_products import add_products
 
 
 def handle_prices(price: float, unit_amount: float, unit_type: str) -> Tuple[float, str]:
-    """handles the prices of the products. If the unit type is kg, it converts it to 100g. If the unit type is lb, it
-    converts it to 100g. If the unit type is g, it converts it to 100g. If the unit type is 100g, it does nothing.
-    """
     # if unit_type == "kg":
     #     price = price / (1000 * unit_amount)
     #     unit_type = "100g"
