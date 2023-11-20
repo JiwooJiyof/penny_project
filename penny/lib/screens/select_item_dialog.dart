@@ -40,7 +40,7 @@ class ItemIndexDialog extends StatelessWidget {
                   left: 0,
                   top: 0,
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.grey),
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () => _navigateBack(context),
                   ),
                 ),
@@ -59,7 +59,7 @@ class ItemIndexDialog extends StatelessWidget {
                   right: 0,
                   top: 0,
                   child: IconButton(
-                    icon: Icon(Icons.close, color: Colors.grey),
+                    icon: Icon(Icons.close, color: Colors.black),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
