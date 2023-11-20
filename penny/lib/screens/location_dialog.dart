@@ -4,16 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 class LocationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Assuming the following custom styles are similar to those in the image:
     const titleStyle = TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.bold,
-      color: Colors.black, // Adjust the color to match the image
+      color: Colors.black, // black text
     );
     const buttonTextStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: Colors.black, // Adjust the color to match the image
+      color: Colors.black, // black
     );
 
     return Dialog(
@@ -27,17 +26,18 @@ class LocationDialog extends StatelessWidget {
           children: [
             Stack(
               children: [
-                // Using Align to center the title
+                // title ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Align(
-                  alignment: Alignment.center,
+                  alignment: Alignment.center, // centered
                   child: Text(
                     'Select your current location',
                     style: GoogleFonts.phudu(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
-                // Positioned to place the close button on the right
+                // close button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Positioned(
+                  // on the right
                   right: 0,
                   top: 0,
                   child: IconButton(
@@ -47,7 +47,8 @@ class LocationDialog extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 25), // Spacing between text and search bar
+            SizedBox(height: 25),
+            // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Container(
               margin: EdgeInsets.symmetric(horizontal: 100),
               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -70,7 +71,7 @@ class LocationDialog extends StatelessWidget {
                     onTap: () {},
                     child: Icon(Icons.search, color: Colors.amber),
                   ),
-                  hintText: 'Search for a product...',
+                  hintText: 'Search for a location...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -79,59 +80,84 @@ class LocationDialog extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 50), // Spacing between search bar and grid
+            SizedBox(height: 50),
+            // stores grid view ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Expanded(
               child: GridView.count(
                 crossAxisCount: 3,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
+                mainAxisSpacing: 15,
+                crossAxisSpacing: 15,
                 childAspectRatio: (1 / .6),
-                children: List.generate(9, (index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 7,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment
-                            .start, // Align text to the start (left)
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Placeholder for store logo
-                          Icon(Icons.store,
-                              size: 50), // Replace with actual logo
-                          SizedBox(height: 8), // Spacing between logo and text
-                          Text(
-                            'Store Name', // Replace with actual store name
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'Grocery Store Address', // Replace with actual address
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                padding: EdgeInsets.all(15), // padding
+                children: List.generate(12, (index) {
+                  return StoreGridItem(index: index);
                 }),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class StoreGridItem extends StatefulWidget {
+  final int index;
+
+  const StoreGridItem({Key? key, required this.index}) : super(key: key);
+
+  @override
+  _StoreGridItemState createState() => _StoreGridItemState();
+}
+
+class _StoreGridItemState extends State<StoreGridItem> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final boxShadow = _isHovered
+        ? BoxShadow(
+            color: Colors.amber.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: Offset(0, 3),
+          )
+        : BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: Offset(0, 3),
+          );
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: () {
+          // Perform your action here
+          print('Tapped on store ${widget.index}');
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: Colors.white,
+            boxShadow: [boxShadow],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.store, size: 50), // TODO: replace with actual logo
+                SizedBox(height: 8),
+                Text('Store Name',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text('Grocery Store Address', style: TextStyle(fontSize: 14)),
+              ],
+            ),
+          ),
         ),
       ),
     );
