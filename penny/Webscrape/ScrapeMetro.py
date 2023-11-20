@@ -40,9 +40,10 @@ class MetroScraper(WebScraper):
                     pass
             if unit_type == "kg":
                 price = price / (1000 * unit_size)
-                unit_type = "g"
+                unit_type = "100g"
             elif unit_type == "g":
-                price = price / unit_size
+                price = price * 100 / unit_size
+                unit_type = "100g"
 
             product = Product(name, price, unit_type)
             result.append(product)
@@ -70,7 +71,7 @@ if __name__ == '__main__':
     url = "https://www.metro.ca/en"
     scrapper.hit_page_fast(url)
     url = f"https://www.metro.ca/en/online-grocery/aisles/fruits-vegetables"
-    for i in scrapper.get_range(url, 24):
+    for i in scrapper.get_range(url, 4):
         print(i)
 
 

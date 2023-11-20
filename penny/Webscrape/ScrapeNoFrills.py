@@ -1,6 +1,6 @@
 from __future__ import annotations
 import re
-from common import Product
+from add_products import Product
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from seleniumbase import Driver
@@ -43,15 +43,21 @@ class NoFrillsScraper(WebScraper):
                 match = re.match(pattern, unit)
                 unit_size = float(match.group(1))
                 unit_type = match.group(2)
-                # print("unit size: ", unit_size, "unit: ", unit_type)
+                # print("unit size:", unit_size, "unit:", unit_type)
                 if unit_type == "kg":
                     price = price / (1000 * unit_size)
-                    unit_type = "g"
+                    unit_type = "100g"
+                elif unit_type == "100g":
+                    pass
                 elif unit_type == "g":
-                    price = price / unit_size
+                    price = price * 100 / unit_size
+                    unit_type = "100g"
+                elif unit_type == "lb":
+                    price = price / (unit_size * 0.453592)
+                    unit_type = "100g"
 
                 # print(f"Price: ${price}, Unitamount: {unit_type}")
-                product = Product(title, price, unit_type)
+                product = Product(name=title, price=price, unit_type=unit_type, store_name="No Frills")
                 result.append(product)
                 # print(product)
             except:
@@ -73,6 +79,6 @@ if __name__ == '__main__':
     url = "https://www.nofrills.ca/food/fruits-vegetables/c/28000?navid=flyout-L2-fruits-vegetables"
     scraper.hit_page_fast(url)
     url = "https://www.nofrills.ca/food/fruits-vegetables/fresh-vegetables/c/28195"
-    for i in scraper.get_range(url, 6):
+    for i in scraper.add_range_to_database(url, 2):
         print(i)
 
