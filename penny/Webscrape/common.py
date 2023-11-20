@@ -9,6 +9,20 @@ from add_products import Product
 from add_products import add_products
 
 
+def handle_prices(price: float, unit_amount: float, unit_type: str) -> Tuple[float, str]:
+    """handles the prices of the products. If the unit type is kg, it converts it to 100g. If the unit type is lb, it
+    converts it to 100g. If the unit type is g, it converts it to 100g. If the unit type is 100g, it does nothing.
+    """
+    # if unit_type == "kg":
+    #     price = price / (1000 * unit_amount)
+    #     unit_type = "100g"
+    # elif unit_type == "g":
+    #     price = price * 100 / unit_amount
+    #     unit_type = "100g"
+    # elif unit_type == "lb":
+    #     price = price / (unit_amount * 0.453592)
+    #     unit_type = "100g"
+    return price, unit_type
 # @dataclass
 # class Product:
 #     name: str
@@ -74,7 +88,8 @@ class WebScraper:
 
 
     def add_range_to_database(self, base_url: str, end: int, start: int = 1) -> List[Product]:
-        """gets all the products from a range of pages"""
+        """gets all the products from a range of pages and adds them to the database. Returns all items it added to
+        the database"""
         result = self.get_range(base_url, end, start)
         print(result)
         add_products(result)

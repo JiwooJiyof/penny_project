@@ -17,6 +17,13 @@ class MetroScraper(WebScraper):
         result = []
         for product in product_tabs:
             name = product.find('div', class_='head__title').text.strip()
+            image = product.find('picture', class_='defaultable-picture')
+            # print(image)
+            image = image.find('source')['srcset']
+            # print("image_type:", type(image))
+            # print(image)
+            image = image.split('.jpg')[0] + '.jpg'
+            # print(image)
             # print(f"Product: {name}")
             pricing_div = pricing_div = product.find("div", class_="content__pricing")
             unit_prices = pricing_div.find('div', class_='pricing__secondary-price').find_all('span')
@@ -45,7 +52,7 @@ class MetroScraper(WebScraper):
                 price = price * 100 / unit_size
                 unit_type = "100g"
 
-            product = Product(name, price, unit_type)
+            product = Product(name=name, price=price, unit_type=unit_type, store_name="Metro", image_url=image)
             result.append(product)
             # print(f"Price: ${price}, Unitamount: {unit_type}, Unit Size: {unit_size}")
         return result
@@ -71,8 +78,12 @@ if __name__ == '__main__':
     url = "https://www.metro.ca/en"
     scrapper.hit_page_fast(url)
     url = f"https://www.metro.ca/en/online-grocery/aisles/fruits-vegetables"
-    for i in scrapper.get_range(url, 4):
+    # with open("metro.html", "w") as f:
+    #     f.write(scrapper.get_page(url))
+    for i in scrapper.add_range_to_database(url, 3):
         print(i)
+    # for i in scrapper.get_range(url, 4):
+    #     print(i)
 
 
 

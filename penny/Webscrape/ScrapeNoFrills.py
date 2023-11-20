@@ -16,6 +16,11 @@ class NoFrillsScraper(WebScraper):
         product_tabs = soup.find_all("div", class_="chakra-linkbox css-wsykbb")
         for product in product_tabs:
             # print(product.prettify())
+            try:
+                image = product.find("img", class_="chakra-image")['src']
+            except:
+                print(product.prettify())
+                image = None
             title = product.find('h3', class_='chakra-heading').text.strip()
             # print(f"Product: {title}")
 
@@ -57,7 +62,7 @@ class NoFrillsScraper(WebScraper):
                     unit_type = "100g"
 
                 # print(f"Price: ${price}, Unitamount: {unit_type}")
-                product = Product(name=title, price=price, unit_type=unit_type, store_name="No Frills")
+                product = Product(name=title, price=price, unit_type=unit_type, store_name="No Frills", image_url=image)
                 result.append(product)
                 # print(product)
             except:
@@ -79,6 +84,14 @@ if __name__ == '__main__':
     url = "https://www.nofrills.ca/food/fruits-vegetables/c/28000?navid=flyout-L2-fruits-vegetables"
     scraper.hit_page_fast(url)
     url = "https://www.nofrills.ca/food/fruits-vegetables/fresh-vegetables/c/28195"
-    for i in scraper.add_range_to_database(url, 2):
+    # page = scraper.get_page(url)
+    # with open("nofrills.html", "w") as f:
+    #     f.write(page)
+    # scraper = NoFrillsScraper()
+    # with open("nofrills.html", "r") as f:
+    #     page = f.read()
+    # for i in scraper.get_all_products_from_html(page):
+    #     print(i)
+    for i in scraper.add_range_to_database(url, 5):
         print(i)
 

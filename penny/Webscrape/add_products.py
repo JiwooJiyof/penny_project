@@ -25,6 +25,9 @@ class Product:
 
 
 def find_product_id(product: Product) -> Optional[int]:
+    """
+    Finds the product id of the product in the database. If the product does not exist, it will return None.
+    """
     columns = (supabase.table('temp_products').select('id').
      eq('display_name', product.name).eq('seller_name', product.store_name).execute())
     print(columns)
@@ -33,16 +36,31 @@ def find_product_id(product: Product) -> Optional[int]:
     if len(columns.data) > 1:
         raise Exception("Multiple products with same name and store name")
     return columns.data[0]['id']
+
+
 def add_products(products: List[Product]):
+    """
+    Adds products to the database. If the product already exists, it will update just update the price. Otherwise it
+    will add the product to the database and then add the price.
+    """
     for product in products:
         id = find_product_id(product)
         if id is None:
             supabase.table('temp_products').insert(
-                {"display_name": product.name, "seller_name": product.store_name}).execute()
+                {"display_name": product.name, "seller_name": product.store_name, "image_url": product.image_url}).execute()
         id = find_product_id(product)
         if id is not None:
             supabase.table('temp_prices').insert(
                 {"product_id": id, "unit_price": product.price, "unit_system": product.unit_type}).execute()
+        if id is None:
+            raise Exception("Product not found")
+
+def delete_all_products():
+    """
+    Deletes all products from temp_products and temp_prices. Really should only be used to test out the scraper.
+    """
+    supabase.table('temp_prices').delete().neq('unit_price', 10).execute()
+    supabase.table('temp_products').delete().neq('display_name', "NULL").execute()
 
         # supabase.table('temp_products').insert(
         #     {"display_name": product.name, "unit_system": product.unit_type}).execute()
@@ -59,6 +77,7 @@ if __name__ == '__main__':
     # prod2 = Product('milk', "mL")
     # product_list = [prod1, prod2]
     # add_products(product_list)
+    delete_all_products()
     prod = [Product('apple', 1.0, "ml", "metro"), Product('milk', 1.0, "ml", "metro")]
-    add_products(prod)
-    update_product('apples', uuid.UUID("e64192f2-9620-40e2-8043-fb4227663e51"))
+    # add_products(prod)
+    # update_product('apples', uuid.UUID("e64192f2-9620-40e2-8043-fb4227663e51"))
