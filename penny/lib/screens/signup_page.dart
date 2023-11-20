@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/home_page.dart';
+import 'package:location/location.dart';
+import 'package:penny/utils/location_utils.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
@@ -78,7 +80,6 @@ class SignUpPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 20), // Increased padding under sign-up button
-                        // Optionally add navigation to the login page
                       ],
                     ),
                   ),
@@ -211,8 +212,12 @@ class SignUpPage extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: InkWell(
-              onTap: () {
-                // TODO: Implement address fetching logic
+              onTap: () async {
+                LocationData? locationData = await LocationUtils.getCurrentLocation();
+                  if (locationData != null) {
+                    String address = await LocationUtils.getReadableAddress(locationData.latitude!, locationData.longitude!);
+                    _addressController.text = address; // Update your address field with the obtained address
+                  }
               },
               child: Container(
                 padding: EdgeInsets.all(8),
