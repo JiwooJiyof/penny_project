@@ -88,7 +88,8 @@ class HomePage extends StatelessWidget {
                       CategoriesWidget(),
                       Container(
                         alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Text(
                           "Today's Prices",
                           style: GoogleFonts.phudu(
@@ -100,6 +101,35 @@ class HomePage extends StatelessWidget {
                       ),
                       ProductWidget(path: ""),
                     ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 32, // padding from the bottom edge
+                  right: 32, // padding from the right edge
+                  child: ElevatedButton.icon(
+                    icon: Icon(Icons.label_outlined, size: 24),
+                    label: Text(
+                      'Log Price',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    onPressed: () {
+                      // TODO: action for button
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber, // bkgd color
+                      onPrimary: Colors.black, // text & icon color
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 18), // padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(30), // rounded corners
+                      ),
+                      textStyle: GoogleFonts.phudu(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
