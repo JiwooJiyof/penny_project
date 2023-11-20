@@ -1,0 +1,102 @@
+[
+    {
+        "model": "items.Item",
+        "pk": 1,
+        "fields": {
+            "name": "Product A",
+            "price": 20,
+            "store_name": "Store X",
+            "location": "City 1"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 2,
+        "fields": {
+            "name": "Product B",
+            "price": 35,
+            "store_name": "Store Y",
+            "location": "City 2"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 3,
+        "fields": {
+            "name": "Product C",
+            "price": 50,
+            "store_name": "Store Z",
+            "location": "City 3"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 4,
+        "fields": {
+            "name": "Product D",
+            "price": 25,
+            "store_name": "Store X",
+            "location": "City 1"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 5,
+        "fields": {
+            "name": "Product E",
+            "price": 40,
+            "store_name": "Store Y",
+            "location": "City 2"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 6,
+        "fields": {
+            "name": "Product F",
+            "price": 55,
+            "store_name": "Store Z",
+            "location": "City 3"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 7,
+        "fields": {
+            "name": "Product G",
+            "price": 30,
+            "store_name": "Store X",
+            "location": "City 1"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 8,
+        "fields": {
+            "name": "Product H",
+            "price": 45,
+            "store_name": "Store Y",
+            "location": "City 2"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 9,
+        "fields": {
+            "name": "Product I",
+            "price": 60,
+            "store_name": "Store Z",
+            "location": "City 3"
+        }
+    },
+    {
+        "model": "items.Item",
+        "pk": 10,
+        "fields": {
+            "name": "Product J",
+            "price": 15,
+            "store_name": "Store X",
+            "location": "City 1"
+        }
+    }
+]
