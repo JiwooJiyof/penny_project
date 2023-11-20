@@ -4,7 +4,7 @@ from stores import Store
 from items import Item
 from typing import List, Dict, Union
 
-
+# comment
 class User:
     def __init__(self, name, username, password, location=None, email=None):
         self.name = name
