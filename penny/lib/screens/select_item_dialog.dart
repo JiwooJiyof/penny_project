@@ -1,20 +1,28 @@
+// item_index_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:penny/screens/select_location_dialog.dart';
+import 'package:penny/screens/share_price_dialog.dart';
 
-class LocationDialog extends StatelessWidget {
+class ItemIndexDialog extends StatelessWidget {
+  final int index;
+
+  const ItemIndexDialog({Key? key, required this.index}) : super(key: key);
+
+  void _navigateBack(BuildContext context) {
+    // Pop the current dialog
+    Navigator.pop(context);
+    // Show the previous dialog again
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => LocationDialog(),
+      barrierDismissible:
+          true, // Set to false if you do not want to dismiss the dialog by tapping outside of it.
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.bold,
-      color: Colors.black, // black text
-    );
-    const buttonTextStyle = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: Colors.black, // black
-    );
-
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -26,11 +34,21 @@ class LocationDialog extends StatelessWidget {
           children: [
             Stack(
               children: [
+                // back button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                Positioned(
+                  // on the left
+                  left: 0,
+                  top: 0,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.grey),
+                    onPressed: () => _navigateBack(context),
+                  ),
+                ),
                 // title ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Align(
                   alignment: Alignment.center, // centered
                   child: Text(
-                    'Select your current location',
+                    'Select an item to price check',
                     style: GoogleFonts.phudu(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -71,7 +89,7 @@ class LocationDialog extends StatelessWidget {
                     onTap: () {},
                     child: Icon(Icons.search, color: Colors.amber),
                   ),
-                  hintText: 'Search for a location...',
+                  hintText: 'Search for an item...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -86,9 +104,9 @@ class LocationDialog extends StatelessWidget {
               child: GridView.count(
                 crossAxisCount: 3,
                 mainAxisSpacing: 15,
-                crossAxisSpacing: 15,
+                crossAxisSpacing: 20,
                 childAspectRatio: (1 / .6),
-                padding: EdgeInsets.all(15), // padding
+                padding: EdgeInsets.all(20), // padding
                 children: List.generate(12, (index) {
                   return StoreGridItem(index: index);
                 }),
@@ -134,8 +152,15 @@ class _StoreGridItemState extends State<StoreGridItem> {
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
         onTap: () {
-          // Perform your action here
-          print('Tapped on store ${widget.index}');
+          // Pop the current dialog
+          Navigator.pop(context);
+          // Open the new dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SharePriceDialog(index: widget.index);
+            },
+          );
         },
         child: Container(
           decoration: BoxDecoration(
@@ -149,12 +174,12 @@ class _StoreGridItemState extends State<StoreGridItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.store, size: 50), // TODO: replace with actual logo
+                Icon(Icons.apple, size: 50), // TODO: replace with actual logo
                 SizedBox(height: 8),
-                Text('Store Name',
+                Text('Product Name',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text('Grocery Store Address', style: TextStyle(fontSize: 14)),
+                Text('Product details', style: TextStyle(fontSize: 14)),
               ],
             ),
           ),

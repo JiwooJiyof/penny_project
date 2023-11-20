@@ -1,0 +1,135 @@
+// item_index_dialog.dart
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class SharePriceDialog extends StatelessWidget {
+  final int index;
+
+  const SharePriceDialog({Key? key, required this.index}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Stack(
+              children: [
+                // title ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                Align(
+                  alignment: Alignment.center, // centered
+                  child: Text(
+                    'Share a price!',
+                    style: GoogleFonts.phudu(
+                        fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                // close button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                Positioned(
+                  // on the right
+                  right: 0,
+                  top: 0,
+                  child: IconButton(
+                    icon: Icon(Icons.close, color: Colors.grey),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
+            ),
+            // SizedBox(height: 25),
+
+            SizedBox(height: 50),
+            // stores grid view ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 3,
+                mainAxisSpacing: 15,
+                crossAxisSpacing: 20,
+                childAspectRatio: (1 / .6),
+                padding: EdgeInsets.all(20), // padding
+                children: List.generate(12, (index) {
+                  return StoreGridItem(index: index);
+                }),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class StoreGridItem extends StatefulWidget {
+  final int index;
+
+  const StoreGridItem({Key? key, required this.index}) : super(key: key);
+
+  @override
+  _StoreGridItemState createState() => _StoreGridItemState();
+}
+
+class _StoreGridItemState extends State<StoreGridItem> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final boxShadow = _isHovered
+        ? BoxShadow(
+            color: Colors.amber.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: Offset(0, 3),
+          )
+        : BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: Offset(0, 3),
+          );
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: () {
+          // Pop the current dialog
+          Navigator.pop(context);
+          // Open the new dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SharePriceDialog(index: widget.index);
+            },
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: Colors.white,
+            boxShadow: [boxShadow],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.apple, size: 50), // TODO: replace with actual logo
+                SizedBox(height: 8),
+                Text('Product Name',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text('Product details', style: TextStyle(fontSize: 14)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
