@@ -4,9 +4,17 @@ import 'package:penny/widgets/home_nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/search_page.dart';
+import 'package:penny/screens/location_dialog.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
+
+  void _showLocationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => LocationDialog(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +122,7 @@ class HomePage extends StatelessWidget {
                         fontSize: 18,
                       ),
                     ),
-                    onPressed: () {
-                      // TODO: action for button
-                    },
+                    onPressed: () => _showLocationDialog(context),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.amber, // bkgd color
                       onPrimary: Colors.black, // text & icon color
