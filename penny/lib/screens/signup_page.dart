@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/home_page.dart';
+import 'package:penny/screens/login_page.dart'; // Ensure you have a LoginPage class
 import 'package:location/location.dart';
-import 'package:penny/utils/location_utils.dart';
+import 'package:penny/utils/location_utils.dart'; // Ensure this points to your LocationUtils
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
@@ -18,7 +19,7 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, bottom: 20),
+        padding: const EdgeInsets.only(top: 15, bottom: 15),
         child: Stack(
           children: [
             Positioned.fill(
@@ -75,11 +76,22 @@ class SignUpPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size.fromHeight(50),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30), // Rounded corners
+                              borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
-                        SizedBox(height: 20), // Increased padding under sign-up button
+                        SizedBox(height: 20),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context); // Navigate back to the login page
+                          },
+                          child: Text(
+                            'Already have an account? Log in',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -214,10 +226,10 @@ class SignUpPage extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 LocationData? locationData = await LocationUtils.getCurrentLocation();
-                  if (locationData != null) {
+                if (locationData != null) {
                     String address = await LocationUtils.getReadableAddress(locationData.latitude!, locationData.longitude!);
                     _addressController.text = address; // Update your address field with the obtained address
-                  }
+                }
               },
               child: Container(
                 padding: EdgeInsets.all(8),
