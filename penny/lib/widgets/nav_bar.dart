@@ -32,9 +32,12 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
               if (value != null) {
                 switch (value) {
                   case 'profile':
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UserProfile()),
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        // Call the UserProfile as a dialog
+                        return UserProfile();
+                      },
                     );
                     break;
                   case 'logout':
