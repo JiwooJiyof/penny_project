@@ -12,6 +12,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -66,6 +67,12 @@ class _SignUpPageState extends State<SignUpPage> {
                             (value) =>
                                 value!.isEmpty ? 'Name cannot be empty' : null),
                         SizedBox(height: 20),
+                        _buildTextField(
+                          _usernameController,
+                          'Username',
+                          (value) => _validateUsername(value),
+                        ),
+                        SizedBox(height: 20),
                         _buildEmailField(),
                         SizedBox(height: 20),
                         _buildPasswordField(
@@ -104,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Already have an account "),
+                            Text("Already have an account? "),
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(
@@ -180,9 +187,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(color: Colors.black),
               ),
-
               labelText: label,
-
               suffixIcon: IconButton(
                 icon: Icon(
                   confirm
@@ -211,6 +216,19 @@ class _SignUpPageState extends State<SignUpPage> {
         );
       },
     );
+  }
+
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Username cannot be empty';
+    }
+    if (value.length < 6 || value.length > 30) {
+      return 'Username must be 6 to 30 characters long';
+    }
+    if (!RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(value)) {
+      return 'Username must start with a letter and can only contain letters, numbers, and underscores';
+    }
+    return null;
   }
 
   String? _passwordValidation(String? value) {
@@ -272,35 +290,54 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFormField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: 'Address',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.pin_drop),
-              onPressed: () async {
-                LocationData? locationData =
-                    await LocationUtils.getCurrentLocation();
-                if (locationData != null) {
-                  String address = await LocationUtils.getReadableAddress(
-                      locationData.latitude!, locationData.longitude!);
-                  _addressController.text = address;
-                }
-              },
-            ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
           ),
-          onChanged: (value) async {
-            if (value.isNotEmpty) {
-              _suggestions.clear();
-              _suggestions.addAll(await LocationUtils.fetchSuggestions(value));
-              setState(() {});
-            }
-          },
-          validator: (value) =>
-              value!.isEmpty ? 'Address cannot be empty' : null,
+          child: TextFormField(
+            cursorColor: Colors.amber,
+            controller: controller,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black), // black label style
+              focusedBorder: OutlineInputBorder(
+                // amber focused border
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.amber),
+              ),
+              enabledBorder: OutlineInputBorder(
+                // style when TextField is enabled
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              labelText: 'Address',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.location_on),
+                onPressed: () async {
+                  LocationData? locationData =
+                      await LocationUtils.getCurrentLocation();
+                  if (locationData != null) {
+                    String address = await LocationUtils.getReadableAddress(
+                        locationData.latitude!, locationData.longitude!);
+                    _addressController.text = address;
+                  }
+                },
+              ),
+            ),
+            onChanged: (value) async {
+              if (value.isNotEmpty) {
+                _suggestions.clear();
+                _suggestions
+                    .addAll(await LocationUtils.fetchSuggestions(value));
+                setState(() {});
+              }
+            },
+            validator: (value) =>
+                value!.isEmpty ? 'Address cannot be empty' : null,
+          ),
         ),
         _buildSuggestionsDropdown(),
       ],
@@ -312,14 +349,29 @@ class _SignUpPageState extends State<SignUpPage> {
       shrinkWrap: true,
       itemCount: _suggestions.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_suggestions[index]),
-          onTap: () {
-            _addressController.text = _suggestions[index];
-            setState(() {
-              _suggestions.clear(); // Clear suggestions after selection
-            });
-          },
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 2), // space between each tile
+          decoration: BoxDecoration(
+            color: Colors.white, // white bkgd
+            borderRadius: BorderRadius.circular(30), // Rounded corners
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(0, 1), // Shadow effect
+              ),
+            ],
+          ),
+          child: ListTile(
+            title: Text(_suggestions[index]),
+            onTap: () {
+              _addressController.text = _suggestions[index];
+              setState(() {
+                _suggestions.clear(); // Clear suggestions after selection
+              });
+            },
+          ),
         );
       },
     );
