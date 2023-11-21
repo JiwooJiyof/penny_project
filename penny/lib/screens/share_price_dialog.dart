@@ -150,29 +150,55 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                       children: [
                         // New text and text box for entering price
                         Text('Enter price:'),
+                        SizedBox(height: 8), // Spacing
                         Container(
-                          child: TextField(
-                            controller: priceController,
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,2}$')),
-                            ],
-                            decoration: InputDecoration(
-                              hintText: 'Enter the price',
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '\$',
+                                  style: TextStyle(color: Colors.amber),
+                                ),
+                                SizedBox(width: 5.0),
+                                Expanded(
+                                  child: TextField(
+                                    controller: priceController,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: true),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^\d+\.?\d{0,2}$')),
+                                    ],
+                                    decoration: InputDecoration(
+                                      hintText: 'Enter the price',
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
 
                         SizedBox(height: 16), // Spacing
-                        Text('Is this on sale?'),
-                        _buildToggleButtons(
-                          isSelected: isOnSaleSelected,
-                          labels: ['Yes', 'No'],
-                          onPressed: _handleIsOnSaleToggle,
-                        ),
-                        SizedBox(height: 8), // Spacing
+                        // Text('Is this on sale?'),
+                        // _buildToggleButtons(
+                        //   isSelected: isOnSaleSelected,
+                        //   labels: ['Yes', 'No'],
+                        //   onPressed: _handleIsOnSaleToggle,
+                        // ),
+                        // SizedBox(height: 8), // Spacing
                         Text('How is it priced?'),
                         _buildToggleButtons(
                           isSelected: howIsPricedSelected,
