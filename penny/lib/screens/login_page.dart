@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:penny/screens/home_page.dart'; // Replace with the correct path to your HomePage
+import 'package:penny/screens/signup_page.dart'; // Replace with the correct path to your SignUpPage
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -16,83 +19,121 @@ class LoginPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          Center( // Center the SingleChildScrollView
+          Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40), // Add padding to the sides
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Penny',
-                      style: GoogleFonts.phudu(
-                        fontSize: 100, // Larger font size for "Penny"
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 60), // Increased space between "Penny" and "Login"
-                    Text(
-                      'Login',
-                      style: GoogleFonts.phudu(
-                        fontSize: 60,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 40),
-                    TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Penny',
+                        style: GoogleFonts.phudu(
+                          fontSize: 100,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                      SizedBox(height: 60),
+                      Text(
+                        'Login',
+                        style: GoogleFonts.phudu(
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implement login logic
-                      },
-                      child: Text('Sign In'),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size.fromHeight(50), // sets the height of the button
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // TODO: Navigate to password recovery
-                      },
-                      child: Text('Forgot Password?'),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Don\'t have an account?'),
-                        TextButton(
-                          onPressed: () {
-                            // TODO: Navigate to sign up page
-                          },
-                          child: Text('Sign Up'),
+                      SizedBox(height: 40),
+                      _buildEmailField(),
+                      SizedBox(height: 20),
+                      _buildPasswordField(),
+                      SizedBox(height: 40),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                            );
+                          }
+                        },
+                        child: Text('Sign In'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(50),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Don't have an account? "),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SignUpPage()),
+                              );
+                            },
+                            child: Text('Sign Up'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildEmailField() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextFormField(
+        controller: _emailController,
+        decoration: InputDecoration(
+          labelText: 'Email',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your email';
+          }
+          // Add more specific validation for email if needed
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextFormField(
+        controller: _passwordController,
+        obscureText: true,
+        decoration: InputDecoration(
+          labelText: 'Password',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your password';
+          }
+          return null;
+        },
       ),
     );
   }
