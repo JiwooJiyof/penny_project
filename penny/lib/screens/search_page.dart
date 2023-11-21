@@ -26,8 +26,6 @@ class _SearchPageState extends State<SearchPage> {
   List<String> sortOptions = [
     'Price: Lowest to Highest',
     'Price: Highest to Lowest',
-    'Product: A-Z',
-    'Product: Z-A',
   ];
 
   @override
