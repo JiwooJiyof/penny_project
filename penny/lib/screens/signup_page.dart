@@ -105,7 +105,7 @@ class SignUpPage extends StatelessWidget {
                                     context); // Navigate back to the login page
                               },
                               child: Text(
-                                'Log in',
+                                'Log In',
                                 style: TextStyle(
                                   color: Colors.amber,
                                 ),
@@ -149,6 +149,7 @@ class SignUpPage extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             obscureText: confirm ? !_confirmPasswordVisible : !_passwordVisible,
+            cursorColor: Colors.amber, // cursor color to amber
             validator: confirm
                 ? (value) {
                     if (value == null || value.isEmpty) {
@@ -162,7 +163,20 @@ class SignUpPage extends StatelessWidget {
                   }
                 : (value) => _passwordValidation(value),
             decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black), // black label style
+              focusedBorder: OutlineInputBorder(
+                // amber focused border
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.amber),
+              ),
+              enabledBorder: OutlineInputBorder(
+                // style when TextField is enabled
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.black),
+              ),
+
               labelText: label,
+
               suffixIcon: IconButton(
                 icon: Icon(
                   confirm
@@ -223,9 +237,21 @@ class SignUpPage extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
+        cursorColor: Colors.amber, // cursor color to amber
         obscureText: obscureText,
         validator: validator,
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black), // black label style
+          focusedBorder: OutlineInputBorder(
+            // amber focused border
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          enabledBorder: OutlineInputBorder(
+            // style when TextField is enabled
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.black),
+          ),
           labelText: label,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -248,7 +274,19 @@ class SignUpPage extends StatelessWidget {
           Expanded(
             child: TextFormField(
               controller: controller,
+              cursorColor: Colors.amber, // cursor color to amber
               decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black), // black label style
+                focusedBorder: OutlineInputBorder(
+                  // amber focused border
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.amber),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  // style when TextField is enabled
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.black),
+                ),
                 labelText: 'Address',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),

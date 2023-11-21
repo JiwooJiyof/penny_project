@@ -112,7 +112,19 @@ class LoginPage extends StatelessWidget {
       ),
       child: TextFormField(
         controller: _emailController,
+        cursorColor: Colors.amber, // cursor color to amber
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black), // black label style
+          focusedBorder: OutlineInputBorder(
+            // amber focused border
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          enabledBorder: OutlineInputBorder(
+            // style when TextField is enabled
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.black),
+          ),
           labelText: 'Email',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -137,8 +149,20 @@ class LoginPage extends StatelessWidget {
       ),
       child: TextFormField(
         controller: _passwordController,
+        cursorColor: Colors.amber, // cursor color to amber
         obscureText: true,
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black), // black label style
+          focusedBorder: OutlineInputBorder(
+            // amber focused border
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          enabledBorder: OutlineInputBorder(
+            // style when TextField is enabled
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.black),
+          ),
           labelText: 'Password',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
