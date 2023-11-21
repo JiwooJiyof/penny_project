@@ -63,7 +63,10 @@ class UpdateAccountView(RetrieveUpdateAPIView):
     #     data = request.data
 
     def get_object(self):
-        pk = self.kwargs.get('pk')
+        # pk = self.kwargs.get('pk')
+        for account in Account.objects.all():
+            if account.is_loggedin == True:
+                pk = account.id
         return Account.objects.get(pk=pk)
 
 
@@ -84,7 +87,10 @@ class AccountInfoView(RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get_object(self):
-        pk = self.kwargs.get('pk')
+        # pk = self.kwargs.get('pk')
+        for account in Account.objects.all():
+            if account.is_loggedin == True:
+                pk = account.id
         return get_object_or_404(Account, pk=pk)
 
 
