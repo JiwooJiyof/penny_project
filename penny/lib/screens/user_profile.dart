@@ -242,19 +242,16 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ],
             ),
-            SizedBox(height: 30),
             // email ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _buildEditableField(Icon(Icons.email_outlined), 'Email', email,
                 () => _changeEmail(context)),
-            SizedBox(height: 20),
             // address ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            _buildEditableField(Icon(Icons.pin_drop_outlined), 'Address',
+            _buildEditableField(Icon(Icons.location_on_outlined), 'Address',
                 address, () => _changeAddress(context)),
-            SizedBox(height: 20),
             // password ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _buildEditableField(Icon(Icons.lock_outline), 'Password', password,
                 () => _changePassword(context)),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
           ],
         ),
       ),
@@ -263,28 +260,31 @@ class _UserProfileState extends State<UserProfile> {
 
   Widget _buildEditableField(
       Icon icon, String label, String value, VoidCallback onPressed) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(width: 10),
-        icon,
-        SizedBox(width: 15),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 5),
-              Text(value, overflow: TextOverflow.ellipsis),
-            ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0, top: 25.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          icon,
+          SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label,
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                SizedBox(height: 5),
+                Text(value, overflow: TextOverflow.ellipsis),
+              ],
+            ),
           ),
-        ),
-        IconButton(
-          icon: Icon(Icons.edit_outlined, color: Colors.amber),
-          onPressed: onPressed,
-        ),
-      ],
+          IconButton(
+            icon: Icon(Icons.edit_outlined, color: Colors.amber),
+            onPressed: onPressed,
+          ),
+        ],
+      ),
     );
   }
 }
