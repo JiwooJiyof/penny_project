@@ -9,7 +9,8 @@ class SignUpPage extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
@@ -53,44 +54,64 @@ class SignUpPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 40),
-                        _buildTextField(_nameController, 'Name', (value) => value!.isEmpty ? 'Name cannot be empty' : null),
+                        _buildTextField(
+                            _nameController,
+                            'Name',
+                            (value) =>
+                                value!.isEmpty ? 'Name cannot be empty' : null),
                         SizedBox(height: 20),
                         _buildEmailField(),
                         SizedBox(height: 20),
-                        _buildPasswordField(context, _passwordController, 'Password'),
+                        _buildPasswordField(
+                            context, _passwordController, 'Password'),
                         SizedBox(height: 20),
-                        _buildPasswordField(context, _confirmPasswordController, 'Confirm Password', confirm: true),
+                        _buildPasswordField(context, _confirmPasswordController,
+                            'Confirm Password',
+                            confirm: true),
                         SizedBox(height: 20),
                         _buildAddressFieldWithPin(context, _addressController),
-                        SizedBox(height: 40),
+                        SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => HomePage()),
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()),
                               );
                             }
                           },
-                          child: Text('Sign Up'),
+                          child: Text('Sign Up',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(50),
+                            primary: Colors.black, // Button color
+                            onPrimary: Colors.white, // Text color
+                            minimumSize: Size.fromHeight(60),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(
+                                  20), // Button corner radius
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Navigate back to the login page
-                          },
-                          child: Text(
-                            'Already have an account? Log in',
-                            style: TextStyle(
-                              color: Colors.blue,
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Already have an account "),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(
+                                    context); // Navigate back to the login page
+                              },
+                              child: Text(
+                                'Log in',
+                                style: TextStyle(
+                                  color: Colors.amber,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
@@ -115,32 +136,42 @@ class SignUpPage extends StatelessWidget {
     });
   }
 
-  Widget _buildPasswordField(BuildContext context, TextEditingController controller, String label, {bool confirm = false}) {
+  Widget _buildPasswordField(
+      BuildContext context, TextEditingController controller, String label,
+      {bool confirm = false}) {
     return StatefulBuilder(
       builder: (context, setState) {
         return Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
           child: TextFormField(
             controller: controller,
             obscureText: confirm ? !_confirmPasswordVisible : !_passwordVisible,
-            validator: confirm ? (value) {
-              if (value == null || value.isEmpty) {
-                return 'Confirm Password cannot be empty';
-              }
-              if (_passwordController.text != _confirmPasswordController.text) {
-                return 'Passwords do not match';
-              }
-              return null;
-            } : (value) => _passwordValidation(value),
+            validator: confirm
+                ? (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Confirm Password cannot be empty';
+                    }
+                    if (_passwordController.text !=
+                        _confirmPasswordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  }
+                : (value) => _passwordValidation(value),
             decoration: InputDecoration(
               labelText: label,
               suffixIcon: IconButton(
                 icon: Icon(
-                  confirm ? (_confirmPasswordVisible ? Icons.visibility : Icons.visibility_off) :
-                            (_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                  confirm
+                      ? (_confirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off)
+                      : (_passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                 ),
                 onPressed: () {
                   setState(() {
@@ -153,7 +184,7 @@ class SignUpPage extends StatelessWidget {
                 },
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
           ),
@@ -167,10 +198,13 @@ class SignUpPage extends StatelessWidget {
       return 'Password cannot be empty';
     }
     List<String> errors = [];
-    if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) errors.add('one uppercase letter');
-    if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) errors.add('one lowercase letter');
+    if (!RegExp(r'(?=.*[A-Z])').hasMatch(value))
+      errors.add('one uppercase letter');
+    if (!RegExp(r'(?=.*[a-z])').hasMatch(value))
+      errors.add('one lowercase letter');
     if (!RegExp(r'(?=.*\d)').hasMatch(value)) errors.add('one number');
-    if (!RegExp(r'(?=.*[@$!%*?&])').hasMatch(value)) errors.add('one special character');
+    if (!RegExp(r'(?=.*[@$!%*?&])').hasMatch(value))
+      errors.add('one special character');
     if (value.length < 8) errors.add('at least 8 characters');
 
     if (errors.isNotEmpty) {
@@ -179,11 +213,13 @@ class SignUpPage extends StatelessWidget {
     return null;
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, String? Function(String?) validator, {bool obscureText = false}) {
+  Widget _buildTextField(TextEditingController controller, String label,
+      String? Function(String?) validator,
+      {bool obscureText = false}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: TextFormField(
         controller: controller,
@@ -192,18 +228,19 @@ class SignUpPage extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildAddressFieldWithPin(BuildContext context, TextEditingController controller) {
+  Widget _buildAddressFieldWithPin(
+      BuildContext context, TextEditingController controller) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -214,10 +251,11 @@ class SignUpPage extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Address',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              validator: (value) => value!.isEmpty ? 'Address cannot be empty' : null,
+              validator: (value) =>
+                  value!.isEmpty ? 'Address cannot be empty' : null,
             ),
           ),
           SizedBox(width: 8), // Added spacing
@@ -225,19 +263,23 @@ class SignUpPage extends StatelessWidget {
             alignment: Alignment.center,
             child: InkWell(
               onTap: () async {
-                LocationData? locationData = await LocationUtils.getCurrentLocation();
+                LocationData? locationData =
+                    await LocationUtils.getCurrentLocation();
                 if (locationData != null) {
-                    String address = await LocationUtils.getReadableAddress(locationData.latitude!, locationData.longitude!);
-                    _addressController.text = address; // Update your address field with the obtained address
+                  String address = await LocationUtils.getReadableAddress(
+                      locationData.latitude!, locationData.longitude!);
+                  _addressController.text =
+                      address; // Update your address field with the obtained address
                 }
               },
               child: Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blue,
+                  color: Colors.black,
                 ),
-                child: Icon(Icons.pin_drop, color: Colors.white), // Pin icon in a circle
+                child: Icon(Icons.location_on_outlined,
+                    color: Colors.white), // Pin icon in a circle
               ),
             ),
           ),
