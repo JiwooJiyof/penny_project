@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import StoreView, ItemUpdateView
+from .views import StoreView, StoreItemView
 
 urlpatterns = [
     path('', StoreView.as_view(), name='store-view'),
-    path('<int:pk>/',
-         ItemUpdateView.as_view(), name='item-update'),
+    # path('<int:pk>/',
+    #      ItemUpdateView.as_view(), name='item-update'),
+    path('<int:pk>/', StoreItemView.as_view())
 ]
