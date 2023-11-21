@@ -3,6 +3,28 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LocationUtils {
+  static const String googleApiKey = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI';
+
+  static Future<List<String>> fetchSuggestions(String input) async {
+    if (input.isEmpty) return [];
+    final String request =
+        'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$googleApiKey&types=address';
+
+    try {
+      final response = await http.get(Uri.parse(request));
+      if (response.statusCode == 200) {
+        final predictions = json.decode(response.body)['predictions'];
+        return List<String>.from(predictions.map((p) => p['description']));
+      } else {
+        print('HTTP Error: ${response.statusCode} - ${response.body}');
+        throw Exception('Failed to load suggestions');
+      }
+    } catch (e) {
+      print('Error fetching suggestions: $e');
+      return [];
+    }
+  }
+
   static Future<LocationData?> getCurrentLocation() async {
     Location location = new Location();
 
@@ -30,9 +52,12 @@ class LocationUtils {
     return _locationData;
   }
 
-   static Future<String> getReadableAddress(double latitude, double longitude) async {
-    final apiKey = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI'; // Replace with your Google API Key
-    final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
+  static Future<String> getReadableAddress(
+      double latitude, double longitude) async {
+    final apiKey =
+        'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI'; // Replace with your Google API Key
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
 
     try {
       final response = await http.get(Uri.parse(url));
