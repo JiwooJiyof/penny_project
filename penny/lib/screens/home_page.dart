@@ -5,7 +5,7 @@ import 'package:penny/widgets/nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/search_page.dart';
-import 'package:penny/screens/select_location_dialog.dart';
+import 'package:penny/screens/select_store_dialog.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
   void _showLocationDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) => LocationDialog(),
+      builder: (BuildContext context) => SelectStoreDialog(),
     );
   }
 

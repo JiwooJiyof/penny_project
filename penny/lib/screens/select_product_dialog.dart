@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:penny/screens/select_item_dialog.dart';
+import 'package:penny/screens/select_store_dialog.dart';
+import 'package:penny/screens/share_price_dialog.dart';
 
-class LocationDialog extends StatelessWidget {
+class SelectProductDialog extends StatelessWidget {
+  final int index;
+
+  const SelectProductDialog({Key? key, required this.index}) : super(key: key);
+
+  void _navigateBack(BuildContext context) {
+    // Pop the current dialog
+    Navigator.pop(context);
+    // Show the previous dialog again
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => SelectStoreDialog(),
+      barrierDismissible:
+          true, // Set to false if you do not want to dismiss the dialog by tapping outside of it.
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.bold,
-      color: Colors.black, // black text
-    );
-    const buttonTextStyle = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: Colors.black, // black
-    );
-
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -27,11 +33,21 @@ class LocationDialog extends StatelessWidget {
           children: [
             Stack(
               children: [
+                // back button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                Positioned(
+                  // on the left
+                  left: 0,
+                  top: 0,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () => _navigateBack(context),
+                  ),
+                ),
                 // title ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Align(
                   alignment: Alignment.center, // centered
                   child: Text(
-                    'Select your current location',
+                    'Select an item to price check',
                     style: GoogleFonts.phudu(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -72,7 +88,7 @@ class LocationDialog extends StatelessWidget {
                     onTap: () {},
                     child: Icon(Icons.search, color: Colors.amber),
                   ),
-                  hintText: 'Search for a location...',
+                  hintText: 'Search for an item...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -91,7 +107,7 @@ class LocationDialog extends StatelessWidget {
                 childAspectRatio: (1 / .6),
                 padding: EdgeInsets.all(20), // padding
                 children: List.generate(12, (index) {
-                  return StoreGridItem(index: index);
+                  return ProductGridItem(index: index);
                 }),
               ),
             ),
@@ -102,16 +118,16 @@ class LocationDialog extends StatelessWidget {
   }
 }
 
-class StoreGridItem extends StatefulWidget {
+class ProductGridItem extends StatefulWidget {
   final int index;
 
-  const StoreGridItem({Key? key, required this.index}) : super(key: key);
+  const ProductGridItem({Key? key, required this.index}) : super(key: key);
 
   @override
-  _StoreGridItemState createState() => _StoreGridItemState();
+  _ProductGridItemState createState() => _ProductGridItemState();
 }
 
-class _StoreGridItemState extends State<StoreGridItem> {
+class _ProductGridItemState extends State<ProductGridItem> {
   bool _isHovered = false;
 
   @override
@@ -141,7 +157,7 @@ class _StoreGridItemState extends State<StoreGridItem> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return ItemIndexDialog(index: widget.index);
+              return SharePriceDialog(index: widget.index);
             },
           );
         },
@@ -152,17 +168,19 @@ class _StoreGridItemState extends State<StoreGridItem> {
             boxShadow: [boxShadow],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.store, size: 50), // TODO: replace with actual logo
-                SizedBox(height: 8),
-                Text('Store Name',
+                Text('Product Name',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text('Grocery Store Address', style: TextStyle(fontSize: 14)),
+                Text('Product details', style: TextStyle(fontSize: 14)),
+                SizedBox(height: 8),
+                Center(
+                    child: Icon(Icons.apple,
+                        size: 50)), // TODO: replace with actual logo
               ],
             ),
           ),

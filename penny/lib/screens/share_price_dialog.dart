@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:penny/screens/select_item_dialog.dart';
+import 'package:penny/screens/select_product_dialog.dart';
 import 'package:flutter/services.dart';
 
 class SharePriceDialog extends StatefulWidget {
@@ -37,7 +37,8 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
     // Show the ItemIndexDialog again
     showDialog(
       context: context,
-      builder: (BuildContext context) => ItemIndexDialog(index: widget.index),
+      builder: (BuildContext context) =>
+          SelectProductDialog(index: widget.index),
       barrierDismissible: true,
     );
   }
