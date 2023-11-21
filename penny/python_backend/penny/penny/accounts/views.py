@@ -55,12 +55,7 @@ class CreateAccountView(CreateAPIView):
 
 class UpdateAccountView(RetrieveUpdateAPIView):
     serializer_class = AccountUpdateSerializer
-    queryset = Account.objects.all()
     permission_classes = [AllowAny]
-    # permission_classes = [IsAuthenticated]
-
-    # def put(self, request:Request):
-    #     data = request.data
 
     def get_object(self):
         # pk = self.kwargs.get('pk')
@@ -87,10 +82,7 @@ class AccountInfoView(RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get_object(self):
-        # pk = self.kwargs.get('pk')
-        for account in Account.objects.all():
-            if account.is_loggedin == True:
-                pk = account.id
+        pk = self.kwargs.get('pk')
         return get_object_or_404(Account, pk=pk)
 
 
