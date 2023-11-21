@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:penny/screens/home_page.dart';
+import 'package:penny/screens/home_page.dart'; // Ensure you have a HomePage class
 import 'package:penny/screens/login_page.dart'; // Ensure you have a LoginPage class
 import 'package:location/location.dart';
 import 'package:penny/utils/location_utils.dart'; // Ensure this points to your LocationUtils
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -13,7 +18,7 @@ class SignUpPage extends StatelessWidget {
       TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final List<String> _suggestions = [];
+  List<String> _suggestions = [];
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
 
@@ -254,81 +259,32 @@ class SignUpPage extends StatelessWidget {
             if (value.isNotEmpty) {
               _suggestions.clear();
               _suggestions.addAll(await LocationUtils.fetchSuggestions(value));
-              // Trigger a UI update to show suggestions
+              setState(() {});
             }
           },
           validator: (value) =>
               value!.isEmpty ? 'Address cannot be empty' : null,
         ),
-        if (_suggestions.isNotEmpty)
-          Container(
-            // Adjust height and width as needed
-            height: 100.0,
-            child: ListView.builder(
-              itemCount: _suggestions.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_suggestions[index]),
-                  onTap: () {
-                    controller.text = _suggestions[index];
-                    _suggestions.clear(); // Clear suggestions after selection
-                    // Trigger a UI update to hide suggestions
-                  },
-                );
-              },
-            ),
-          ),
+        _buildSuggestionsDropdown(),
       ],
     );
   }
-}
 
-// return Container(
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8),
-//       ),
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           Expanded(
-//             child: TextFormField(
-//               controller: controller,
-//               decoration: InputDecoration(
-//                 labelText: 'Address',
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(8),
-//                 ),
-//               ),
-//               validator: (value) =>
-//                   value!.isEmpty ? 'Address cannot be empty' : null,
-//             ),
-//           ),
-//           SizedBox(width: 8), // Added spacing
-//           Align(
-//             alignment: Alignment.center,
-//             child: InkWell(
-//               onTap: () async {
-//                 LocationData? locationData =
-//                     await LocationUtils.getCurrentLocation();
-//                 if (locationData != null) {
-//                   String address = await LocationUtils.getReadableAddress(
-//                       locationData.latitude!, locationData.longitude!);
-//                   _addressController.text =
-//                       address; // Update your address field with the obtained address
-//                 }
-//               },
-//               child: Container(
-//                 padding: EdgeInsets.all(8),
-//                 decoration: BoxDecoration(
-//                   shape: BoxShape.circle,
-//                   color: Colors.blue,
-//                 ),
-//                 child: Icon(Icons.pin_drop,
-//                     color: Colors.white), // Pin icon in a circle
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
+  Widget _buildSuggestionsDropdown() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(_suggestions[index]),
+          onTap: () {
+            _addressController.text = _suggestions[index];
+            setState(() {
+              _suggestions.clear(); // Clear suggestions after selection
+            });
+          },
+        );
+      },
+    );
+  }
+}

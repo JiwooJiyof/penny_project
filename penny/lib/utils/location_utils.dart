@@ -6,18 +6,16 @@ class LocationUtils {
   static const String googleApiKey = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI';
 
   static Future<List<String>> fetchSuggestions(String input) async {
-    if (input.isEmpty) return [];
-    final String request =
-        'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$googleApiKey&types=address';
+    final String backendUrl = 'http://127.0.0.1:8000/accounts/autocomplete/';
 
     try {
-      final response = await http.get(Uri.parse(request));
+      final response = await http.get(Uri.parse('$backendUrl?input=$input'));
       if (response.statusCode == 200) {
-        final predictions = json.decode(response.body)['predictions'];
-        return List<String>.from(predictions.map((p) => p['description']));
+        final List<dynamic> suggestions = json.decode(response.body);
+        return suggestions.cast<String>();
       } else {
-        print('HTTP Error: ${response.statusCode} - ${response.body}');
-        throw Exception('Failed to load suggestions');
+        print('Failed to load suggestions: ${response.body}');
+        return [];
       }
     } catch (e) {
       print('Error fetching suggestions: $e');
