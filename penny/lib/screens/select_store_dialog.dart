@@ -1,28 +1,21 @@
-// item_index_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:penny/screens/select_location_dialog.dart';
-import 'package:penny/screens/share_price_dialog.dart';
+import 'package:penny/screens/select_product_dialog.dart';
 
-class ItemIndexDialog extends StatelessWidget {
-  final int index;
-
-  const ItemIndexDialog({Key? key, required this.index}) : super(key: key);
-
-  void _navigateBack(BuildContext context) {
-    // Pop the current dialog
-    Navigator.pop(context);
-    // Show the previous dialog again
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => LocationDialog(),
-      barrierDismissible:
-          true, // Set to false if you do not want to dismiss the dialog by tapping outside of it.
-    );
-  }
-
+class SelectStoreDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    const titleStyle = TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: Colors.black, // black text
+    );
+    const buttonTextStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.black, // black
+    );
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -34,21 +27,11 @@ class ItemIndexDialog extends StatelessWidget {
           children: [
             Stack(
               children: [
-                // back button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                Positioned(
-                  // on the left
-                  left: 0,
-                  top: 0,
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.black),
-                    onPressed: () => _navigateBack(context),
-                  ),
-                ),
                 // title ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Align(
                   alignment: Alignment.center, // centered
                   child: Text(
-                    'Select an item to price check',
+                    'Select your current location',
                     style: GoogleFonts.phudu(
                         fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -89,7 +72,7 @@ class ItemIndexDialog extends StatelessWidget {
                     onTap: () {},
                     child: Icon(Icons.search, color: Colors.amber),
                   ),
-                  hintText: 'Search for an item...',
+                  hintText: 'Search for a location...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -158,7 +141,7 @@ class _StoreGridItemState extends State<StoreGridItem> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return SharePriceDialog(index: widget.index);
+              return SelectProductDialog(index: widget.index);
             },
           );
         },
@@ -169,17 +152,19 @@ class _StoreGridItemState extends State<StoreGridItem> {
             boxShadow: [boxShadow],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.apple, size: 50), // TODO: replace with actual logo
-                SizedBox(height: 8),
-                Text('Product Name',
+                Text('Store Name',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text('Product details', style: TextStyle(fontSize: 14)),
+                // Text('Grocery Store Address', style: TextStyle(fontSize: 14)),
+                SizedBox(height: 8),
+                Center(
+                    child: Icon(Icons.store,
+                        size: 50)), // TODO: replace with actual logo
               ],
             ),
           ),
