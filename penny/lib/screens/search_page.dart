@@ -5,8 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SearchPage extends StatefulWidget {
   final String inputText;
+  final dynamic result;
+  final int resultCount;
 
-  SearchPage({required this.inputText});
+  SearchPage({
+    required this.inputText,
+    required this.result,
+    required this.resultCount,
+  });
 
   @override
   _SearchPageState createState() => _SearchPageState(inputText: inputText);
@@ -15,7 +21,8 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String inputText;
   String selectedSortOption;
-  int resultCount = 7; // change this
+  late int resultCount; // late initialization
+  late dynamic result;
 
   _SearchPageState({required this.inputText})
       : selectedSortOption = 'Lowest to Highest Price';
@@ -32,6 +39,11 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    inputText = widget.inputText;
+    selectedSortOption = 'Lowest to Highest Price';
+    resultCount = widget.resultCount;
+    result = widget.result;
+
     _controller.text = inputText;
   }
 
@@ -87,21 +99,23 @@ class _SearchPageState extends State<SearchPage> {
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
                               onTap: () {
+                                // print(result)
                                 // navigate to the SearchPage when the search icon is clicked
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        SearchPage(
-                                      inputText: _controller.text,
-                                    ),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      return child; // no animation, just return the child
-                                    },
-                                  ),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   PageRouteBuilder(
+                                //     pageBuilder: (context, animation,
+                                //             secondaryAnimation) =>
+                                //         SearchPage(
+                                //       inputText: _controller.text,
+                                //       result: ,
+                                //     ),
+                                //     transitionsBuilder: (context, animation,
+                                //         secondaryAnimation, child) {
+                                //       return child; // no animation, just return the child
+                                //     },
+                                //   ),
+                                // );
                               },
                               child: Icon(Icons.search, color: Colors.amber),
                             ),
@@ -118,7 +132,7 @@ class _SearchPageState extends State<SearchPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${resultCount} results found', // TODO: change value :')
+                            '${resultCount} results found\n${result}', // TODO: change value :')
                             style: GoogleFonts.phudu(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,

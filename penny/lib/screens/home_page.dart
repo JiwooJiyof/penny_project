@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:penny/widgets/categories.dart';
@@ -6,10 +8,14 @@ import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/search_page.dart';
 import 'package:penny/screens/select_location_dialog.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
   final LocationData? locationData;
+  late String searchText; // searchText variable
+  dynamic result; // Move these declarations to the class level
+  int resultCount = 0;
 
   HomePage({Key? key, this.locationData}) : super(key: key);
 
@@ -71,8 +77,34 @@ class HomePage extends StatelessWidget {
                           cursorColor: Colors.amber,
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
-                              onTap: () {
-                                // Navigate to the SearchPage when the search icon is clicked
+                              onTap: () async {
+                                // Store user input in searchText
+                                searchText = _searchController.text;
+                                // Make the GET request to your API endpoint
+                                var response = await http.get(Uri.parse(
+                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+
+                                // Check if the request was successful
+                                if (response.statusCode == 200) {
+                                  // If the call to the server was successful, parse the JSON
+                                  Map<String, dynamic> jsonData =
+                                      json.decode(response.body);
+
+                                  print(
+                                      "Response data: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                  result = jsonData['results'];
+                                  resultCount = result.length;
+
+                                  // print(jsonData['results']);
+                                  // print(jsonData['results'].length);
+                                } else {
+                                  // If the server did not return a "200 OK response",
+                                  // then throw an exception.
+                                  print(
+                                      'Request failed with status: ${response.statusCode}.');
+                                }
+
+                                // Navigate to the SearchPage with the search text
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
@@ -80,6 +112,8 @@ class HomePage extends StatelessWidget {
                                             secondaryAnimation) =>
                                         SearchPage(
                                       inputText: _searchController.text,
+                                      result: result,
+                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
@@ -88,6 +122,23 @@ class HomePage extends StatelessWidget {
                                   ),
                                 );
                               },
+                              // onTap: () {
+                              //   // Navigate to the SearchPage when the search icon is clicked
+                              //   Navigator.push(
+                              //     context,
+                              //     PageRouteBuilder(
+                              //       pageBuilder: (context, animation,
+                              //               secondaryAnimation) =>
+                              //           SearchPage(
+                              //         inputText: _searchController.text,
+                              //       ),
+                              //       transitionsBuilder: (context, animation,
+                              //           secondaryAnimation, child) {
+                              //         return child; // no animation, just return the child
+                              //       },
+                              //     ),
+                              //   );
+                              // },
                               child: Icon(Icons.search, color: Colors.amber),
                             ),
                             hintText: 'Search for a product...',
