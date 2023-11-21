@@ -10,6 +10,13 @@ from .serializers import AccountSerializer, AccountUpdateSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+import requests  # Import requests
+from django.http import JsonResponse
+import logging
+import sys
+
+logger = logging.getLogger(__name__)
+logger.setLevel("ERROR")
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -71,3 +78,27 @@ class AccountInfoView(RetrieveAPIView):
     def get_object(self):
         pk = self.kwargs.get('pk')
         return get_object_or_404(Account, pk=pk)
+    
+
+def autocomplete(request):
+    input_text = request.GET.get('input', '')
+    if not input_text:
+        return JsonResponse([])
+
+    google_api_key = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI'
+    url = f"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input_text}&key={google_api_key}&types=address"
+
+    try:
+        # print("HELLO")
+        response = requests.get(url)
+        if response.status_code == 200:
+            predictions = response.json().get('predictions', [])
+            # print(predictions)
+            addresses = [prediction['description'] for prediction in predictions]
+            logger.error("Addresses: %s", addresses)
+            # print("address", addresses)
+            return JsonResponse(addresses, safe=False)
+        else:
+            return JsonResponse([])
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({'error': str(e)})
