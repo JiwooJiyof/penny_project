@@ -5,14 +5,29 @@ from dataclasses import dataclass
 from selenium import webdriver
 from seleniumbase import Driver
 from bs4 import BeautifulSoup, PageElement
+from add_products import Product
+from add_products import add_products
 
 
-@dataclass
-class Product:
-    name: str
-    price: float
-    unit_type: str
-    # brand: Optional[str] = None
+def handle_prices(price: float, unit_amount: float, unit_type: str) -> Tuple[float, str]:
+    # if unit_type == "kg":
+    #     price = price / (1000 * unit_amount)
+    #     unit_type = "100g"
+    # elif unit_type == "g":
+    #     price = price * 100 / unit_amount
+    #     unit_type = "100g"
+    # elif unit_type == "lb":
+    #     price = price / (unit_amount * 0.453592)
+    #     unit_type = "100g"
+    return price, unit_type
+# @dataclass
+# class Product:
+#     name: str
+#     price: float
+#     unit_type: str
+#     store_name: str
+#     image_url: Optional[str] = None
+#     # brand: Optional[str] = None
 
 
 class WebScraper:
@@ -30,7 +45,6 @@ class WebScraper:
         self.driver.get(url)
         time.sleep(1)
 
-
     def get_page(self, url: str) -> str:
         """
         use this function to get a page that you need the html content of. It waits a bit of time for the javascript
@@ -43,7 +57,6 @@ class WebScraper:
         html = self.driver.page_source
         return html
 
-
     def get_all_products_from_html(self, html: str) -> List[Product]:
         """
         gets all the products from the html of a page. The subclasses themselves must implement this function.
@@ -51,7 +64,6 @@ class WebScraper:
         to prevent constant access of the website (which is really slow)
         """
         raise NotImplementedError
-
 
     def get_all_products(self, url: str) -> List[Product]:
         """just a more convenient function to get all the products from a url. without having to turn it into html
@@ -72,7 +84,10 @@ class WebScraper:
         return result
 
 
-
-
-
-
+    def add_range_to_database(self, base_url: str, end: int, start: int = 1) -> List[Product]:
+        """gets all the products from a range of pages and adds them to the database. Returns all items it added to
+        the database"""
+        result = self.get_range(base_url, end, start)
+        print(result)
+        add_products(result)
+        return result
