@@ -11,7 +11,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final Future<LocationData?> locationFuture = LocationUtils.getCurrentLocation(); // Use the LocationUtils class
+  final Future<LocationData?> locationFuture =
+      LocationUtils.getCurrentLocation(); // Use the LocationUtils class
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         "/": (context) => FutureBuilder<LocationData?>(
               future: locationFuture,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
                   return HomePage(locationData: snapshot.data);
                 }
                 return HomePage(locationData: null);
