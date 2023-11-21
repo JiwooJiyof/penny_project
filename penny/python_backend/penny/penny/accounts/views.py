@@ -15,6 +15,11 @@ from django.http import JsonResponse
 import logging
 import sys
 
+from django.contrib.auth import get_user_model, authenticate
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 logger = logging.getLogger(__name__)
 logger.setLevel("ERROR")
 
@@ -102,3 +107,34 @@ def autocomplete(request):
             return JsonResponse([])
     except requests.exceptions.RequestException as e:
         return JsonResponse({'error': str(e)})
+
+class LoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        try:
+            user = Account.objects.get(email=email)
+            print('user.password')
+            if user.password == password:
+                print("in")
+                user.is_loggedin = True
+                user.save()
+                return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        except Account.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class LogoutView(APIView):
+    # No permission_classes, allowing unauthenticated access
+
+    def post(self, request, *args, **kwargs):
+        # Find all users with is_loggedin=True and set it to False
+        logged_in_users = Account.objects.filter(is_loggedin=True)
+        logged_in_users.update(is_loggedin=False)
+
+        return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)

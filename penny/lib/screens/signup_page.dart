@@ -4,6 +4,8 @@ import 'package:penny/screens/home_page.dart'; // Ensure you have a HomePage cla
 import 'package:penny/screens/login_page.dart'; // Ensure you have a LoginPage class
 import 'package:location/location.dart';
 import 'package:penny/utils/location_utils.dart'; // Ensure this points to your LocationUtils
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -78,15 +80,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         _buildAddressFieldWithPin(context, _addressController),
                         SizedBox(height: 40),
                         ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()),
-                              );
-                            }
-                          },
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _signUp();
+                              }
+                            },
                           child: Text('Sign Up'),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size.fromHeight(50),
@@ -119,6 +117,32 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+    Future<void> _signUp() async {
+    var url = Uri.parse('http://127.0.0.1:8000/accounts/signup/');
+    var response = await http.post(url, body: {
+      'name': _nameController.text,
+      'email': _emailController.text,
+      'username': '0', // Static value for now
+      'password': _passwordController.text,
+      'confirm_password': _confirmPasswordController.text,
+      'address': _addressController.text,
+      'longitude': '0', // Static value for now
+      'latitude': '0', // Static value for now
+    });
+
+    if (response.statusCode == 201) {
+      // Handle successful response
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      // Handle error
+      print('Failed to sign up: ${response.body}');
+    }
+  }
+
 
   Widget _buildEmailField() {
     return _buildTextField(_emailController, 'Email', (value) {

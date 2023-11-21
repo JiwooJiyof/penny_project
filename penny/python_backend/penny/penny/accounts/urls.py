@@ -6,5 +6,7 @@ urlpatterns = [
     path('update/<int:pk>/', views.UpdateAccountView.as_view(), name='update-account'),
     path('info/<int:pk>/', views.AccountInfoView.as_view(), name='account-info'),
     path('autocomplete/', views.autocomplete, name='autocomplete'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
 ]
 
