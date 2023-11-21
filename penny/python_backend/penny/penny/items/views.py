@@ -5,10 +5,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Item
+from stores.models import Store
 from .serializers import ItemSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from rest_framework import status
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -22,7 +26,6 @@ class ItemView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['name']  # Search by name
-    ordering_fields = ['price', 'location']  # Sort by Price and Location
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -34,3 +37,20 @@ class ItemView(ListAPIView):
             queryset = queryset.filter(name__icontains=search_term)
 
         return queryset
+
+
+class ItemDetailView(ListAPIView):
+    serializer_class = ItemSerializer
+    pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    ordering_fields = ['price', 'location']  # Sort by Price and Location
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        item = get_object_or_404(Item, pk=kwargs['pk'])
+        stores = Store.objects.filter(items=item)
+
+        # Assuming you want to return store names in a JSON response
+        store_names = [store.name for store in stores]
+
+        return JsonResponse({'stores_with_item': store_names}, status=status.HTTP_200_OK)
