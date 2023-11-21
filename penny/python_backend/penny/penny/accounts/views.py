@@ -30,24 +30,26 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 10
 
 # creating an account
+
+
 class CreateAccountView(CreateAPIView):
     serializer_class = AccountSerializer
     permission_classes = [AllowAny]
 
-    def post(self,request:Request):
+    def post(self, request: Request):
         data = request.data
 
-        serializer=self.serializer_class(data=data)
+        serializer = self.serializer_class(data=data)
 
         if serializer.is_valid():
             serializer.save()
 
-            response={
+            response = {
                 "message": "User Created Successfully",
-                "data":serializer.data
+                "data": serializer.data
             }
             return Response(data=response, status=status.HTTP_201_CREATED)
-        
+
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -72,9 +74,10 @@ class AccountProfileView(ListAPIView):
     def get(self, request, *args, **kwargs):
         user = self.get_object()
         return Response(
-                    self.get_serializer(user).data,
-                    status=status.HTTP_200_OK
+            self.get_serializer(user).data,
+            status=status.HTTP_200_OK
         )
+
 
 class AccountInfoView(RetrieveAPIView):
     serializer_class = AccountSerializer
@@ -83,7 +86,7 @@ class AccountInfoView(RetrieveAPIView):
     def get_object(self):
         pk = self.kwargs.get('pk')
         return get_object_or_404(Account, pk=pk)
-    
+
 
 def autocomplete(request):
     input_text = request.GET.get('input', '')
@@ -99,7 +102,8 @@ def autocomplete(request):
         if response.status_code == 200:
             predictions = response.json().get('predictions', [])
             # print(predictions)
-            addresses = [prediction['description'] for prediction in predictions]
+            addresses = [prediction['description']
+                         for prediction in predictions]
             logger.error("Addresses: %s", addresses)
             # print("address", addresses)
             return JsonResponse(addresses, safe=False)
@@ -107,6 +111,7 @@ def autocomplete(request):
             return JsonResponse([])
     except requests.exceptions.RequestException as e:
         return JsonResponse({'error': str(e)})
+
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -130,7 +135,7 @@ class LoginView(APIView):
 
 
 class LogoutView(APIView):
-    # No permission_classes, allowing unauthenticated access
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         # Find all users with is_loggedin=True and set it to False
