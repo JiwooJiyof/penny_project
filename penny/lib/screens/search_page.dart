@@ -18,15 +18,16 @@ class _SearchPageState extends State<SearchPage> {
   int resultCount = 7; // change this
 
   _SearchPageState({required this.inputText})
-      : selectedSortOption = 'Lowest to Highest Price';
+      : selectedSortOption = 'Price: Lowest to Highest';
 
   final TextEditingController _controller = TextEditingController();
 
   // sorting options
   List<String> sortOptions = [
-    'Lowest to Highest Price',
-    'Highest to Lowest Price',
-    'By Name'
+    'Price: Lowest to Highest',
+    'Price: Highest to Lowest',
+    'Product: A-Z',
+    'Product: Z-A',
   ];
 
   @override
@@ -55,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
           Padding(
             padding: EdgeInsets.only(top: 60),
             child: ListView(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(30),
               children: [
                 Container(
                   // temp height
@@ -111,24 +112,27 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 40),
+                      SizedBox(height: 60),
 
                       // items widget ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${resultCount} results found', // TODO: change value :')
-                            style: GoogleFonts.phudu(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              '${resultCount} results found', // TODO: change value :')
+                              style: GoogleFonts.phudu(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
 
                           // sort dropdown ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                           Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Container(
                               padding: EdgeInsets.only(left: 16, right: 16),
                               decoration: BoxDecoration(
@@ -154,8 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                                   DropdownButton<String>(
                                     dropdownColor: Colors.white,
                                     icon: Icon(Icons.arrow_drop_down,
-                                        color: Colors
-                                            .amber), // Dropdown arrow to the right
+                                        color: Colors.amber), // dropdown arrow
                                     value: selectedSortOption,
                                     onChanged: (String? newValue) {
                                       if (newValue != null) {
@@ -170,9 +173,11 @@ class _SearchPageState extends State<SearchPage> {
                                         value: option,
                                         child: Row(
                                           children: [
-                                            Text(option,
-                                                style: TextStyle(
-                                                    color: Colors.black)),
+                                            Text(
+                                              option,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
                                             SizedBox(width: 8),
                                           ],
                                         ),
