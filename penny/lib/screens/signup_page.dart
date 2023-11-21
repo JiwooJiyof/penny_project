@@ -76,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             confirm: true),
                         SizedBox(height: 20),
                         _buildAddressFieldWithPin(context, _addressController),
-                        SizedBox(height: 40),
+                        SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -87,26 +87,37 @@ class _SignUpPageState extends State<SignUpPage> {
                               );
                             }
                           },
-                          child: Text('Sign Up'),
+                          child: Text('Sign Up',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(50),
+                            primary: Colors.black, // Button color
+                            onPrimary: Colors.white, // Text color
+                            minimumSize: Size.fromHeight(60),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(
+                                  20), // Button corner radius
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(
-                                context); // Navigate back to the login page
-                          },
-                          child: Text(
-                            'Already have an account? Log in',
-                            style: TextStyle(
-                              color: Colors.blue,
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Already have an account "),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(
+                                    context); // Navigate back to the login page
+                              },
+                              child: Text(
+                                'Log In',
+                                style: TextStyle(
+                                  color: Colors.amber,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
@@ -139,11 +150,12 @@ class _SignUpPageState extends State<SignUpPage> {
         return Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
           child: TextFormField(
             controller: controller,
             obscureText: confirm ? !_confirmPasswordVisible : !_passwordVisible,
+            cursorColor: Colors.amber, // cursor color to amber
             validator: confirm
                 ? (value) {
                     if (value == null || value.isEmpty) {
@@ -157,7 +169,20 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                 : (value) => _passwordValidation(value),
             decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black), // black label style
+              focusedBorder: OutlineInputBorder(
+                // amber focused border
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.amber),
+              ),
+              enabledBorder: OutlineInputBorder(
+                // style when TextField is enabled
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.black),
+              ),
+
               labelText: label,
+
               suffixIcon: IconButton(
                 icon: Icon(
                   confirm
@@ -179,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 },
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
           ),
@@ -214,16 +239,28 @@ class _SignUpPageState extends State<SignUpPage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: TextFormField(
         controller: controller,
+        cursorColor: Colors.amber, // cursor color to amber
         obscureText: obscureText,
         validator: validator,
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black), // black label style
+          focusedBorder: OutlineInputBorder(
+            // amber focused border
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          enabledBorder: OutlineInputBorder(
+            // style when TextField is enabled
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.black),
+          ),
           labelText: label,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
       ),
