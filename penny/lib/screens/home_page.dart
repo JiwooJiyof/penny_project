@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:penny/widgets/categories.dart';
-import 'package:penny/widgets/home_nav_bar.dart';
+import 'package:penny/widgets/nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/search_page.dart';
+import 'package:penny/screens/select_store_dialog.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
@@ -12,23 +13,33 @@ class HomePage extends StatelessWidget {
 
   HomePage({Key? key, this.locationData}) : super(key: key);
 
+  void _showLocationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => SelectStoreDialog(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          HomeNavBar(), // Stationary AppBar
+          // nav bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          NavBar(),
           Expanded(
             child: Stack(
               children: [
+                // background ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Positioned.fill(
                   child: Image.asset(
                     'assets/main_page.png',
                     fit: BoxFit.cover,
                   ),
                 ),
+                // other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.all(30),
                   child: Column(
                     children: [
                       SizedBox(height: 40),
@@ -43,6 +54,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
+                      // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 100),
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -89,7 +101,9 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 80),
-                      CategoriesWidget(),
+                      // categories ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      // CategoriesWidget(),
+                      // today's prices ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Container(
                         alignment: Alignment.centerLeft,
                         margin:
@@ -103,8 +117,37 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      // products ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       ProductWidget(path: ""),
                     ],
+                  ),
+                ),
+                // log price button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                Positioned(
+                  bottom: 32, // padding from the bottom edge
+                  right: 32, // padding from the right edge
+                  child: ElevatedButton.icon(
+                    icon: Icon(Icons.label_outlined, size: 24),
+                    label: Text(
+                      'Log Price',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    onPressed: () => _showLocationDialog(context),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber, // bkgd color
+                      onPrimary: Colors.black, // text & icon color
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 18), // padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(30), // rounded corners
+                      ),
+                      textStyle: GoogleFonts.phudu(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
