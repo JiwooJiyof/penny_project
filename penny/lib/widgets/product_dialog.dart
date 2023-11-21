@@ -1,168 +1,196 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:penny/widgets/store.dart';
 
 void showProductDetailsDialog(BuildContext context, int index) {
+  String? selectedSortOption = 'distance'; // Initial value for the dropdown
+
   showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext context, Animation<double> animation,
         Animation<double> secondaryAnimation) {
-      return Center(
-        child: Material(
-          type: MaterialType.transparency,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            width: MediaQuery.of(context).size.width * 0.7,
-            padding: EdgeInsets.all(20),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                // Button to close the pop-up
-                // Positioned(
-                //   top: 0,
-                //   right: 0,
-                //   child: ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       primary: Colors.white,
-                //       onPrimary: Colors.black,
-                //       shape: CircleBorder(),
-                //       elevation: 0,
-                //     ),
-                //     child: Icon(Icons.close, color: Colors.black),
-                //     onPressed: () {
-                //       Navigator.of(context).pop();
-                //     },
-                //   ),
-                // ),
-                SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Product Name",
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Center(
+            child: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                margin: EdgeInsets.all(10), // Added margin around the dialog
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      backgroundColor: Colors.white,
+                      expandedHeight: 200.0,
+                      floating: false,
+                      pinned: true,
+                      automaticallyImplyLeading: false,
+                      actions: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.close, color: Colors.black),
+                          onPressed: () => Navigator.of(context).pop(),
                         ),
-                      ),
-                      Text(
-                        "Product description",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Center(
-                        child: Image.asset(
-                          "assets/products/${index + 1}.png",
-                          height: 200,
-                          width: 200,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(height: 10),
-                      // Text(
-                      //   "\$10",
-                      //   style: TextStyle(
-                      //       fontSize: 25,
-                      //       fontWeight: FontWeight.bold,
-                      //       color: Colors.black),
-                      // ),
-                      // Text(
-                      //   "/unit",
-                      //   style: TextStyle(fontSize: 12, color: Colors.black),
-                      // ),
-                      Text(
-                        "Available at",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      Wrap(
-                        spacing: 20, // Horizontal spacing between children
-                        runSpacing: 5, // Vertical spacing between rows
-                        children: [
-                          for (int i = 1; i < 9; i++)
-                            Container(
-                              width: (MediaQuery.of(context).size.width * 0.7 -
-                                      60) /
-                                  2, // Minus 60 for the spacing and paddings
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 2,
-                                    blurRadius: 7,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
+                      ],
+                      flexibleSpace: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          double top = constraints.biggest.height;
+                          bool isCollapsed = top <= kToolbarHeight;
+                          double scale =
+                              (top - kToolbarHeight) / (200.0 - kToolbarHeight);
+                          scale = scale.clamp(0.0, 1.0);
+
+                          double imageSize = isCollapsed ? 40 : 180 * scale;
+                          double titleSize = isCollapsed ? 18 : 30 * scale;
+                          double descriptionSize =
+                              isCollapsed ? 14 : 15 * scale;
+
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              // Positioned image on the left that scales down
+                              Positioned(
+                                top: isCollapsed
+                                    ? (kToolbarHeight - imageSize) / 2
+                                    : top - imageSize - 20,
+                                left: 20, // Fixed left position
+                                child: Image.asset(
+                                  "assets/products/${index + 1}.png",
+                                  height: imageSize,
+                                  width: imageSize,
+                                ),
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/categories/7.png",
-                                    width: 30,
-                                    height: 30,
+                              // Positioned title text that scales down
+                              Positioned(
+                                top: isCollapsed
+                                    ? (kToolbarHeight - titleSize) / 2
+                                    : top - titleSize - 60,
+                                left: imageSize +
+                                    (isCollapsed
+                                        ? 30
+                                        : 40), // Adjusted left position for collapsed state
+                                child: Text(
+                                  "Product Name",
+                                  style: GoogleFonts.phudu(
+                                    fontSize: titleSize,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    // Added to make sure the text wraps if it's too long
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Grocery Store",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Store address",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    "\$${10 + i - 1}",
+                                ),
+                              ),
+                              // Positioned description text that fades out
+                              Positioned(
+                                top: isCollapsed
+                                    ? (kToolbarHeight - descriptionSize) / 2
+                                    : top - descriptionSize - 40,
+                                left: imageSize +
+                                    40, // Left position aligned with title text
+                                child: Opacity(
+                                  opacity: scale,
+                                  child: Text(
+                                    "Product description",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
+                                      fontSize: descriptionSize,
                                       color: Colors.black,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
+                              // Close button is already positioned correctly
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 10), // Adjust the padding as needed
+                            child:
+                                // store availability ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Available at",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                // sort dropdown ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                Row(
+                                  children: [
+                                    Icon(Icons.sort,
+                                        color: Colors.amber), // prefix icon
+                                    SizedBox(width: 8),
+                                    // dropdown Button
+                                    DropdownButton<String>(
+                                      items: [
+                                        DropdownMenuItem<String>(
+                                          child: Text('Distance'),
+                                          value: 'distance',
+                                        ),
+                                        DropdownMenuItem<String>(
+                                          child: Text('Price: Low to High'),
+                                          value: 'lowToHigh',
+                                        ),
+                                        DropdownMenuItem<String>(
+                                          child: Text('Price: High to Low'),
+                                          value: 'highToLow',
+                                        ),
+                                      ],
+                                      onChanged: (String? value) {
+                                        // update dropdown val
+                                        setState(() {
+                                          selectedSortOption = value;
+                                        });
+                                        // You can implement sorting logic based on the selected option
+                                      },
+                                      hint: Text('Sort by'),
+                                      value:
+                                          selectedSortOption, // Set the default value to the first dropdown item
+                                      dropdownColor: Colors
+                                          .white, // Set the dropdown background color
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: Colors
+                                              .amber), // Set the dropdown arrow color
+                                      underline: Container(
+                                        height: 2,
+                                        color: Colors
+                                            .amber, // Set the underline color
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
+                          ),
+                          // stores ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: StoreWidget(path: "rawr"),
+                          ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
     },
-    barrierDismissible: true, // Allow dismissing by tapping outside the dialog
+    barrierDismissible: true,
     barrierColor: Colors.black.withOpacity(0.5),
     barrierLabel: "Close",
     transitionDuration: Duration(milliseconds: 300),
