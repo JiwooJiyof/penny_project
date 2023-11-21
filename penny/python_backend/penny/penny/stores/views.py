@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Item
@@ -24,16 +24,25 @@ class StandardResultsSetPagination(PageNumberPagination):
 class ItemUpdateView(RetrieveUpdateAPIView):
     queryset = Store.objects.all()
     serializer_class = StoreSerializer
+    pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['name']  # Search by name or store
+    permission_classes = [AllowAny]
 
     def update(self, request, *args, **kwargs):
-        store_id = kwargs.get('store_id')
         item_id = kwargs.get('pk')
+        store_name = request.data.get('store_name', '')
 
-        store = self.get_object()
+        if not item_id:
+            return Response(
+                {'detail': 'Item ID (pk) not provided in the request.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        store = get_object_or_404(Store, name=store_name)
         item = store.items.filter(id=item_id).first()
 
         if item is not None:
-            # Update the price for the item
             new_price = request.data.get('price', '')
             item.price = new_price
             item.save()
@@ -43,7 +52,6 @@ class ItemUpdateView(RetrieveUpdateAPIView):
                 self.get_serializer(store).data,
                 status=status.HTTP_200_OK
             )
-
         else:
             return Response(
                 {'detail': 'Item not found in the store.'},
@@ -56,7 +64,7 @@ class StoreView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['name']  # Search by name or store
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         search_term = self.request.query_params.get('name')
