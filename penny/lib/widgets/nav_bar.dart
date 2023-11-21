@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:penny/screens/user_profile.dart';
 import 'package:penny/widgets/shopping_list.dart';
 import 'package:penny/screens/login_page.dart'; // Ensure this is the correct path
@@ -28,7 +29,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
                   value: 'logout',
                 ),
               ],
-            ).then((value) {
+            ).then((value) async {
               if (value != null) {
                 switch (value) {
                   case 'profile':
@@ -41,10 +42,22 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
                     );
                     break;
                   case 'logout':
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    // Add POST request here for logout
+                    var response = await http.post(
+                      Uri.parse('http://127.0.0.1:8000/accounts/logout/'),
                     );
+                    if (response.statusCode == 200) {
+                      // Handle successful logout
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    } else {
+                      // Handle error in logout
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Logout failed')),
+                      );
+                    }
                     break;
                 }
               }
