@@ -8,6 +8,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   String name = 'Bob Smith';
+  String username = 'bobsmith';
   String email = 'bob.smith@gmail.com';
   String address = "27 King's College Cir, Toronto, ON M5S";
   String password = '••••••••';
@@ -20,6 +21,19 @@ class _UserProfileState extends State<UserProfile> {
     return regExp.hasMatch(password);
   }
 
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Username cannot be empty';
+    }
+    if (value.length < 6 || value.length > 30) {
+      return 'Username must be between 6 and 30 characters';
+    }
+    if (!RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(value)) {
+      return 'Username must start with a letter and only contain letters, numbers, and underscores';
+    }
+    return null;
+  }
+
   void _changeName(BuildContext context) {
     TextEditingController _nameController = TextEditingController(text: name);
     _showDialog(
@@ -27,6 +41,47 @@ class _UserProfileState extends State<UserProfile> {
       'Change name',
       _nameController,
       (value) => setState(() => name = value),
+    );
+  }
+
+  void _changeUsername(BuildContext context) {
+    TextEditingController _usernameController =
+        TextEditingController(text: username);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change username'),
+          content: TextField(
+            controller: _usernameController,
+            decoration: InputDecoration(
+              hintText: 'Enter new username',
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text('Save'),
+              onPressed: () {
+                String? validationMessage =
+                    _validateUsername(_usernameController.text);
+                if (validationMessage == null) {
+                  setState(() {
+                    username = _usernameController.text;
+                  });
+                  Navigator.of(context).pop();
+                } else {
+                  _showErrorDialog(context, validationMessage);
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -242,6 +297,9 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ],
             ),
+            // username ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            _buildEditableField(Icon(Icons.person_outline), 'Username',
+                username, () => _changeUsername(context)),
             // email ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _buildEditableField(Icon(Icons.email_outlined), 'Email', email,
                 () => _changeEmail(context)),
