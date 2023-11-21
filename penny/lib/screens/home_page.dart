@@ -5,12 +5,20 @@ import 'package:penny/widgets/home_nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/search_page.dart';
+import 'package:penny/screens/select_location_dialog.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
   final LocationData? locationData;
 
   HomePage({Key? key, this.locationData}) : super(key: key);
+
+  void _showLocationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => LocationDialog(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +113,33 @@ class HomePage extends StatelessWidget {
                       ),
                       ProductWidget(path: ""),
                     ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 32, // padding from the bottom edge
+                  right: 32, // padding from the right edge
+                  child: ElevatedButton.icon(
+                    icon: Icon(Icons.label_outlined, size: 24),
+                    label: Text(
+                      'Log Price',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    onPressed: () => _showLocationDialog(context),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber, // bkgd color
+                      onPrimary: Colors.black, // text & icon color
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 18), // padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(30), // rounded corners
+                      ),
+                      textStyle: GoogleFonts.phudu(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
