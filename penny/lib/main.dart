@@ -3,7 +3,7 @@ import 'package:penny/screens/home_page.dart';
 import 'package:penny/screens/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
-import 'package:penny/widgets/location_utils.dart';
+import 'package:penny/utils/location_utils.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
