@@ -21,7 +21,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 class CreateAccountView(CreateAPIView):
     serializer_class = AccountSerializer
     permission_classes = [AllowAny]
-    
+
     def post(self,request:Request):
         data = request.data
 
@@ -42,13 +42,15 @@ class CreateAccountView(CreateAPIView):
 class UpdateAccountView(RetrieveUpdateAPIView):
     serializer_class = AccountUpdateSerializer
     queryset = Account.objects.all()
+    permission_classes = [AllowAny]
     # permission_classes = [IsAuthenticated]
 
     # def put(self, request:Request):
     #     data = request.data
 
     def get_object(self):
-        return self.request.user
+        pk = self.kwargs.get('pk')
+        return Account.objects.get(pk=pk)
 
 
 class AccountProfileView(ListAPIView):

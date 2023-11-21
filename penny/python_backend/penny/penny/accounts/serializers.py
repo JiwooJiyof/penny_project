@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.hashers import make_password
 from rest_framework.validators import ValidationError
 from .models import Account
 
@@ -22,6 +23,9 @@ class AccountSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
 class AccountUpdateSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True, required=False)
+    
     class Meta:
         model = Account
         fields = ['name', 'email', 'username', 'password', 'confirm_password', 'address', 'longitude', 'latitude']
@@ -30,6 +34,8 @@ class AccountUpdateSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
+            if attr == 'password':
+                value = make_password(value)
             setattr(instance, attr, value)
         # if 'username' in validated_data:
         #     instance.username = validated_data['username']
