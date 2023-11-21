@@ -66,7 +66,8 @@ class AccountProfileView(ListAPIView):
 
 class AccountInfoView(RetrieveAPIView):
     serializer_class = AccountSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self):
-        return self.request.user
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Account, pk=pk)
