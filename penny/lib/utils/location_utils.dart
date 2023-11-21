@@ -23,6 +23,24 @@ class LocationUtils {
     }
   }
 
+   static Future<Map<String, double>> getCoordinatesFromAddress(String address) async {
+    final url = 'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=$googleApiKey';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['results'] != null && data['results'].length > 0) {
+          final location = data['results'][0]['geometry']['location'];
+          return {'latitude': location['lat'], 'longitude': location['lng']};
+        }
+      }
+      return {'latitude': 0.0, 'longitude': 0.0};
+    } catch (e) {
+      return {'latitude': 0.0, 'longitude': 0.0};
+    }
+  }
+
   static Future<LocationData?> getCurrentLocation() async {
     Location location = new Location();
 

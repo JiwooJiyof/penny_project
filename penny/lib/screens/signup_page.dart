@@ -135,16 +135,19 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
     Future<void> _signUp() async {
+    // Convert the address to coordinates
+    var coordinates = await LocationUtils.getCoordinatesFromAddress(_addressController.text);
+    
     var url = Uri.parse('http://127.0.0.1:8000/accounts/signup/');
     var response = await http.post(url, body: {
       'name': _nameController.text,
       'email': _emailController.text,
-      'username': '0', // Static value for now
+      'username': _usernameController.text, // Now using the username
       'password': _passwordController.text,
       'confirm_password': _confirmPasswordController.text,
       'address': _addressController.text,
-      'longitude': '0', // Static value for now
-      'latitude': '0', // Static value for now
+      'longitude': coordinates['longitude'].toString(), // Updated
+      'latitude': coordinates['latitude'].toString(), // Updated
     });
 
     if (response.statusCode == 201) {
