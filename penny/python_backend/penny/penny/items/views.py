@@ -25,7 +25,7 @@ class ItemView(ListAPIView):
     serializer_class = ItemSerializer
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['name']  # Search by name
+    filterset_fields = ['name']  # Search by name or store
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -50,7 +50,11 @@ class ItemDetailView(ListAPIView):
         item = get_object_or_404(Item, pk=kwargs['pk'])
         stores = Store.objects.filter(items=item)
 
-        # Assuming you want to return store names in a JSON response
-        store_names = [store.name for store in stores]
+        # Initialize a dictionary to store store names and prices
+        store_data = {}
 
-        return JsonResponse({'stores_with_item': store_names}, status=status.HTTP_200_OK)
+        for store in stores:
+            price_for_store = store.items.get(pk=item.pk).price
+            store_data[store.name] = {'price': price_for_store}
+
+        return JsonResponse({'stores_with_item': store_data}, status=status.HTTP_200_OK)
