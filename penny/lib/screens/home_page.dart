@@ -25,18 +25,21 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          HomeNavBar(), // Stationary AppBar
+          // nav bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          HomeNavBar(),
           Expanded(
             child: Stack(
               children: [
+                // background ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Positioned.fill(
                   child: Image.asset(
                     'assets/main_page.png',
                     fit: BoxFit.cover,
                   ),
                 ),
+                // other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.all(30),
                   child: Column(
                     children: [
                       SizedBox(height: 40),
@@ -51,6 +54,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
+                      // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 100),
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -97,7 +101,9 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 80),
-                      CategoriesWidget(),
+                      // categories ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      // CategoriesWidget(),
+                      // today's prices ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Container(
                         alignment: Alignment.centerLeft,
                         margin:
@@ -111,10 +117,12 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      // products ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       ProductWidget(path: ""),
                     ],
                   ),
                 ),
+                // log price button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Positioned(
                   bottom: 32, // padding from the bottom edge
                   right: 32, // padding from the right edge
