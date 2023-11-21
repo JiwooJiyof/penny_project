@@ -16,8 +16,17 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size_query_param = "page_size"
     max_page_size = 10
 
+# creating an account
 class CreateAccountView(CreateAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class UpdateAccountView():
     
+
+
+
 
 class AccountProfileView(ListAPIView):
     serializer_class = AccountSerializer
@@ -28,4 +37,4 @@ class AccountProfileView(ListAPIView):
         return Response(
                     self.get_serializer(user).data,
                     status=status.HTTP_200_OK
-                )
+        )
