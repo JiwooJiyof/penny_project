@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:penny/widgets/categories.dart';
 import 'package:penny/widgets/home_nav_bar.dart';
 import 'package:penny/widgets/product.dart';
@@ -8,6 +9,9 @@ import 'package:penny/screens/select_location_dialog.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
+  final LocationData? locationData;
+
+  HomePage({Key? key, this.locationData}) : super(key: key);
 
   void _showLocationDialog(BuildContext context) {
     showDialog(
