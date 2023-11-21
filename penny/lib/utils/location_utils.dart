@@ -3,6 +3,26 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LocationUtils {
+  static const String googleApiKey = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI';
+
+  static Future<List<String>> fetchSuggestions(String input) async {
+    final String backendUrl = 'http://127.0.0.1:8000/accounts/autocomplete/';
+
+    try {
+      final response = await http.get(Uri.parse('$backendUrl?input=$input'));
+      if (response.statusCode == 200) {
+        final List<dynamic> suggestions = json.decode(response.body);
+        return suggestions.cast<String>();
+      } else {
+        print('Failed to load suggestions: ${response.body}');
+        return [];
+      }
+    } catch (e) {
+      print('Error fetching suggestions: $e');
+      return [];
+    }
+  }
+
   static Future<LocationData?> getCurrentLocation() async {
     Location location = new Location();
 
@@ -30,9 +50,12 @@ class LocationUtils {
     return _locationData;
   }
 
-   static Future<String> getReadableAddress(double latitude, double longitude) async {
-    final apiKey = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI'; // Replace with your Google API Key
-    final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
+  static Future<String> getReadableAddress(
+      double latitude, double longitude) async {
+    final apiKey =
+        'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI'; // Replace with your Google API Key
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
 
     try {
       final response = await http.get(Uri.parse(url));

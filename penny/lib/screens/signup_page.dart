@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:penny/screens/home_page.dart';
+import 'package:penny/screens/home_page.dart'; // Ensure you have a HomePage class
 import 'package:penny/screens/login_page.dart'; // Ensure you have a LoginPage class
 import 'package:location/location.dart';
 import 'package:penny/utils/location_utils.dart'; // Ensure this points to your LocationUtils
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -13,6 +18,7 @@ class SignUpPage extends StatelessWidget {
       TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<String> _suggestions = [];
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
 
@@ -263,66 +269,59 @@ class SignUpPage extends StatelessWidget {
 
   Widget _buildAddressFieldWithPin(
       BuildContext context, TextEditingController controller) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: controller,
-              cursorColor: Colors.amber, // cursor color to amber
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.black), // black label style
-                focusedBorder: OutlineInputBorder(
-                  // amber focused border
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.amber),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  // style when TextField is enabled
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                labelText: 'Address',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              validator: (value) =>
-                  value!.isEmpty ? 'Address cannot be empty' : null,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: 'Address',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
-          ),
-          SizedBox(width: 8), // Added spacing
-          Align(
-            alignment: Alignment.center,
-            child: InkWell(
-              onTap: () async {
+            suffixIcon: IconButton(
+              icon: Icon(Icons.pin_drop),
+              onPressed: () async {
                 LocationData? locationData =
                     await LocationUtils.getCurrentLocation();
                 if (locationData != null) {
                   String address = await LocationUtils.getReadableAddress(
                       locationData.latitude!, locationData.longitude!);
-                  _addressController.text =
-                      address; // Update your address field with the obtained address
+                  _addressController.text = address;
                 }
               },
-              child: Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.black,
-                ),
-                child: Icon(Icons.location_on_outlined,
-                    color: Colors.white), // Pin icon in a circle
-              ),
             ),
           ),
-        ],
-      ),
+          onChanged: (value) async {
+            if (value.isNotEmpty) {
+              _suggestions.clear();
+              _suggestions.addAll(await LocationUtils.fetchSuggestions(value));
+              setState(() {});
+            }
+          },
+          validator: (value) =>
+              value!.isEmpty ? 'Address cannot be empty' : null,
+        ),
+        _buildSuggestionsDropdown(),
+      ],
+    );
+  }
+
+  Widget _buildSuggestionsDropdown() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(_suggestions[index]),
+          onTap: () {
+            _addressController.text = _suggestions[index];
+            setState(() {
+              _suggestions.clear(); // Clear suggestions after selection
+            });
+          },
+        );
+      },
     );
   }
 }
