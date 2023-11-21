@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 
 class ShoppingCartItem {
@@ -15,11 +16,14 @@ class ShoppingCartDialog extends StatefulWidget {
 }
 
 class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
-  List<ShoppingCartItem> items = [ShoppingCartItem(id: Uuid().v4())]; // Start with one empty item
+  List<ShoppingCartItem> items = [
+    ShoppingCartItem(id: Uuid().v4())
+  ]; // Start with one empty item
 
   void _addItem() {
     setState(() {
-      items.add(ShoppingCartItem(id: Uuid().v4())); // Add a new item at the end of the list
+      items.add(ShoppingCartItem(
+          id: Uuid().v4())); // Add a new item at the end of the list
     });
   }
 
@@ -58,11 +62,15 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                     SizedBox(width: 10),
                     Text(
                       'Shopping List',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+                      style: GoogleFonts.phudu(
+                          fontWeight: FontWeight.bold, fontSize: 30.0),
                     ),
                   ],
                 ),
-                IconButton(icon: Icon(Icons.add_circle_outline), onPressed: _addItem),
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(Icons.close),
+                )
               ],
             ),
             Divider(),
@@ -77,13 +85,22 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                         _updateItem(item.id, item.name, newValue);
                       }
                     },
+                    activeColor: Colors.amber,
                   ),
                   Expanded(
                     child: TextField(
+                      cursorColor: Colors.amber,
                       controller: TextEditingController(text: item.name)
-                        ..selection = TextSelection.collapsed(offset: item.name.length),
-                      onChanged: (newName) => _updateItem(item.id, newName, item.isChecked),
-                      decoration: InputDecoration(hintText: 'Enter item name'),
+                        ..selection =
+                            TextSelection.collapsed(offset: item.name.length),
+                      onChanged: (newName) =>
+                          _updateItem(item.id, newName, item.isChecked),
+                      decoration: InputDecoration(
+                        hintText: 'Enter item name',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.amber),
+                        ),
+                      ),
                     ),
                   ),
                   IconButton(
@@ -94,7 +111,30 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
               );
             }).toList(),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: () => Navigator.of(context).pop(), child: Text('Done')),
+            IntrinsicWidth(
+              child: Container(
+                height: 40, // Adjust the height as needed
+                child: ElevatedButton(
+                  onPressed: _addItem,
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    primary: Colors.black,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.add, color: Colors.white),
+                      SizedBox(width: 5),
+                      Text(
+                        'Add',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
