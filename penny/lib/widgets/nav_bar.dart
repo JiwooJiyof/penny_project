@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:penny/screens/user_profile.dart'; 
-import 'package:penny/widgets/shopping_list.dart'; 
+import 'package:penny/screens/user_profile.dart';
+import 'package:penny/widgets/shopping_list.dart';
 import 'package:penny/screens/login_page.dart'; // Ensure this is the correct path
 
 class HomeNavBar extends StatelessWidget {
@@ -15,20 +15,21 @@ class HomeNavBar extends StatelessWidget {
           onTap: () {
             showMenu(
               context: context,
-              position: RelativeRect.fromLTRB(0.0, AppBar().preferredSize.height, 0.0, 0.0),
+              position: RelativeRect.fromLTRB(
+                  0.0, AppBar().preferredSize.height, 0.0, 0.0),
               items: [
                 PopupMenuItem<String>(
                   child: Text('View Profile'),
                   value: 'profile',
                 ),
-                PopupMenuItem<String>(
-                  child: Text('Settings'),
-                  value: 'settings',
-                ),
-                PopupMenuItem<String>(
-                  child: Text('Help & Support'),
-                  value: 'help',
-                ),
+                // PopupMenuItem<String>(
+                //   child: Text('Settings'),
+                //   value: 'settings',
+                // ),
+                // PopupMenuItem<String>(
+                //   child: Text('Help & Support'),
+                //   value: 'help',
+                // ),
                 PopupMenuItem<String>(
                   child: Text('Log Out'),
                   value: 'logout',
@@ -44,14 +45,14 @@ class HomeNavBar extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => UserProfile()),
                     );
                     break;
-                  case 'settings':
-                    // Handle settings action
-                    // Navigate to settings page (if exists)
-                    break;
-                  case 'help':
-                    // Handle help action
-                    // Navigate to help & support page (if exists)
-                    break;
+                  // case 'settings':
+                  //   // Handle settings action
+                  //   // Navigate to settings page (if exists)
+                  //   break;
+                  // case 'help':
+                  //   // Handle help action
+                  //   // Navigate to help & support page (if exists)
+                  //   break;
                   case 'logout':
                     // Navigate to the login page
                     Navigator.pushReplacement(

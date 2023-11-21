@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:penny/widgets/home_nav_bar.dart';
+import 'package:penny/widgets/nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 
