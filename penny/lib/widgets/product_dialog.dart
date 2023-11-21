@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/widgets/store.dart';
 
-void showProductDetailsDialog(BuildContext context, int index) {
+void showProductDetailsDialog(
+    BuildContext context, int index, dynamic product) {
   String? selectedSortOption = 'distance'; // Initial value for the dropdown
-
+  print(product);
   showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext context, Animation<double> animation,
@@ -58,10 +59,23 @@ void showProductDetailsDialog(BuildContext context, int index) {
                                     ? (kToolbarHeight - imageSize) / 2
                                     : top - imageSize - 20,
                                 left: 20, // Fixed left position
-                                child: Image.asset(
-                                  "assets/products/${index + 1}.png",
-                                  height: imageSize,
-                                  width: imageSize,
+                                child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: Image.network(
+                                    product['image_url'],
+                                    height: imageSize,
+                                    width: imageSize,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
+                                      return Icon(
+                                        Icons.local_grocery_store,
+                                        size: imageSize,
+                                        color: Colors.amber,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               // Positioned title text that scales down
@@ -74,7 +88,7 @@ void showProductDetailsDialog(BuildContext context, int index) {
                                         ? 30
                                         : 40), // Adjusted left position for collapsed state
                                 child: Text(
-                                  "Product Name",
+                                  product['name'],
                                   style: GoogleFonts.phudu(
                                     fontSize: titleSize,
                                     color: Colors.black,
@@ -83,23 +97,23 @@ void showProductDetailsDialog(BuildContext context, int index) {
                                 ),
                               ),
                               // Positioned description text that fades out
-                              Positioned(
-                                top: isCollapsed
-                                    ? (kToolbarHeight - descriptionSize) / 2
-                                    : top - descriptionSize - 40,
-                                left: imageSize +
-                                    40, // Left position aligned with title text
-                                child: Opacity(
-                                  opacity: scale,
-                                  child: Text(
-                                    "Product description",
-                                    style: TextStyle(
-                                      fontSize: descriptionSize,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Positioned(
+                              //   top: isCollapsed
+                              //       ? (kToolbarHeight - descriptionSize) / 2
+                              //       : top - descriptionSize - 40,
+                              //   left: imageSize +
+                              //       40, // Left position aligned with title text
+                              //   child: Opacity(
+                              //     opacity: scale,
+                              //     child: Text(
+                              //       "Product description",
+                              //       style: TextStyle(
+                              //         fontSize: descriptionSize,
+                              //         color: Colors.black,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               // Close button is already positioned correctly
                             ],
                           );

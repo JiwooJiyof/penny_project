@@ -46,7 +46,8 @@ class _ProductWidgetState extends State<ProductWidget> {
           },
           child: GestureDetector(
             onTap: () {
-              showProductDetailsDialog(context, index); // open prod details
+              showProductDetailsDialog(
+                  context, index, product); // open prod details
             },
             child: Container(
               margin: EdgeInsets.all(10),
