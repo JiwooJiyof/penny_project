@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Item
@@ -27,7 +27,7 @@ class ItemView(ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ['price', 'location']  # Sort by Price and Location
     filterset_fields = ['name']  # Search by name or store
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         search_term = self.request.query_params.get('name')
@@ -47,7 +47,7 @@ class ItemDetailView(ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     # Sort by Price and Location
     ordering_fields = ['items__price', 'location']
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         search_term = self.request.query_params.get('name')
