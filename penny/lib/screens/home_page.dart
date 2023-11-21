@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           // nav bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          HomeNavBar(),
+          NavBar(),
           Expanded(
             child: Stack(
               children: [

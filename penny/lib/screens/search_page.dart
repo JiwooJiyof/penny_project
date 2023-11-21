@@ -45,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
             top: 0,
             left: 0,
             right: 0,
-            child: HomeNavBar(),
+            child: NavBar(),
           ),
           // Positioned.fill(
           //   child: Image.asset(
