@@ -1,22 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:penny/widgets/categories.dart';
-import 'package:penny/widgets/home_nav_bar.dart';
+import 'package:penny/widgets/nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/search_page.dart';
-import 'package:penny/screens/select_location_dialog.dart';
+import 'package:penny/screens/select_store_dialog.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class HomePage extends StatelessWidget {
-  final TextEditingController _searchController = TextEditingController();
+class HomePage extends StatefulWidget {
   final LocationData? locationData;
 
   HomePage({Key? key, this.locationData}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController _searchController = TextEditingController();
+  late String searchText; // searchText variable
+  dynamic result;
+  int resultCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    var response = await http.get(Uri.parse('http://127.0.0.1:8000/items/'));
+    if (response.statusCode == 200) {
+      // Process your data and update state
+      setState(() {
+        result = json.decode(response.body)['results'];
+        resultCount = result.length; // Update this as per your data structure
+        print(result);
+      });
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
+  }
+
   void _showLocationDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) => LocationDialog(),
+      builder: (BuildContext context) => SelectStoreDialog(),
     );
   }
 
@@ -25,18 +56,21 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          HomeNavBar(), // Stationary AppBar
+          // nav bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          NavBar(),
           Expanded(
             child: Stack(
               children: [
+                // background ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Positioned.fill(
                   child: Image.asset(
                     'assets/main_page.png',
                     fit: BoxFit.cover,
                   ),
                 ),
+                // other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.all(30),
                   child: Column(
                     children: [
                       SizedBox(height: 40),
@@ -51,6 +85,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
+                      // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 100),
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -71,15 +106,38 @@ class HomePage extends StatelessWidget {
                           cursorColor: Colors.amber,
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
-                              onTap: () {
-                                // Navigate to the SearchPage when the search icon is clicked
+                              onTap: () async {
+                                // Store user input in searchText
+                                searchText = _searchController.text;
+                                // Make the GET request to your API endpoint
+                                var response = await http.get(Uri.parse(
+                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+
+                                // Check if the request was successful
+                                if (response.statusCode == 200) {
+                                  // If the call to the server was successful, parse the JSON
+                                  Map<String, dynamic> jsonData =
+                                      json.decode(response.body);
+
+                                  result = jsonData['results'];
+                                  resultCount = result.length;
+                                } else {
+                                  // If the server did not return a "200 OK response",
+                                  // then throw an exception.
+                                  print(
+                                      'Request failed with status: ${response.statusCode}.');
+                                }
+
+                                // Navigate to the SearchPage with the search text
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (context, animation,
                                             secondaryAnimation) =>
                                         SearchPage(
-                                      inputText: _searchController.text,
+                                      searchText: _searchController.text,
+                                      result: result,
+                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
@@ -97,7 +155,9 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 80),
-                      CategoriesWidget(),
+                      // categories ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      // CategoriesWidget(),
+                      // today's prices ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Container(
                         alignment: Alignment.centerLeft,
                         margin:
@@ -111,10 +171,14 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ProductWidget(path: ""),
+                      // products ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ProductWidget(
+                        result: result,
+                      ),
                     ],
                   ),
                 ),
+                // log price button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Positioned(
                   bottom: 32, // padding from the bottom edge
                   right: 32, // padding from the right edge

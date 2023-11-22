@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:penny/screens/home_page.dart';
+import 'package:penny/screens/home_page.dart'; // Ensure you have a HomePage class
 import 'package:penny/screens/login_page.dart'; // Ensure you have a LoginPage class
 import 'package:location/location.dart';
 import 'package:penny/utils/location_utils.dart'; // Ensure this points to your LocationUtils
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<String> _suggestions = [];
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
 
@@ -53,44 +63,64 @@ class SignUpPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 40),
-                        _buildTextField(_nameController, 'Name', (value) => value!.isEmpty ? 'Name cannot be empty' : null),
+                        _buildTextField(
+                            _nameController,
+                            'Name',
+                            (value) =>
+                                value!.isEmpty ? 'Name cannot be empty' : null),
+                        SizedBox(height: 20),
+                        _buildTextField(
+                          _usernameController,
+                          'Username',
+                          (value) => _validateUsername(value),
+                        ),
                         SizedBox(height: 20),
                         _buildEmailField(),
                         SizedBox(height: 20),
-                        _buildPasswordField(context, _passwordController, 'Password'),
+                        _buildPasswordField(
+                            context, _passwordController, 'Password'),
                         SizedBox(height: 20),
-                        _buildPasswordField(context, _confirmPasswordController, 'Confirm Password', confirm: true),
+                        _buildPasswordField(context, _confirmPasswordController,
+                            'Confirm Password',
+                            confirm: true),
                         SizedBox(height: 20),
                         _buildAddressFieldWithPin(context, _addressController),
-                        SizedBox(height: 40),
+                        SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => HomePage()),
-                              );
-                            }
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _signUp();
+                              }
                           },
                           child: Text('Sign Up'),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(50),
+                            primary: Colors.black, // Button color
+                            onPrimary: Colors.white, // Text color
+                            minimumSize: Size.fromHeight(60),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(
+                                  20), // Button corner radius
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Navigate back to the login page
-                          },
-                          child: Text(
-                            'Already have an account? Log in',
-                            style: TextStyle(
-                              color: Colors.blue,
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Already have an account? "),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(
+                                    context); // Navigate back to the login page
+                              },
+                              child: Text(
+                                'Log In',
+                                style: TextStyle(
+                                  color: Colors.amber,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
@@ -104,6 +134,35 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
+    Future<void> _signUp() async {
+    // Convert the address to coordinates
+    var coordinates = await LocationUtils.getCoordinatesFromAddress(_addressController.text);
+    
+    var url = Uri.parse('http://127.0.0.1:8000/accounts/signup/');
+    var response = await http.post(url, body: {
+      'name': _nameController.text,
+      'email': _emailController.text,
+      'username': _usernameController.text, // Now using the username
+      'password': _passwordController.text,
+      'confirm_password': _confirmPasswordController.text,
+      'address': _addressController.text,
+      'longitude': coordinates['longitude'].toString(), // Updated
+      'latitude': coordinates['latitude'].toString(), // Updated
+    });
+
+    if (response.statusCode == 201) {
+      // Handle successful response
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      // Handle error
+      print('Failed to sign up: ${response.body}');
+    }
+  }
+
+
   Widget _buildEmailField() {
     return _buildTextField(_emailController, 'Email', (value) {
       if (value == null || value.isEmpty) {
@@ -115,32 +174,43 @@ class SignUpPage extends StatelessWidget {
     });
   }
 
-  Widget _buildPasswordField(BuildContext context, TextEditingController controller, String label, {bool confirm = false}) {
+  Widget _buildPasswordField(
+      BuildContext context, TextEditingController controller, String label,
+      {bool confirm = false}) {
     return StatefulBuilder(
       builder: (context, setState) {
         return Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
           child: TextFormField(
             controller: controller,
             obscureText: confirm ? !_confirmPasswordVisible : !_passwordVisible,
-            validator: confirm ? (value) {
-              if (value == null || value.isEmpty) {
-                return 'Confirm Password cannot be empty';
-              }
-              if (_passwordController.text != _confirmPasswordController.text) {
-                return 'Passwords do not match';
-              }
-              return null;
-            } : (value) => _passwordValidation(value),
+            cursorColor: Colors.amber, // cursor color to amber
+            validator: confirm
+                ? (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Confirm Password cannot be empty';
+                    }
+                    if (_passwordController.text !=
+                        _confirmPasswordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  }
+                : (value) => _passwordValidation(value),
             decoration: InputDecoration(
               labelText: label,
               suffixIcon: IconButton(
                 icon: Icon(
-                  confirm ? (_confirmPasswordVisible ? Icons.visibility : Icons.visibility_off) :
-                            (_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                  confirm
+                      ? (_confirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off)
+                      : (_passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                 ),
                 onPressed: () {
                   setState(() {
@@ -153,7 +223,7 @@ class SignUpPage extends StatelessWidget {
                 },
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
           ),
@@ -162,15 +232,31 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Username cannot be empty';
+    }
+    if (value.length < 6 || value.length > 30) {
+      return 'Username must be 6 to 30 characters long';
+    }
+    if (!RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$').hasMatch(value)) {
+      return 'Username must start with a letter and can only contain letters, numbers, and underscores';
+    }
+    return null;
+  }
+
   String? _passwordValidation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password cannot be empty';
     }
     List<String> errors = [];
-    if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) errors.add('one uppercase letter');
-    if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) errors.add('one lowercase letter');
+    if (!RegExp(r'(?=.*[A-Z])').hasMatch(value))
+      errors.add('one uppercase letter');
+    if (!RegExp(r'(?=.*[a-z])').hasMatch(value))
+      errors.add('one lowercase letter');
     if (!RegExp(r'(?=.*\d)').hasMatch(value)) errors.add('one number');
-    if (!RegExp(r'(?=.*[@$!%*?&])').hasMatch(value)) errors.add('one special character');
+    if (!RegExp(r'(?=.*[@$!%*?&])').hasMatch(value))
+      errors.add('one special character');
     if (value.length < 8) errors.add('at least 8 characters');
 
     if (errors.isNotEmpty) {
@@ -179,70 +265,129 @@ class SignUpPage extends StatelessWidget {
     return null;
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, String? Function(String?) validator, {bool obscureText = false}) {
+  Widget _buildTextField(TextEditingController controller, String label,
+      String? Function(String?) validator,
+      {bool obscureText = false}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: TextFormField(
         controller: controller,
+        cursorColor: Colors.amber, // cursor color to amber
         obscureText: obscureText,
         validator: validator,
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black), // black label style
+          focusedBorder: OutlineInputBorder(
+            // amber focused border
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          enabledBorder: OutlineInputBorder(
+            // style when TextField is enabled
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.black),
+          ),
           labelText: label,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildAddressFieldWithPin(BuildContext context, TextEditingController controller) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: 'Address',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              validator: (value) => value!.isEmpty ? 'Address cannot be empty' : null,
-            ),
+  Widget _buildAddressFieldWithPin(
+      BuildContext context, TextEditingController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
           ),
-          SizedBox(width: 8), // Added spacing
-          Align(
-            alignment: Alignment.center,
-            child: InkWell(
-              onTap: () async {
-                LocationData? locationData = await LocationUtils.getCurrentLocation();
-                if (locationData != null) {
-                    String address = await LocationUtils.getReadableAddress(locationData.latitude!, locationData.longitude!);
-                    _addressController.text = address; // Update your address field with the obtained address
-                }
-              },
-              child: Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue,
-                ),
-                child: Icon(Icons.pin_drop, color: Colors.white), // Pin icon in a circle
+          child: TextFormField(
+            cursorColor: Colors.amber,
+            controller: controller,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black), // black label style
+              focusedBorder: OutlineInputBorder(
+                // amber focused border
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.amber),
+              ),
+              enabledBorder: OutlineInputBorder(
+                // style when TextField is enabled
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              labelText: 'Address',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.location_on),
+                onPressed: () async {
+                  LocationData? locationData =
+                      await LocationUtils.getCurrentLocation();
+                  if (locationData != null) {
+                    String address = await LocationUtils.getReadableAddress(
+                        locationData.latitude!, locationData.longitude!);
+                    _addressController.text = address;
+                  }
+                },
               ),
             ),
+            onChanged: (value) async {
+              if (value.isNotEmpty) {
+                _suggestions.clear();
+                _suggestions
+                    .addAll(await LocationUtils.fetchSuggestions(value));
+                setState(() {});
+              }
+            },
+            validator: (value) =>
+                value!.isEmpty ? 'Address cannot be empty' : null,
           ),
-        ],
-      ),
+        ),
+        _buildSuggestionsDropdown(),
+      ],
+    );
+  }
+
+  Widget _buildSuggestionsDropdown() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _suggestions.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 2), // space between each tile
+          decoration: BoxDecoration(
+            color: Colors.white, // white bkgd
+            borderRadius: BorderRadius.circular(30), // Rounded corners
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(0, 1), // Shadow effect
+              ),
+            ],
+          ),
+          child: ListTile(
+            title: Text(_suggestions[index]),
+            onTap: () {
+              _addressController.text = _suggestions[index];
+              setState(() {
+                _suggestions.clear(); // Clear suggestions after selection
+              });
+            },
+          ),
+        );
+      },
     );
   }
 }

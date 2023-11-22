@@ -1,38 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:penny/widgets/home_nav_bar.dart';
+import 'package:penny/widgets/nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SearchPage extends StatefulWidget {
-  final String inputText;
+  final String searchText;
+  final dynamic result;
+  final int resultCount;
 
-  SearchPage({required this.inputText});
+  SearchPage({
+    required this.searchText,
+    required this.result,
+    required this.resultCount,
+  });
 
   @override
-  _SearchPageState createState() => _SearchPageState(inputText: inputText);
+  _SearchPageState createState() => _SearchPageState(searchText: searchText);
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String inputText;
+  String searchText;
   String selectedSortOption;
-  int resultCount = 7; // change this
+  final TextEditingController _searchController = TextEditingController();
+  late int resultCount; // late initialization
+  late dynamic result;
 
-  _SearchPageState({required this.inputText})
-      : selectedSortOption = 'Lowest to Highest Price';
+  _SearchPageState({required this.searchText})
+      : selectedSortOption = 'Price: Lowest to Highest';
 
   final TextEditingController _controller = TextEditingController();
 
   // sorting options
   List<String> sortOptions = [
-    'Lowest to Highest Price',
-    'Highest to Lowest Price',
-    'By Name'
+    'Price: Lowest to Highest',
+    'Price: Highest to Lowest',
   ];
 
   @override
   void initState() {
     super.initState();
-    _controller.text = inputText;
+    searchText = widget.searchText;
+    selectedSortOption = 'Price: Lowest to Highest';
+    _searchController.text =
+        searchText; // Set the initial value of the search bar
+    resultCount = widget.resultCount;
+    result = widget.result;
+
+    _controller.text = searchText;
   }
 
   @override
@@ -44,7 +60,7 @@ class _SearchPageState extends State<SearchPage> {
             top: 0,
             left: 0,
             right: 0,
-            child: HomeNavBar(),
+            child: NavBar(),
           ),
           // Positioned.fill(
           //   child: Image.asset(
@@ -55,7 +71,7 @@ class _SearchPageState extends State<SearchPage> {
           Padding(
             padding: EdgeInsets.only(top: 60),
             child: ListView(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(30),
               children: [
                 Container(
                   // temp height
@@ -82,19 +98,42 @@ class _SearchPageState extends State<SearchPage> {
                           ],
                         ),
                         child: TextField(
-                          controller: _controller,
+                          controller: _searchController,
                           cursorColor: Colors.amber,
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
-                              onTap: () {
-                                // navigate to the SearchPage when the search icon is clicked
+                              onTap: () async {
+                                // Store user input in searchText
+                                searchText = _searchController.text;
+                                // Make the GET request to your API endpoint
+                                var response = await http.get(Uri.parse(
+                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+
+                                // Check if the request was successful
+                                if (response.statusCode == 200) {
+                                  // If the call to the server was successful, parse the JSON
+                                  Map<String, dynamic> jsonData =
+                                      json.decode(response.body);
+
+                                  result = jsonData['results'];
+                                  resultCount = result.length;
+                                } else {
+                                  // If the server did not return a "200 OK response",
+                                  // then throw an exception.
+                                  print(
+                                      'Request failed with status: ${response.statusCode}.');
+                                }
+
+                                // Navigate to the SearchPage with the search text
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (context, animation,
                                             secondaryAnimation) =>
                                         SearchPage(
-                                      inputText: _controller.text,
+                                      searchText: _searchController.text,
+                                      result: result,
+                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
@@ -111,24 +150,27 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 40),
+                      SizedBox(height: 60),
 
                       // items widget ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${resultCount} results found', // TODO: change value :')
-                            style: GoogleFonts.phudu(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              '${resultCount} results found', // TODO: change value :')
+                              style: GoogleFonts.phudu(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
 
                           // sort dropdown ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                           Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Container(
                               padding: EdgeInsets.only(left: 16, right: 16),
                               decoration: BoxDecoration(
@@ -154,8 +196,7 @@ class _SearchPageState extends State<SearchPage> {
                                   DropdownButton<String>(
                                     dropdownColor: Colors.white,
                                     icon: Icon(Icons.arrow_drop_down,
-                                        color: Colors
-                                            .amber), // Dropdown arrow to the right
+                                        color: Colors.amber), // dropdown arrow
                                     value: selectedSortOption,
                                     onChanged: (String? newValue) {
                                       if (newValue != null) {
@@ -170,9 +211,11 @@ class _SearchPageState extends State<SearchPage> {
                                         value: option,
                                         child: Row(
                                           children: [
-                                            Text(option,
-                                                style: TextStyle(
-                                                    color: Colors.black)),
+                                            Text(
+                                              option,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
                                             SizedBox(width: 8),
                                           ],
                                         ),
@@ -189,7 +232,7 @@ class _SearchPageState extends State<SearchPage> {
                       SizedBox(height: 20),
 
                       // items widget
-                      ProductWidget(path: "straw"),
+                      ProductWidget(result: result),
                     ],
                   ),
                 ),
