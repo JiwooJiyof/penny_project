@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -7,11 +9,44 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  String name = 'Bob Smith';
-  String username = 'bobsmith';
-  String email = 'bob.smith@gmail.com';
-  String address = "27 King's College Cir, Toronto, ON M5S";
-  String password = '••••••••';
+  String name = '';
+  String username = '';
+  String email = '';
+  String address = '';
+  String password = '*******';
+  // ... Other fields remain unchanged
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+
+  Future<void> fetchUserInfo() async {
+  try {
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/accounts/info/'));
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+
+      setState(() {
+        name = data['name'];
+        username = data['username'];
+        email = data['email'];
+        address = data['address'];
+      });
+    } else {
+      // Print status code and body for more detailed error information
+      print('Request failed with status: ${response.statusCode}.');
+      print('Response body: ${response.body}');
+    }
+  } catch (e) {
+    // Print the exception to understand network errors
+    print('An error occurred: $e');
+  } finally {
+    // Code to run regardless of success or failure (optional)
+    // e.g., hide loading indicator
+  } }
+
 
   // Validator for password complexity
   bool isPasswordComplex(String password) {
@@ -40,7 +75,13 @@ class _UserProfileState extends State<UserProfile> {
       context,
       'Change name',
       _nameController,
-      (value) => setState(() => name = value),
+       (value) {
+        updateUserInfo('name', value).then((_) {
+          setState(() => name = value);
+        }).catchError((error) {
+          _showErrorDialog(context, 'Failed to update name.');
+        });
+      },
     );
   }
 
@@ -67,44 +108,62 @@ class _UserProfileState extends State<UserProfile> {
             TextButton(
               child: Text('Save'),
               onPressed: () {
-                String? validationMessage =
-                    _validateUsername(_usernameController.text);
+                String? validationMessage = _validateUsername(_usernameController.text);
                 if (validationMessage == null) {
-                  setState(() {
-                    username = _usernameController.text;
-                  });
-                  Navigator.of(context).pop();
+                  updateUserInfo('username', _usernameController.text)
+                    .then((_) {
+                      setState(() {
+                        username = _usernameController.text;
+                      });
+                      Navigator.of(context).pop();
+                    })
+                    .catchError((error) {
+                      _showErrorDialog(context, 'Failed to update username.');
+                    });
                 } else {
                   _showErrorDialog(context, validationMessage);
                 }
               },
             ),
-          ],
+          ]
         );
       },
     );
   }
 
   void _changeEmail(BuildContext context) {
-    TextEditingController _emailController = TextEditingController(text: email);
-    _showDialog(
-      context,
-      'Change email',
-      _emailController,
-      (value) => setState(() => email = value),
-    );
-  }
+  TextEditingController _emailController = TextEditingController(text: email);
+  _showDialog(
+    context,
+    'Change email',
+    _emailController,
+    (value) {
+      updateUserInfo('email', value).then((_) {
+        setState(() => email = value);
+      }).catchError((error) {
+        _showErrorDialog(context, 'Failed to update email.');
+      });
+    },
+  );
+}
+
 
   void _changeAddress(BuildContext context) {
-    TextEditingController _addressController =
-        TextEditingController(text: address);
-    _showDialog(
-      context,
-      'Change address',
-      _addressController,
-      (value) => setState(() => address = value),
-    );
-  }
+  TextEditingController _addressController = TextEditingController(text: address);
+  _showDialog(
+    context,
+    'Change address',
+    _addressController,
+    (value) {
+      updateUserInfo('address', value).then((_) {
+        setState(() => address = value);
+      }).catchError((error) {
+        _showErrorDialog(context, 'Failed to update address.');
+      });
+    },
+  );
+}
+
 
   void _changePassword(BuildContext context) {
     TextEditingController _passwordController = TextEditingController();
@@ -171,10 +230,16 @@ class _UserProfileState extends State<UserProfile> {
                 if (errors.isNotEmpty) {
                   _showErrorDialog(context, errors.join('\n'));
                 } else {
-                  setState(() {
-                    password = newPassword;
-                  });
-                  Navigator.of(context).pop();
+                  updateUserInfo('password', _passwordController.text)
+                    .then((_) {
+                      setState(() {
+                        password = '*******';
+                      });
+                      Navigator.of(context).pop();
+                    })
+                    .catchError((error) {
+                      _showErrorDialog(context, 'Failed to update password.');
+                    });
                 }
               },
             ),
@@ -346,3 +411,28 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 }
+
+
+Future<void> updateUserInfo(String field, String value) async {
+  try {
+    final response = await http.put(
+      Uri.parse('http://127.0.0.1:8000/accounts/update/'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({field: value}), // Dynamically set the field and value
+    );
+
+    if (response.statusCode == 200) {
+      // Handle success
+      print('User info updated successfully.');
+    } else {
+      // Handle error
+      print('Failed to update user info: ${response.body}');
+    }
+  } catch (e) {
+    // Handle network error
+    print('An error occurred: $e');
+  }
+}
+

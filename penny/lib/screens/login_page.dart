@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:penny/screens/home_page.dart'; // Replace with the correct path to your HomePage
-import 'package:penny/screens/signup_page.dart'; // Replace with the correct path to your SignUpPage
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:penny/screens/home_page.dart'; // Replace with your HomePage path
+import 'package:penny/screens/signup_page.dart'; // Replace with your SignUpPage path
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _errorMessage = ''; // To display error messages
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +23,7 @@ class LoginPage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/main_page.png', // Using the same background as the HomePage
+              'assets/main_page.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -27,7 +35,7 @@ class LoginPage extends StatelessWidget {
                   key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                   children: [
                       Text(
                         'Penny',
                         style: GoogleFonts.phudu(
@@ -47,29 +55,23 @@ class LoginPage extends StatelessWidget {
                       _buildEmailField(),
                       SizedBox(height: 20),
                       _buildPasswordField(),
+                      if (_errorMessage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10, top: 10),
+                          child: Text(
+                            _errorMessage,
+                            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()),
-                            );
+                            _attemptLogin(context);
                           }
                         },
-                        child: Text('Log In',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.black, // Button color
-                          onPrimary: Colors.white, // Text color
-                          minimumSize: Size.fromHeight(60),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                20), // Button corner radius
-                          ),
-                        ),
+                        child: Text('Log In', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        style: ElevatedButton.styleFrom(primary: Colors.black, onPrimary: Colors.white, minimumSize: Size.fromHeight(60), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                       ),
                       SizedBox(height: 10),
                       Row(
@@ -78,18 +80,9 @@ class LoginPage extends StatelessWidget {
                           Text("Don't have an account? "),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUpPage()),
-                              );
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
                             },
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                color: Colors.amber,
-                              ),
-                            ),
+                            child: Text('Sign Up', style: TextStyle(color: Colors.amber)),
                           ),
                         ],
                       ),
@@ -105,76 +98,62 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _buildEmailField() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
+    return TextFormField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+        filled: true,
+        fillColor: Colors.white,
       ),
-      child: TextFormField(
-        controller: _emailController,
-        cursorColor: Colors.amber, // cursor color to amber
-        decoration: InputDecoration(
-          labelStyle: TextStyle(color: Colors.black), // black label style
-          focusedBorder: OutlineInputBorder(
-            // amber focused border
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.amber),
-          ),
-          enabledBorder: OutlineInputBorder(
-            // style when TextField is enabled
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          labelText: 'Email',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your email';
-          }
-          // Add more specific validation for email if needed
-          return null;
-        },
-      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your email';
+        }
+        return null;
+      },
     );
   }
 
   Widget _buildPasswordField() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+        filled: true,
+        fillColor: Colors.white,
       ),
-      child: TextFormField(
-        controller: _passwordController,
-        cursorColor: Colors.amber, // cursor color to amber
-        obscureText: true,
-        decoration: InputDecoration(
-          labelStyle: TextStyle(color: Colors.black), // black label style
-          focusedBorder: OutlineInputBorder(
-            // amber focused border
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.amber),
-          ),
-          enabledBorder: OutlineInputBorder(
-            // style when TextField is enabled
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          labelText: 'Password',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your password';
-          }
-          return null;
-        },
-      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your password';
+        }
+        return null;
+      },
     );
+  }
+
+  Future<void> _attemptLogin(BuildContext context) async {
+    var url = Uri.parse('http://127.0.0.1:8000/accounts/login/');
+    var response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({'email': _emailController.text, 'password': _passwordController.text}),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    } else {
+      String errorMessage = 'Login failed';
+      if (response.statusCode == 401) {
+        errorMessage = 'Email and password do not match';
+      } else if (response.statusCode == 404) {
+        errorMessage = 'User does not exist';
+      }
+      setState(() {
+        _errorMessage = errorMessage;
+      });
+    }
   }
 }
