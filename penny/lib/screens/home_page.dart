@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                                 searchText = _searchController.text;
                                 // Make the GET request to your API endpoint
                                 var response = await http.get(Uri.parse(
-                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+                                    'http://127.0.0.1:8000/items/?ordering=price&name=$searchText')); // sort low to high by defeault
 
                                 // Check if the request was successful
                                 if (response.statusCode == 200) {
@@ -136,8 +136,6 @@ class _HomePageState extends State<HomePage> {
                                             secondaryAnimation) =>
                                         SearchPage(
                                       searchText: _searchController.text,
-                                      result: result,
-                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
