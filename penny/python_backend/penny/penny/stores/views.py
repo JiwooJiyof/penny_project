@@ -22,44 +22,6 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 10
 
 
-class ItemUpdateView(RetrieveUpdateAPIView):
-    queryset = Store.objects.all()
-    serializer_class = StoreSerializer
-    pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['name']  # Search by name or store
-    permission_classes = [AllowAny]
-
-    def update(self, request, *args, **kwargs):
-        item_id = kwargs.get('pk')
-        store_name = request.data.get('store_name', '')
-
-        if not item_id:
-            return Response(
-                {'detail': 'Item ID (pk) not provided in the request.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        store = get_object_or_404(Store, name=store_name)
-        item = store.items.filter(id=item_id).first()
-
-        if item is not None:
-            new_price = request.data.get('price', '')
-            item.price = new_price
-            item.save()
-
-            # Success
-            return Response(
-                self.get_serializer(store).data,
-                status=status.HTTP_200_OK
-            )
-        else:
-            return Response(
-                {'detail': 'Item not found in the store.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-
 class StoreView(ListAPIView):
     serializer_class = StoreSerializer
     pagination_class = StandardResultsSetPagination
@@ -75,6 +37,23 @@ class StoreView(ListAPIView):
         if search_term:
             queryset = queryset.filter(name__icontains=search_term)
 
+        return queryset
+
+
+class StoreItemView(ListAPIView):
+    serializer_class = StoreSerializer
+    pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        # Retrieve the store based on the 'pk' parameter from the URL
+        # assuming the URL parameter is named 'pk'
+        store_id = self.kwargs.get('pk')
+        store = get_object_or_404(Store, pk=store_id)
+
+        # Return the items associated with the store
+        queryset = store.items.all()
         return queryset
     
 def get_stores_distance(request):
