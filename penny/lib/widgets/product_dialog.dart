@@ -5,13 +5,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 dynamic globalFetchedStores; // store fetched stores
+String ordering = 'distance'; // Default ordering value
 
-Future<dynamic> fetchData(dynamic product) async {
-  // print(
-  //     "TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING !!!!!!!!!!!!!");
-  // print('http://127.0.0.1:8000/items/detail/?name=${product['name']}');
-  var response = await http.get(
-      Uri.parse('http://127.0.0.1:8000/items/detail/?name=${product['name']}'));
+Future<dynamic> fetchData(dynamic product, String ordering) async {
+  var response = await http.get(Uri.parse(
+      'http://127.0.0.1:8000/items/detail/?ordering=$ordering&name=${product['name']}'));
   if (response.statusCode == 200) {
     globalFetchedStores = json.decode(
         response.body)['stores_with_item']; // Store data in the global variable
@@ -23,11 +21,8 @@ Future<dynamic> fetchData(dynamic product) async {
 
 void showProductDetailsDialog(
     BuildContext context, int index, dynamic product) async {
-  await fetchData(product);
-  // print(
-  //     "WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP !!!!!!!!!!!!!");
-  // print(globalFetchedStores);
   String? selectedSortOption = 'distance'; // Initial value for the dropdown
+  await fetchData(product, ordering);
 
   showGeneralDialog(
     context: context,
@@ -189,8 +184,20 @@ void showProductDetailsDialog(
                                         // update dropdown val
                                         setState(() {
                                           selectedSortOption = value;
+                                          // Set the ordering variable based on the selected option
+                                          if (selectedSortOption ==
+                                              'lowToHigh') {
+                                            ordering = 'price';
+                                          } else if (selectedSortOption ==
+                                              'highToLow') {
+                                            ordering = '-price';
+                                          } else if (selectedSortOption ==
+                                              'distance') {
+                                            ordering = 'distance';
+                                          }
+                                          // You can implement sorting logic based on the selected option
+                                          fetchData(product, ordering);
                                         });
-                                        // You can implement sorting logic based on the selected option
                                       },
                                       hint: Text('Sort by'),
                                       value:
