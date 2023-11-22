@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class StoreWidget extends StatelessWidget {
-  final String path;
+  dynamic stores; // store fetched stores
+  dynamic prod; // store fetched stores
 
-  StoreWidget({required this.path});
+  StoreWidget({required this.stores, required this.prod});
   @override
   Widget build(BuildContext context) {
     // Get the screen width
+    // print(
+    //     "WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP !!!!!!!!!!!!!");
+    // print(stores);
     double screenWidth = MediaQuery.of(context).size.width;
 
     // Calculate the width for each container based on the screen width and the desired number of items per row
@@ -21,8 +25,10 @@ class StoreWidget extends StatelessWidget {
       ),
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 7,
+      itemCount: stores.length,
       itemBuilder: (context, index) {
+        dynamic store = stores[index];
+
         return Container(
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(15),
@@ -45,7 +51,7 @@ class StoreWidget extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Store Name",
+                    store['store_name'],
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -90,14 +96,14 @@ class StoreWidget extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "\$10",
+                            "\$${store['price']}",
                             style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
                           Text(
-                            "/unit",
+                            "/${prod['unit_system']}",
                             style: TextStyle(fontSize: 12, color: Colors.black),
                           ),
                         ],

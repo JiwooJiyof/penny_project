@@ -7,14 +7,14 @@ import 'dart:convert';
 dynamic globalFetchedStores; // store fetched stores
 
 Future<dynamic> fetchData(dynamic product) async {
-  print(
-      "TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING !!!!!!!!!!!!!");
-  print('http://127.0.0.1:8000/items/detail/?name=${product['name']}');
+  // print(
+  //     "TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING !!!!!!!!!!!!!");
+  // print('http://127.0.0.1:8000/items/detail/?name=${product['name']}');
   var response = await http.get(
       Uri.parse('http://127.0.0.1:8000/items/detail/?name=${product['name']}'));
   if (response.statusCode == 200) {
-    globalFetchedStores = json
-        .decode(response.body)['results']; // Store data in the global variable
+    globalFetchedStores = json.decode(
+        response.body)['stores_with_item']; // Store data in the global variable
   } else {
     print('Request failed with status: ${response.statusCode}.');
     globalFetchedStores = null; // Set to null or appropriate value on failure
@@ -24,11 +24,10 @@ Future<dynamic> fetchData(dynamic product) async {
 void showProductDetailsDialog(
     BuildContext context, int index, dynamic product) async {
   await fetchData(product);
-  print(
-      "WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP !!!!!!!!!!!!!");
-  print(globalFetchedStores);
+  // print(
+  //     "WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP !!!!!!!!!!!!!");
+  // print(globalFetchedStores);
   String? selectedSortOption = 'distance'; // Initial value for the dropdown
-  print(product);
 
   showGeneralDialog(
     context: context,
@@ -215,7 +214,8 @@ void showProductDetailsDialog(
                           // stores ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                           Padding(
                             padding: const EdgeInsets.all(10),
-                            child: StoreWidget(path: "rawr"),
+                            child: StoreWidget(
+                                stores: globalFetchedStores, prod: product),
                           ),
                         ],
                       ),
