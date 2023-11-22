@@ -47,21 +47,31 @@ class LoginPage extends StatelessWidget {
                       _buildEmailField(),
                       SizedBox(height: 20),
                       _buildPasswordField(),
-                      SizedBox(height: 40),
+                      SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => HomePage()),
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()),
                             );
                           }
                         },
-                        child: Text('Sign In'),
+                        child: Text('Log In',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size.fromHeight(50),
+                          primary: Colors.black, // Button color
+                          onPrimary: Colors.white, // Text color
+                          minimumSize: Size.fromHeight(60),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                20), // Button corner radius
+                          ),
                         ),
                       ),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -70,10 +80,16 @@ class LoginPage extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SignUpPage()),
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpPage()),
                               );
                             },
-                            child: Text('Sign Up'),
+                            child: Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: Colors.amber,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -92,14 +108,26 @@ class LoginPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: TextFormField(
         controller: _emailController,
+        cursorColor: Colors.amber, // cursor color to amber
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black), // black label style
+          focusedBorder: OutlineInputBorder(
+            // amber focused border
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          enabledBorder: OutlineInputBorder(
+            // style when TextField is enabled
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.black),
+          ),
           labelText: 'Email',
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
         validator: (value) {
@@ -117,15 +145,27 @@ class LoginPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: TextFormField(
         controller: _passwordController,
+        cursorColor: Colors.amber, // cursor color to amber
         obscureText: true,
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.black), // black label style
+          focusedBorder: OutlineInputBorder(
+            // amber focused border
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          enabledBorder: OutlineInputBorder(
+            // style when TextField is enabled
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.black),
+          ),
           labelText: 'Password',
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
         validator: (value) {
