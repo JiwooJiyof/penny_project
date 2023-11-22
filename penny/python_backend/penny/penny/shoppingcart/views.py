@@ -33,36 +33,28 @@ class RemoveItemFromCartView(DestroyAPIView):
 
         return cart_item
 
-
-class CheckOffItemView(UpdateAPIView):
+class ToggleCheckItemView(UpdateAPIView):
     serializer_class = ShoppingCartSerializer
     permission_classes = [AllowAny]
 
     def get_object(self):
         item_name = self.kwargs.get('item_name')
-        cart_item = ShoppingCart.objects.filter(item_name=item_name, is_checked=False).first()
+        cart_item = ShoppingCart.objects.filter(item_name=item_name).first()
 
         if cart_item is None:
-            raise Http404("No unchecked ShoppingCart item found with this item name")
+            raise Http404(f"No ShoppingCart item found with this item name: {item_name}")
 
         return cart_item
 
     def perform_update(self, serializer):
-        serializer.save(is_checked=True)
+        cart_item = self.get_object()
+        serializer.save(is_checked=not cart_item.is_checked)
 
 
-class UncheckItemView(UpdateAPIView):
+class ViewItems(ListAPIView):
     serializer_class = ShoppingCartSerializer
     permission_classes = [AllowAny]
 
-    def get_object(self):
-        item_name = self.kwargs.get('item_name')
-        cart_item = ShoppingCart.objects.filter(item_name=item_name, is_checked=True).first()
-
-        if cart_item is None:
-            raise Http404("No checked ShoppingCart item found with this item name")
-
-        return cart_item
-
-    def perform_update(self, serializer):
-        serializer.save(is_checked=False)
+    def get_queryset(self):
+        queryset = ShoppingCart.objects.all()
+        return queryset
