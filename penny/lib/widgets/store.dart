@@ -69,13 +69,16 @@ class StoreWidget extends StatelessWidget {
                 Expanded(
                   child: InkWell(
                     onTap: () {},
-                    child: Image.asset(
-                      "assets/products/$path${index + 1}.png",
-                      // Remove fixed height and let the image expand
-                      width: double
-                          .infinity, // make image take all horizontal space
-                      fit: BoxFit.cover, // cover the space without distortion
+                    child: Icon(
+                      Icons.store,
+                      size: 80,
                     ),
+                    // child: Image.asset(
+                    //   "assets/products/$path${index + 1}.png",
+                    //   // Remove fixed height and let the image expand
+                    //   width: double
+                    //       .infinity, // make image take all horizontal space
+                    //   fit: BoxFit.cover, // cover the space without distortion
                   ),
                 ),
                 Padding(

@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/widgets/store.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+dynamic globalFetchedStores; // store fetched stores
+
+Future<dynamic> fetchData(dynamic product) async {
+  print(
+      "TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING !!!!!!!!!!!!!");
+  print('http://127.0.0.1:8000/items/detail/?name=${product['name']}');
+  var response = await http.get(
+      Uri.parse('http://127.0.0.1:8000/items/detail/?name=${product['name']}'));
+  if (response.statusCode == 200) {
+    globalFetchedStores = json
+        .decode(response.body)['results']; // Store data in the global variable
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+    globalFetchedStores = null; // Set to null or appropriate value on failure
+  }
+}
 
 void showProductDetailsDialog(
-    BuildContext context, int index, dynamic product) {
+    BuildContext context, int index, dynamic product) async {
+  await fetchData(product);
+  print(
+      "WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP !!!!!!!!!!!!!");
+  print(globalFetchedStores);
   String? selectedSortOption = 'distance'; // Initial value for the dropdown
   print(product);
+
   showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext context, Animation<double> animation,
@@ -62,7 +86,7 @@ void showProductDetailsDialog(
                                 child: Container(
                                   margin: EdgeInsets.all(10),
                                   child: Image.network(
-                                    product['image_url'],
+                                    product['image_url'] ?? '',
                                     height: imageSize,
                                     width: imageSize,
                                     fit: BoxFit.cover,
