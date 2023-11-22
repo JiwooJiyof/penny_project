@@ -66,3 +66,12 @@ class UncheckItemView(UpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save(is_checked=False)
+
+
+class ViewItems(ListAPIView):
+    serializer_class = ShoppingCartSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        queryset = ShoppingCart.objects.all()
+        return queryset
