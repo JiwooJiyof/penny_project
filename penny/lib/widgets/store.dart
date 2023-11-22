@@ -59,19 +59,19 @@ class StoreWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Address",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 8),
+                //   child: Container(
+                //     alignment: Alignment.centerLeft,
+                //     child: Text(
+                //       "Address",
+                //       style: TextStyle(
+                //         fontSize: 14,
+                //         color: Colors.black,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Expanded(
                   child: InkWell(
                     onTap: () {},
