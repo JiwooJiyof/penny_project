@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'items',
     'stores',
     'shoppingcart',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +53,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'penny.urls'
 
@@ -92,6 +96,17 @@ DATABASES = {
         'PASSWORD': 'BooleanBoos26',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'BooleanBoos26',
+#         'HOST': 'db.ytjttwkyfkltqqxpdaox.supabase.co',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation

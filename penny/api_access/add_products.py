@@ -1,4 +1,6 @@
 import os
+from typing import Optional, List
+
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from dataclasses import dataclass
@@ -12,11 +14,19 @@ supabase: Client = create_client(url, key)
 
 @dataclass
 class Product:
-    name: str
+    display_name: str
     unit_type: str
+    store_name: str
+    price: float
+    image_url: Optional[str] = None
 
 
-def add_products(products):
+
+
+def find_product_id(pruduct_name: str, store: str) -> Optional[int]:
+    pass
+def add_products(products: List[Product]):
+
     for product in products:
         supabase.table('products').insert(
             {"display_name": product.name, "unit_system": product.unit_type}).execute()
