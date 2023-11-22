@@ -2,22 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:penny/widgets/nav_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SearchPage extends StatefulWidget {
-  final String inputText;
+  final String searchText;
+  final dynamic result;
+  final int resultCount;
 
-  SearchPage({required this.inputText});
+  SearchPage({
+    required this.searchText,
+    required this.result,
+    required this.resultCount,
+  });
 
   @override
-  _SearchPageState createState() => _SearchPageState(inputText: inputText);
+  _SearchPageState createState() => _SearchPageState(searchText: searchText);
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String inputText;
+  String searchText;
   String selectedSortOption;
-  int resultCount = 7; // change this
+  final TextEditingController _searchController = TextEditingController();
+  late int resultCount; // late initialization
+  late dynamic result;
 
-  _SearchPageState({required this.inputText})
+  _SearchPageState({required this.searchText})
       : selectedSortOption = 'Price: Lowest to Highest';
 
   final TextEditingController _controller = TextEditingController();
@@ -31,7 +41,14 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    _controller.text = inputText;
+    searchText = widget.searchText;
+    selectedSortOption = 'Price: Lowest to Highest';
+    _searchController.text =
+        searchText; // Set the initial value of the search bar
+    resultCount = widget.resultCount;
+    result = widget.result;
+
+    _controller.text = searchText;
   }
 
   @override
@@ -81,19 +98,42 @@ class _SearchPageState extends State<SearchPage> {
                           ],
                         ),
                         child: TextField(
-                          controller: _controller,
+                          controller: _searchController,
                           cursorColor: Colors.amber,
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
-                              onTap: () {
-                                // navigate to the SearchPage when the search icon is clicked
+                              onTap: () async {
+                                // Store user input in searchText
+                                searchText = _searchController.text;
+                                // Make the GET request to your API endpoint
+                                var response = await http.get(Uri.parse(
+                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+
+                                // Check if the request was successful
+                                if (response.statusCode == 200) {
+                                  // If the call to the server was successful, parse the JSON
+                                  Map<String, dynamic> jsonData =
+                                      json.decode(response.body);
+
+                                  result = jsonData['results'];
+                                  resultCount = result.length;
+                                } else {
+                                  // If the server did not return a "200 OK response",
+                                  // then throw an exception.
+                                  print(
+                                      'Request failed with status: ${response.statusCode}.');
+                                }
+
+                                // Navigate to the SearchPage with the search text
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (context, animation,
                                             secondaryAnimation) =>
                                         SearchPage(
-                                      inputText: _controller.text,
+                                      searchText: _searchController.text,
+                                      result: result,
+                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
@@ -192,7 +232,7 @@ class _SearchPageState extends State<SearchPage> {
                       SizedBox(height: 20),
 
                       // items widget
-                      ProductWidget(path: "straw"),
+                      ProductWidget(result: result),
                     ],
                   ),
                 ),

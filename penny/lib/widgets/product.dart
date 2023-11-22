@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:penny/widgets/product_dialog.dart';
 
 class ProductWidget extends StatefulWidget {
-  final String path;
+  final dynamic result;
 
-  ProductWidget({required this.path});
+  ProductWidget({
+    required this.result,
+  });
 
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
@@ -12,6 +14,7 @@ class ProductWidget extends StatefulWidget {
 
 class _ProductWidgetState extends State<ProductWidget> {
   int? hoveredIndex; // item that is being hovered over
+  late dynamic result;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +29,10 @@ class _ProductWidgetState extends State<ProductWidget> {
       ),
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 7,
+      itemCount: widget.result.length,
       itemBuilder: (context, index) {
+        dynamic product = widget.result[index];
+
         return MouseRegion(
           onEnter: (_) {
             setState(() {
@@ -41,7 +46,8 @@ class _ProductWidgetState extends State<ProductWidget> {
           },
           child: GestureDetector(
             onTap: () {
-              showProductDetailsDialog(context, index); // open prod details
+              showProductDetailsDialog(
+                  context, index, product); // open prod details
             },
             child: Container(
               margin: EdgeInsets.all(10),
@@ -67,7 +73,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     padding: EdgeInsets.only(bottom: 8),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Product Name",
+                      product['name'],
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -79,7 +85,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Grocery Store",
+                      product['store_name'],
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -89,23 +95,32 @@ class _ProductWidgetState extends State<ProductWidget> {
                   // product image ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Container(
                     margin: EdgeInsets.all(10),
-                    child: Image.asset(
-                      "assets/products/${widget.path}${index + 1}.png",
+                    child: Image.network(
+                      product['image_url'] ?? '',
                       height: 120,
                       width: 120,
+                      fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Icon(
+                          Icons.local_grocery_store,
+                          size: 100,
+                          color: Colors.amber,
+                        );
+                      },
                     ),
                   ),
                   // product description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Product description",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   alignment: Alignment.centerLeft,
+                  //   child: Text(
+                  //     "Product description",
+                  //     style: TextStyle(
+                  //       fontSize: 15,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // ),
                   // product price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
@@ -113,14 +128,14 @@ class _ProductWidgetState extends State<ProductWidget> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "\$10",
+                          "\$${product['price']}",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
                         Text(
-                          "/unit",
+                          "/${product['unit_system']}",
                           style: TextStyle(fontSize: 12, color: Colors.black),
                         ),
                       ],

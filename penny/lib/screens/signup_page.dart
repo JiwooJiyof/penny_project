@@ -176,17 +176,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                 : (value) => _passwordValidation(value),
             decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.black), // black label style
-              focusedBorder: OutlineInputBorder(
-                // amber focused border
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.amber),
-              ),
-              enabledBorder: OutlineInputBorder(
-                // style when TextField is enabled
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.black),
-              ),
               labelText: label,
               suffixIcon: IconButton(
                 icon: Icon(

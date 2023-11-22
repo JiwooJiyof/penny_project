@@ -6,12 +6,43 @@ import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/search_page.dart';
 import 'package:penny/screens/select_store_dialog.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class HomePage extends StatelessWidget {
-  final TextEditingController _searchController = TextEditingController();
+class HomePage extends StatefulWidget {
   final LocationData? locationData;
 
   HomePage({Key? key, this.locationData}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController _searchController = TextEditingController();
+  late String searchText; // searchText variable
+  dynamic result;
+  int resultCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    var response = await http.get(Uri.parse('http://127.0.0.1:8000/items/'));
+    if (response.statusCode == 200) {
+      // Process your data and update state
+      setState(() {
+        result = json.decode(response.body)['results'];
+        resultCount = result.length; // Update this as per your data structure
+        print(result);
+      });
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
+  }
 
   void _showLocationDialog(BuildContext context) {
     showDialog(
@@ -75,15 +106,38 @@ class HomePage extends StatelessWidget {
                           cursorColor: Colors.amber,
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
-                              onTap: () {
-                                // Navigate to the SearchPage when the search icon is clicked
+                              onTap: () async {
+                                // Store user input in searchText
+                                searchText = _searchController.text;
+                                // Make the GET request to your API endpoint
+                                var response = await http.get(Uri.parse(
+                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+
+                                // Check if the request was successful
+                                if (response.statusCode == 200) {
+                                  // If the call to the server was successful, parse the JSON
+                                  Map<String, dynamic> jsonData =
+                                      json.decode(response.body);
+
+                                  result = jsonData['results'];
+                                  resultCount = result.length;
+                                } else {
+                                  // If the server did not return a "200 OK response",
+                                  // then throw an exception.
+                                  print(
+                                      'Request failed with status: ${response.statusCode}.');
+                                }
+
+                                // Navigate to the SearchPage with the search text
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (context, animation,
                                             secondaryAnimation) =>
                                         SearchPage(
-                                      inputText: _searchController.text,
+                                      searchText: _searchController.text,
+                                      result: result,
+                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
@@ -118,7 +172,9 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       // products ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      ProductWidget(path: ""),
+                      ProductWidget(
+                        result: result,
+                      ),
                     ],
                   ),
                 ),
