@@ -1,10 +1,8 @@
 from django.urls import path
-from . import views
-
+from .views import ViewCartItems, UpdateCartItems, DeleteCartItem
 
 urlpatterns = [
-    path('addItem/<str:item_name>/', views.AddItemToCartView.as_view(), name='addItem'),
-    path('removeItem/<str:item_name>/', views.RemoveItemFromCartView.as_view(), name='removeItem'),
-    path('togglecheck/<str:item_name>/', views.ToggleCheckItemView.as_view(), name='togglecheck'),
-    path('view/', views.ViewItems.as_view(), name='view'),
+    path('view/', ViewCartItems.as_view(), name='view-cart-items'),
+    path('update/', UpdateCartItems.as_view(), name='update-cart-items'),
+    path('delete/<item_name>/', DeleteCartItem.as_view(), name='delete-cart-item'),
 ]
