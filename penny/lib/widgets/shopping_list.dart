@@ -65,8 +65,27 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
     });
   }
 
-  void _removeItem(String id) {
+  Future<void> _deleteItem(String itemName) async {
+  final response = await http.delete(
+    Uri.parse('http://127.0.0.1:8000/shoppingcart/delete/$itemName/'), // Use the item name in the URL
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    // Item deleted successfully, update your UI
     setState(() {
+      items.removeWhere((item) => item.name == itemName);
+    });
+  } else {
+    // Handle errors or show a message
+  }
+}
+
+  void _removeItem(String id, String name) {
+    setState(() {
+      _deleteItem(name);
       items.removeWhere((item) => item.id == id);
     });
   }
@@ -148,7 +167,7 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
                   ),
                   IconButton(
                     icon: Icon(Icons.remove_circle_outline),
-                    onPressed: () => _removeItem(item.id),
+                    onPressed: () => _removeItem(item.id, item.name),
                   ),
                 ],
               );
