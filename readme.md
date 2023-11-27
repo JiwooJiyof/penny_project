@@ -97,7 +97,7 @@ Last, to run the application's frontend, the developer must run main.dart in the
 -   Our team's GitHub workflow follows the common GitHub workflow. We started by hosting our repository on GitHub and each made a local clone of the repository individually. For each sub-team's part, we made branches to make and commit changes to work within our sub-team, then pushed any changes once they were finished. Next each sub-team would create a pull request onto the main branch where the team members within each sub-team would review them before merging, adding comments where needed. If there were needed changes, the member who created the pull request would fix them and send the code in fo review again. Then, once the review is complete, the sub-team would be responsible for merging them as a group.
 -   We chose this workflow because it is what most of our team members are familiar with based on other courses and personal/professional experiences.
 -   Overall deployment process from writing code to viewing a live application was to first populate the database in Supabase by webscraping, then sending the data over using API requests for the backend who will run the server on their terminal, and then frontend connects to the backend as well and deploys over Flutter.
--   Deployment tools we used were GitHub for backend, Supabase for database, and Flutter for frontend.
+-   Deployment tools we used were Render for backend, Supabase for database, and Flutter for frontend.
 
 ## Coding Standards and Guidelines
 
