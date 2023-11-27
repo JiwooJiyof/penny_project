@@ -9,7 +9,7 @@ String ordering = 'distance'; // Default ordering value
 
 Future<dynamic> fetchData(dynamic product, String ordering) async {
   var response = await http.get(Uri.parse(
-      'http://127.0.0.1:8000/items/detail/?ordering=$ordering&name=${product['name']}'));
+      'https://boolean-boos.onrender.com/items/detail/?ordering=$ordering&name=${product['name']}'));
   if (response.statusCode == 200) {
     globalFetchedStores = json.decode(
         response.body)['stores_with_item']; // Store data in the global variable

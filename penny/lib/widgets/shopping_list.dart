@@ -27,7 +27,7 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
   }
 
   Future<void> _fetchCartItems() async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/shoppingcart/view/'));
+    final response = await http.get(Uri.parse('https://boolean-boos.onrender.com/shoppingcart/view/'));
     if (response.statusCode == 200) {
       final List<dynamic> itemsJson = json.decode(response.body);
       setState(() {
@@ -48,7 +48,7 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
       'is_checked': item.isChecked
     }).toList();
     final response = await http.put(
-      Uri.parse('http://127.0.0.1:8000/shoppingcart/update/'),
+      Uri.parse('https://boolean-boos.onrender.com/shoppingcart/update/'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -67,7 +67,7 @@ class _ShoppingCartDialogState extends State<ShoppingCartDialog> {
 
   Future<void> _deleteItem(String itemName) async {
   final response = await http.delete(
-    Uri.parse('http://127.0.0.1:8000/shoppingcart/delete/$itemName/'), // Use the item name in the URL
+    Uri.parse('https://boolean-boos.onrender.com/shoppingcart/delete/$itemName/'), // Use the item name in the URL
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

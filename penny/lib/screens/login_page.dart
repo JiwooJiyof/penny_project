@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _attemptLogin(BuildContext context) async {
-    var url = Uri.parse('http://127.0.0.1:8000/accounts/login/');
+    var url = Uri.parse('https://boolean-boos.onrender.com/accounts/login/');
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},

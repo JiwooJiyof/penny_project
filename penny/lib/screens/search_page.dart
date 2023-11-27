@@ -55,7 +55,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _performSearch(String ordering) async {
     var response = await http.get(Uri.parse(
-        'http://127.0.0.1:8000/items/?ordering=$ordering&name=$searchText'));
+        'https://boolean-boos.onrender.com/items/?ordering=$ordering&name=$searchText'));
 
     if (response.statusCode == 200) {
       // sucessful

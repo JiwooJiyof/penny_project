@@ -24,7 +24,7 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<void> fetchUserInfo() async {
   try {
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/accounts/info/'));
+    final response = await http.get(Uri.parse('https://boolean-boos.onrender.com/accounts/info/'));
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
 
@@ -416,7 +416,7 @@ class _UserProfileState extends State<UserProfile> {
 Future<void> updateUserInfo(String field, String value) async {
   try {
     final response = await http.put(
-      Uri.parse('http://127.0.0.1:8000/accounts/update/'),
+      Uri.parse('https://boolean-boos.onrender.com/accounts/update/'),
       headers: {
         'Content-Type': 'application/json',
       },

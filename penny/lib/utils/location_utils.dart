@@ -6,7 +6,7 @@ class LocationUtils {
   static const String googleApiKey = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI';
 
   static Future<List<String>> fetchSuggestions(String input) async {
-    final String backendUrl = 'http://127.0.0.1:8000/accounts/autocomplete/';
+    final String backendUrl = 'https://boolean-boos.onrender.com/accounts/autocomplete/';
 
     try {
       final response = await http.get(Uri.parse('$backendUrl?input=$input'));
