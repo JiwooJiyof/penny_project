@@ -138,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
     // Convert the address to coordinates
     var coordinates = await LocationUtils.getCoordinatesFromAddress(_addressController.text);
     
-    var url = Uri.parse('http://127.0.0.1:8000/accounts/signup/');
+    var url = Uri.parse('https://boolean-boos.onrender.com/accounts/signup/');
     var response = await http.post(url, body: {
       'name': _nameController.text,
       'email': _emailController.text,

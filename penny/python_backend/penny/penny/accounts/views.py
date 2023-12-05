@@ -123,9 +123,12 @@ class LoginView(APIView):
 
         try:
             user = Account.objects.get(email=email)
-            print('user.password')
+            # Set all other users to is_loggedin=False
+            Account.objects.exclude(id=user.id).update(is_loggedin=False)
+            
             if user.password == password:
-                print("in")
+                
+                
                 user.is_loggedin = True
                 user.save()
                 return Response({"message": "Login successful"}, status=status.HTTP_200_OK)

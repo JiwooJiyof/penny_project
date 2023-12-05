@@ -15,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _errorMessage = ''; // To display error messages
+  bool _isPasswordVisible = false; // To toggle password visibility
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                   key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
+                    children: [
                       Text(
                         'Penny',
                         style: GoogleFonts.phudu(
@@ -118,12 +119,23 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildPasswordField() {
     return TextFormField(
       controller: _passwordController,
-      obscureText: true,
+      obscureText: !_isPasswordVisible, // Toggle password visibility
       decoration: InputDecoration(
         labelText: 'Password',
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
         filled: true,
         fillColor: Colors.white,
+        suffixIcon: GestureDetector(
+          onTap: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
+          child: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            color: Colors.grey,
+          ),
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -135,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _attemptLogin(BuildContext context) async {
-    var url = Uri.parse('http://127.0.0.1:8000/accounts/login/');
+    var url = Uri.parse('https://boolean-boos.onrender.com/accounts/login/');
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},

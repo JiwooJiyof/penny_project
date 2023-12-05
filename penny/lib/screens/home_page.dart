@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void fetchData() async {
-    var response = await http.get(Uri.parse('http://127.0.0.1:8000/items/'));
+    var response = await http.get(Uri.parse('https://boolean-boos.onrender.com/items/'));
     if (response.statusCode == 200) {
       // Process your data and update state
       setState(() {
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                                 searchText = _searchController.text;
                                 // Make the GET request to your API endpoint
                                 var response = await http.get(Uri.parse(
-                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+                                    'https://boolean-boos.onrender.com/items/?ordering=price&name=$searchText')); // sort low to high by defeault
 
                                 // Check if the request was successful
                                 if (response.statusCode == 200) {
@@ -136,8 +136,6 @@ class _HomePageState extends State<HomePage> {
                                             secondaryAnimation) =>
                                         SearchPage(
                                       searchText: _searchController.text,
-                                      result: result,
-                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {

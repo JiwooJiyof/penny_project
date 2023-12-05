@@ -7,13 +7,13 @@ import 'dart:convert';
 
 class SearchPage extends StatefulWidget {
   final String searchText;
-  final dynamic result;
-  final int resultCount;
+  // final dynamic result;
+  // final int resultCount;
 
   SearchPage({
     required this.searchText,
-    required this.result,
-    required this.resultCount,
+    // required this.result,
+    // required this.resultCount,
   });
 
   @override
@@ -23,6 +23,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String searchText;
   String selectedSortOption;
+  String ordering = 'price';
   final TextEditingController _searchController = TextEditingController();
   late int resultCount; // late initialization
   late dynamic result;
@@ -44,11 +45,30 @@ class _SearchPageState extends State<SearchPage> {
     searchText = widget.searchText;
     selectedSortOption = 'Price: Lowest to Highest';
     _searchController.text =
-        searchText; // Set the initial value of the search bar
-    resultCount = widget.resultCount;
-    result = widget.result;
+        searchText; // set the initial value of the search bar
+    resultCount = 0;
+    result = [];
 
-    _controller.text = searchText;
+    // _controller.text = searchText;
+    _performSearch('price');
+  }
+
+  Future<void> _performSearch(String ordering) async {
+    var response = await http.get(Uri.parse(
+        'https://boolean-boos.onrender.com/items/?ordering=$ordering&name=$searchText'));
+
+    if (response.statusCode == 200) {
+      // sucessful
+      Map<String, dynamic> jsonData =
+          json.decode(response.body); // parse to json
+
+      setState(() {
+        result = jsonData['results'];
+        resultCount = result.length;
+      });
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
   }
 
   @override
@@ -103,28 +123,11 @@ class _SearchPageState extends State<SearchPage> {
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
                               onTap: () async {
-                                // Store user input in searchText
-                                searchText = _searchController.text;
-                                // Make the GET request to your API endpoint
-                                var response = await http.get(Uri.parse(
-                                    'http://127.0.0.1:8000/items/?name=$searchText'));
+                                searchText =
+                                    _searchController.text; // user input
 
-                                // Check if the request was successful
-                                if (response.statusCode == 200) {
-                                  // If the call to the server was successful, parse the JSON
-                                  Map<String, dynamic> jsonData =
-                                      json.decode(response.body);
+                                await _performSearch(ordering); // search
 
-                                  result = jsonData['results'];
-                                  resultCount = result.length;
-                                } else {
-                                  // If the server did not return a "200 OK response",
-                                  // then throw an exception.
-                                  print(
-                                      'Request failed with status: ${response.statusCode}.');
-                                }
-
-                                // Navigate to the SearchPage with the search text
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
@@ -132,8 +135,6 @@ class _SearchPageState extends State<SearchPage> {
                                             secondaryAnimation) =>
                                         SearchPage(
                                       searchText: _searchController.text,
-                                      result: result,
-                                      resultCount: resultCount,
                                     ),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
@@ -159,7 +160,7 @@ class _SearchPageState extends State<SearchPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
-                              '${resultCount} results found', // TODO: change value :')
+                              '${resultCount} results found',
                               style: GoogleFonts.phudu(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
@@ -202,7 +203,16 @@ class _SearchPageState extends State<SearchPage> {
                                       if (newValue != null) {
                                         setState(() {
                                           selectedSortOption = newValue;
-                                          // TODO: Add sorting logic
+                                          // set ordering variable
+                                          if (selectedSortOption ==
+                                              'Price: Lowest to Highest') {
+                                            ordering = 'price';
+                                          } else if (selectedSortOption ==
+                                              'Price: Highest to Lowest') {
+                                            ordering = '-price';
+                                          }
+                                          _performSearch(
+                                              ordering); // regenerate items
                                         });
                                       }
                                     },

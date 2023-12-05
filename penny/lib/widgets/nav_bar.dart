@@ -44,7 +44,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
                   case 'logout':
                     // Add POST request here for logout
                     var response = await http.post(
-                      Uri.parse('http://127.0.0.1:8000/accounts/logout/'),
+                      Uri.parse('https://boolean-boos.onrender.com/accounts/logout/'),
                     );
                     if (response.statusCode == 200) {
                       // Handle successful logout

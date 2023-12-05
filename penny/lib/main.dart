@@ -25,19 +25,19 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      // routes: {"/": (context) => LoginPage()},
-      routes: {
-        "/": (context) => FutureBuilder<LocationData?>(
-              future: locationFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
-                  return HomePage(locationData: snapshot.data);
-                }
-                return HomePage(locationData: null);
-              },
-            )
-      },
+      routes: {"/": (context) => LoginPage()},
+      // routes: {
+      //   "/": (context) => FutureBuilder<LocationData?>(
+      //         future: locationFuture,
+      //         builder: (context, snapshot) {
+      //           if (snapshot.connectionState == ConnectionState.done &&
+      //               snapshot.hasData) {
+      //             return HomePage(locationData: snapshot.data);
+      //           }
+      //           return HomePage(locationData: null);
+      //         },
+      //       )
+      // },
     );
   }
 }

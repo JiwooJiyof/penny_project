@@ -16,7 +16,7 @@
 
 ## Key Features
 
--   The key features in the applications are searching for grocery products, creating shopping lists, searching for stores/locations, product filtering, and a cost-to-distance ratio.
+-   The key features in the applications are searching for grocery products, creating shopping lists, searching for stores/locations, price logging, user account system, and a cost-to-distance ratio.
 -   Key Features:
 
             -   Searching for grocery products: users can enter or select the grocery items they are looking to purchase where the app will display a list of stores with that product and its prices. Users can also sort and filter based off the pricing, which will be updated in real-time.
@@ -28,47 +28,84 @@
             - Searching for stores/locations: users can input their location or turn on location services to detect the nearest grocery stores to them. From there, users can view the nearest grocery stores on the map and get directions, where each store will have basic information such as opening hours, contact information, and address.
             Value: 5/5
 
-            - Product filtering: users can set dietary preferences in their profile or during searching, where the app will show only compatible products.
-            Value: 3/5
+            - Price logging: if users see that a price on Penny does not match the current price at the store, users can update the price on the app for everyone else to see.
+            Value: 4/5
+
+            - User account system: users can register for an account and log in on the site. From here, they can access every feature needed, which would be searching for products and stores, creating shopping lists, and logging/changing prices of a product. Users also have the ability to view their profile, update any of the information, and logout.
+            Value: 5/5
 
             - Cost-to-distance ratio: users can see a cost-to-distance ratio for each store considering their shopping list price(s) and the distance to the store. They can sort and filter the stores based on the ratio and also get directions with different modes of transportation.
             Value: 3/5
 
 ## Instructions
 
--   Clear instructions for how to use the application from the end-user's perspective
--   How do you access it? For example: Are accounts pre-created or does a user register? Where do you start? etc.
--   Provide clear steps for using each feature described in the previous section.
--   This section is critical to testing your application and must be done carefully and thoughtfully.
+-   To use the application from the end-user's perspective, the user will go to the website (https://app.shopwithpenny.com/) and register for an account with Penny. Then, this will register the user into our database and be logged in to access to all of Penny's features:
+
+    -   Searching for grocery products: upon entering Penny, users will find themselves on Penny's homepage which displays a search bar and a grid view of many available products and their information. This means there are two ways to search for their products. If they want to search for a specific item, they can do so by entering their item into the search bar. This will show results from multiple grocery stores that have the item available. It may also result in other products showing up that include the item's name in the grid view (ex/ user searching for apple and apple chips show up). The other way is that the user scrolls through the homepage's gridview of products, where they can find the product they are interested in.
+
+    -   Creating shopping lists: on Penny's homepage, the user will find a button at the top right of a shopping cart icon where they can create their shopping list. Here, they can input products into their list and check them off based on their needs. Once they are done with the product, they can erase it from their list.
+
+    -   Searching for stores/locations: when registering, the user will be able to put in their address by inputting it or turning on location services. This will detect nearby grocery stores and allows products during search to be found at the nearest grocery store.
+
+    -   Price logging: on Penny's homepage, the user can see a button on the bottom right of the homepage which says "Log Price." Once they click that button, they can choose the grocery store and the location they are at and then search for the product which has different information (ex. pricing) in-person versus on Penny. They can input the changed details and submit the change.
+
+    -   User account system: upon opening the website, users are prompted to log in or register. If they are a new user, they will register, inputting all their information into the fillable form. Once they register, they are logged into their account and start at Penny's homepage. If they are a returning user, they will input their email and password and if those match, they are logged in starting at the Penny homepage.
 
 ## Development requirements
 
--   What are the technical requirements for a developer to set up on their machine or server (e.g. OS, libraries, etc.)?
--   Briefly describe instructions for setting up and running the application. You should address this part like how one would expect a README doc of real-world deployed application would be.
--   You can see this [example](https://github.com/alichtman/shallow-backup#readme) to get started.
+The technical requirements for a developer to set up on their machine or server is to have Python3.9 and Flutter.SDK and Flutter extension on VSCode installed and then install our repository from the source:
+
+```
+git clone https://github.com/csc301-2023-fall/project-26-penny-t.git
+```
+
+then use a virtual environment and install Django within the environment.
+
+```
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install django
+
+# Django REST framework
+pip install djangorestframework
+pip install markdown       # Markdown support for the browsable API.
+pip install django-filter  # Filtering support
+
+# Json web token
+pip install djangorestframework-simplejwt
+
+# Origin
+pip install django-cors-headers
+
+pip install psycopg2-binary
+```
+
+Next, to run the application's backend and connect to the database, the developer must navigate to the python_backend folder and in their terminal run:
+
+```
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py runserver
+```
+
+Last, to run the application's frontend, the developer must run main.dart in the lib folder. Pick a device to use and it will launch Flutter where you can navigate through the website.
 
 ## Deployment and Github Workflow
 
-Describe your Git/GitHub workflow. Essentially, we want to understand how your team members share codebase, avoid conflicts and deploys the application.
-​
-
--   Be concise, yet precise. For example, "we use pull-requests" is not a precise statement since it leaves too many open questions - Pull-requests from where to where? Who reviews the pull-requests? Who is responsible for merging them? etc.
--   If applicable, specify any naming conventions or standards you decide to adopt.
--   Describe your overall deployment process from writing code to viewing a live application
--   What deployment tool(s) are you using? And how?
--   Don't forget to **briefly justify why** you chose this workflow or particular aspects of it!
+-   Our team's GitHub workflow follows the common GitHub workflow. We started by hosting our repository on GitHub and each made a local clone of the repository individually. For each sub-team's part, we made branches to make and commit changes to work within our sub-team, then pushed any changes once they were finished. Next each sub-team would create a pull request onto the main branch where the team members within each sub-team would review them before merging, adding comments where needed. If there were needed changes, the member who created the pull request would fix them and send the code in fo review again. Then, once the review is complete, the sub-team would be responsible for merging them as a group.
+-   We chose this workflow because it is what most of our team members are familiar with based on other courses and personal/professional experiences.
+-   Overall deployment process from writing code to viewing a live application was to first populate the database in Supabase by webscraping, then sending the data over using API requests for the backend who will run the server on their terminal, and then frontend connects to the backend as well and deploys over Flutter.
+-   Deployment tools we used were Render for backend, Supabase for database, and Flutter for frontend.
 
 ## Coding Standards and Guidelines
 
-Keep this section brief, a maximum of 2-3 lines. You would want to read through this [article](https://www.geeksforgeeks.org/coding-standards-and-guidelines/) to get more context about what this section is for before attempting to answer.
-
--   These are 2 optional resources that you might want to go through: [article with High level explanation](https://blog.codacy.com/coding-standards-what-are-they-and-why-do-you-need-them/) and [this article with Detailed Explanation](https://google.github.io/styleguide/)
+-   Our main coding standards and guidelines are surrounding naming conventions and proper indentation. Each member ensured the naming conventions for our variables and functions are using meaningful and understandable names that describe what they are used for and ensuring no digits were used during naming. For proper indentation, we made sure to use white spaces where needed for a visually appealing format, including spaces after commas and indentations for nested blocks.
     ​
 
 ## Licenses
 
-Keep this section as brief as possible. You may read this [Github article](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository) for a start.
-​
+-   The type of license we will apply to our codebase is the default copyright because our partner has not decided on the type of license he wants yet.
+-   This means that people who are not a part of the team should not be copying the development and use of our codebase due to copyright.
 
--   What type of license will you apply to your codebase? And why?
--   What affect does it have on the development and use of your codebase?
