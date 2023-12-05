@@ -148,7 +148,8 @@ class SelectProductDialog extends StatelessWidget {
                       padding: EdgeInsets.all(20), // padding
                       children: List.generate(productData.length, (index) {
                         return ProductGridItem(
-                            storeIndex: index,
+                            index: index,
+                            storeIndex: storeIndex,
                             store: store,
                             items: productData);
                       }),
@@ -165,12 +166,14 @@ class SelectProductDialog extends StatelessWidget {
 }
 
 class ProductGridItem extends StatefulWidget {
+  final int index;
   final int storeIndex;
   final store;
   final List<dynamic> items;
 
   const ProductGridItem({
     Key? key,
+    required this.index,
     required this.storeIndex,
     required this.store,
     required this.items,
@@ -199,7 +202,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
             offset: Offset(0, 3),
           );
 
-    final itemInfo = widget.items[widget.storeIndex];
+    final itemInfo = widget.items[widget.index];
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -209,6 +212,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
           // Pop the current dialog
           Navigator.pop(context);
           // Open the new dialog
+          // print(itemInfo['id'].toRadixString(16));
           showDialog(
             context: context,
             builder: (BuildContext context) {
