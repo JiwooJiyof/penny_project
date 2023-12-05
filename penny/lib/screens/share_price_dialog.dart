@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/select_product_dialog.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class SharePriceDialog extends StatefulWidget {
-  final int index;
+  final int prodId;
+  final String prodName;
+  final int storeIndex;
+  final store;
 
-  const SharePriceDialog({Key? key, required this.index}) : super(key: key);
+  const SharePriceDialog(
+      {Key? key,
+      required this.prodId,
+      required this.prodName,
+      required this.storeIndex,
+      required this.store})
+      : super(key: key);
 
   @override
   State<SharePriceDialog> createState() => _SharePriceDialogState();
@@ -31,14 +41,35 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
   double enteredPrice = 0.0; // Updated price variable
   String selectedUnit = '/lb'; // Initialize with a default unit
 
+  Future<void> updatePrice(int id, double price, String unit) async {
+    try {
+      final response = await http.patch(
+        Uri.parse(
+            'http://127.0.0.1:8000/items/$id/'), // Update the URL with your endpoint
+        body: {
+          'price': price.toString(),
+          'unit_system': unit,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('Price updated successfully');
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
   void _navigateBack(BuildContext context) {
     // Pop the current dialog
     Navigator.pop(context);
     // Show the ItemIndexDialog again
     showDialog(
       context: context,
-      builder: (BuildContext context) =>
-          SelectProductDialog(index: widget.index),
+      builder: (BuildContext context) => SelectProductDialog(
+          storeIndex: widget.storeIndex, store: widget.store),
       barrierDismissible: true,
     );
   }
@@ -225,7 +256,8 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                         Center(
                           child: ElevatedButton(
                             onPressed: () {
-                              // Handle the update action
+                              updatePrice(
+                                  widget.prodId, enteredPrice, selectedUnit);
                             },
                             child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -257,8 +289,9 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                   Expanded(
                     flex: 1,
                     child: _buildProductCard(
-                      productName: 'French Baguette',
-                      productDetails: 'Baked In Store\nGrocery Store',
+                      productName: widget.prodName,
+                      productDetails:
+                          '${widget.store['name']}, ${widget.store['location']}',
                       imagePath: 'assets/products/1.png',
                       price: enteredPrice, // Use the updated enteredPrice
                       unit: selectedUnit,
@@ -311,7 +344,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
   }
 
   Widget _buildProductCard({
-    String productName = 'Product name',
+    required String productName,
     String productDetails = 'Product details\nGrocery Store, Address',
     String imagePath = "assets/products/1.png",
     double price = 10.0,

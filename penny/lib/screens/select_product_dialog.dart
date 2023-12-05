@@ -6,9 +6,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class SelectProductDialog extends StatelessWidget {
-  final int index;
+  final int storeIndex;
+  final store;
 
-  const SelectProductDialog({Key? key, required this.index}) : super(key: key);
+  const SelectProductDialog({
+    Key? key,
+    required this.storeIndex,
+    required this.store,
+  }) : super(key: key);
 
   Future<dynamic> getProductData(int index) async {
     try {
@@ -47,7 +52,7 @@ class SelectProductDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getProductData(index), // Call the function with the index
+      future: getProductData(storeIndex), // Call the function with the index
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(); // Show a loading indicator while waiting for the response
@@ -101,37 +106,37 @@ class SelectProductDialog extends StatelessWidget {
                   ),
                   SizedBox(height: 25),
                   // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 100),
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      cursorColor: Colors.amber,
-                      decoration: InputDecoration(
-                        suffixIcon: InkWell(
-                          onTap: () {},
-                          child: Icon(Icons.search, color: Colors.amber),
-                        ),
-                        hintText: 'Search for an item...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.all(20),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   margin: EdgeInsets.symmetric(horizontal: 100),
+                  //   padding: EdgeInsets.symmetric(horizontal: 15),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(30),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.grey.withOpacity(0.3),
+                  //         spreadRadius: 2,
+                  //         blurRadius: 7,
+                  //         offset: const Offset(0, 3),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: TextField(
+                  //     cursorColor: Colors.amber,
+                  //     decoration: InputDecoration(
+                  //       suffixIcon: InkWell(
+                  //         onTap: () {},
+                  //         child: Icon(Icons.search, color: Colors.amber),
+                  //       ),
+                  //       hintText: 'Search for an item...',
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(30),
+                  //         borderSide: BorderSide.none,
+                  //       ),
+                  //       contentPadding: EdgeInsets.all(20),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: 50),
                   // stores grid view ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Expanded(
@@ -143,7 +148,9 @@ class SelectProductDialog extends StatelessWidget {
                       padding: EdgeInsets.all(20), // padding
                       children: List.generate(productData.length, (index) {
                         return ProductGridItem(
-                            index: index, items: productData);
+                            storeIndex: index,
+                            store: store,
+                            items: productData);
                       }),
                     ),
                   ),
@@ -158,12 +165,14 @@ class SelectProductDialog extends StatelessWidget {
 }
 
 class ProductGridItem extends StatefulWidget {
-  final int index;
+  final int storeIndex;
+  final store;
   final List<dynamic> items;
 
   const ProductGridItem({
     Key? key,
-    required this.index,
+    required this.storeIndex,
+    required this.store,
     required this.items,
   }) : super(key: key);
 
@@ -190,7 +199,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
             offset: Offset(0, 3),
           );
 
-    final itemInfo = widget.items[widget.index];
+    final itemInfo = widget.items[widget.storeIndex];
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -203,7 +212,11 @@ class _ProductGridItemState extends State<ProductGridItem> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return SharePriceDialog(id: itemInfo['id'], index: widget.index);
+              return SharePriceDialog(
+                  prodId: itemInfo['id'],
+                  prodName: itemInfo['name'],
+                  storeIndex: widget.storeIndex,
+                  store: widget.store);
             },
           );
         },
