@@ -234,7 +234,7 @@ class _StoreGridItemState extends State<StoreGridItem> {
                     // width: 50, // Set the desired width
                     // height: 50, // Set the desired height
                     child: Image.asset(
-                      'stores/${storeInfo['name']}.png', // Replace with your image file path
+                      'stores/${storeInfo['name'].replaceAll(' ', '')}.png', // Replace with your image file path
                       fit: BoxFit
                           .contain, // Use BoxFit.contain to fit the image within the container
                     ),
