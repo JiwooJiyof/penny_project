@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from django.conf import settings
 import requests
+import os
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
@@ -58,13 +59,14 @@ class StoreItemView(ListAPIView):
     
 def get_stores_distance(request):
     user_location = request.GET.get('user_location')
-    google_api_key = 'AIzaSyDpIWKiBj1P0x5buBX2losmBknSRYn1HVI'
+    google_api_key = os.environ.get('GOOGLE_API_KEY')
+    supabase_api_key = os.environ.get('SUPABASE_API_KEY')
 
     # Supabase REST URL and Headers
     supabase_url = 'https://ytjttwkyfkltqqxpdaox.supabase.co/rest/v1/stores_store'
     supabase_headers = {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0anR0d2t5ZmtsdHFxeHBkYW94Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDA1MzA2NDQsImV4cCI6MjAxNjEwNjY0NH0.BJxaaSqeCJDp2vKOMj2UNW5YwytqezaLfez24kPMuZs',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0anR0d2t5ZmtsdHFxeHBkYW94Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDA1MzA2NDQsImV4cCI6MjAxNjEwNjY0NH0.BJxaaSqeCJDp2vKOMj2UNW5YwytqezaLfez24kPMuZs'
+        'apikey': supabase_api_key,
+        'Authorization': f'Bearer {supabase_api_key}'
     }
 
     # Fetch stores from Supabase
