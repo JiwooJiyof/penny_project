@@ -87,12 +87,14 @@ class _SignUpPageState extends State<SignUpPage> {
                         _buildAddressFieldWithPin(context, _addressController),
                         SizedBox(height: 20),
                         ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _signUp();
-                              }
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _signUp();
+                            }
                           },
-                          child: Text('Sign Up'),
+                          child: Text('Sign Up',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.black, // Button color
                             onPrimary: Colors.white, // Text color
@@ -134,10 +136,11 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-    Future<void> _signUp() async {
+  Future<void> _signUp() async {
     // Convert the address to coordinates
-    var coordinates = await LocationUtils.getCoordinatesFromAddress(_addressController.text);
-    
+    var coordinates =
+        await LocationUtils.getCoordinatesFromAddress(_addressController.text);
+
     var url = Uri.parse('https://boolean-boos.onrender.com/accounts/signup/');
     var response = await http.post(url, body: {
       'name': _nameController.text,
@@ -161,7 +164,6 @@ class _SignUpPageState extends State<SignUpPage> {
       print('Failed to sign up: ${response.body}');
     }
   }
-
 
   Widget _buildEmailField() {
     return _buildTextField(_emailController, 'Email', (value) {
@@ -201,6 +203,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                 : (value) => _passwordValidation(value),
             decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.black), // black label style
+              focusedBorder: OutlineInputBorder(
+                // amber focused border
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.amber),
+              ),
+              enabledBorder: OutlineInputBorder(
+                // style when TextField is enabled
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.black),
+              ),
               labelText: label,
               suffixIcon: IconButton(
                 icon: Icon(
@@ -351,6 +364,12 @@ class _SignUpPageState extends State<SignUpPage> {
             },
             validator: (value) =>
                 value!.isEmpty ? 'Address cannot be empty' : null,
+            onFieldSubmitted: (value) {
+              // login when Enter key is pressed
+              if (_formKey.currentState!.validate()) {
+                _signUp();
+              }
+            },
           ),
         ),
         _buildSuggestionsDropdown(),

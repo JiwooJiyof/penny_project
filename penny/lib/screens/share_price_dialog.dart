@@ -23,6 +23,8 @@ class SharePriceDialog extends StatefulWidget {
 }
 
 class _SharePriceDialogState extends State<SharePriceDialog> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   List<bool> isOnSaleSelected = [
     false,
     true // no default
@@ -172,48 +174,51 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Enter price:'),
-                        SizedBox(height: 8), // Spacing
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.45,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 1.0,
+                        // enter price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                        Form(
+                          key: _formKey,
+                          child: TextFormField(
+                            controller: priceController,
+                            cursorColor: Colors.amber,
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d*\.?\d{0,2}')),
+                            ],
+                            decoration: InputDecoration(
+                              labelText: 'Enter price',
+                              labelStyle: TextStyle(
+                                  color: Colors.black), // black label style
+                              focusedBorder: OutlineInputBorder(
+                                // amber focused border
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(color: Colors.amber),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                // style when TextField is enabled
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Text('\$',
+                                    style: TextStyle(color: Colors.black)),
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '\$',
-                                  style: TextStyle(color: Colors.amber),
-                                ),
-                                SizedBox(width: 5.0),
-                                Expanded(
-                                  child: TextField(
-                                    controller: priceController,
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                            decimal: true),
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'^\d+\.?\d{0,2}$')),
-                                    ],
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter the price',
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a price';
+                              }
+                              if (double.tryParse(value) == null) {
+                                return 'Please enter a valid number';
+                              }
+                              return null; // null if the input is valid
+                            },
                           ),
                         ),
-
                         SizedBox(height: 16), // Spacing
                         // Text('Is this on sale?'),
                         // _buildToggleButtons(
@@ -222,6 +227,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                         //   onPressed: _handleIsOnSaleToggle,
                         // ),
                         // SizedBox(height: 8), // Spacing
+                        // unit system ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                         Text('How is it priced?'),
                         _buildToggleButtons(
                           isSelected: howIsPricedSelected,
@@ -244,11 +250,15 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                           ),
                         SizedBox(height: 16), // Spacing
                         // "Update" button
+                        // update button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                         Center(
                           child: ElevatedButton(
                             onPressed: () {
-                              updatePrice(
-                                  widget.prodId, enteredPrice, selectedUnit);
+                              if (_formKey.currentState!.validate()) {
+                                // check if form is valid
+                                updatePrice(
+                                    widget.prodId, enteredPrice, selectedUnit);
+                              }
                             },
                             child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -269,6 +279,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                     ),
                   ),
                   SizedBox(width: 20),
+                  // product card ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Expanded(
                     flex: 1,
                     child: _buildProductCard(
@@ -343,6 +354,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // product name ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Text(
               productName,
               style: GoogleFonts.phudu(
@@ -350,11 +362,13 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            // product details ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Text(
               productDetails,
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 8),
+            // product image ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             InkWell(
               child: Container(
                 margin: EdgeInsets.all(10),
@@ -365,6 +379,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                 ),
               ),
             ),
+            // product price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Row(

@@ -135,7 +135,7 @@ class SelectProductDialog extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(height: 40),
+                  // SizedBox(height: 50),
                   // stores grid view ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Expanded(
                     child: GridView.count(
@@ -241,8 +241,10 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 ),
                 // Text('Product details', style: TextStyle(fontSize: 14)),
                 SizedBox(height: 10),
-                Center(
-                  child: Icon(Icons.apple, size: 50),
+                Expanded(
+                  child: Center(
+                    child: Icon(Icons.apple, size: 50),
+                  ),
                 ), // TODO: replace with actual logo
               ],
             ),

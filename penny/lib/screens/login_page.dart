@@ -61,7 +61,8 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(bottom: 10, top: 10),
                           child: Text(
                             _errorMessage,
-                            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
                           ),
                         ),
                       SizedBox(height: 20),
@@ -71,8 +72,15 @@ class _LoginPageState extends State<LoginPage> {
                             _attemptLogin(context);
                           }
                         },
-                        child: Text('Log In', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        style: ElevatedButton.styleFrom(primary: Colors.black, onPrimary: Colors.white, minimumSize: Size.fromHeight(60), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                        child: Text('Log In',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.black,
+                            onPrimary: Colors.white,
+                            minimumSize: Size.fromHeight(60),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20))),
                       ),
                       SizedBox(height: 10),
                       Row(
@@ -81,9 +89,13 @@ class _LoginPageState extends State<LoginPage> {
                           Text("Don't have an account? "),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpPage()));
                             },
-                            child: Text('Sign Up', style: TextStyle(color: Colors.amber)),
+                            child: Text('Sign Up',
+                                style: TextStyle(color: Colors.amber)),
                           ),
                         ],
                       ),
@@ -101,8 +113,20 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildEmailField() {
     return TextFormField(
       controller: _emailController,
+      cursorColor: Colors.amber,
       decoration: InputDecoration(
+        labelStyle: TextStyle(color: Colors.black), // black label style
         labelText: 'Email',
+        focusedBorder: OutlineInputBorder(
+          // amber focused border
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.amber),
+        ),
+        enabledBorder: OutlineInputBorder(
+          // style when TextField is enabled
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.black),
+        ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
         filled: true,
         fillColor: Colors.white,
@@ -119,9 +143,21 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildPasswordField() {
     return TextFormField(
       controller: _passwordController,
+      cursorColor: Colors.amber, // cursor color to amber
       obscureText: !_isPasswordVisible, // Toggle password visibility
       decoration: InputDecoration(
         labelText: 'Password',
+        labelStyle: TextStyle(color: Colors.black), // black label style
+        focusedBorder: OutlineInputBorder(
+          // amber focused border
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.amber),
+        ),
+        enabledBorder: OutlineInputBorder(
+          // style when TextField is enabled
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.black),
+        ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
         filled: true,
         fillColor: Colors.white,
@@ -143,6 +179,12 @@ class _LoginPageState extends State<LoginPage> {
         }
         return null;
       },
+      onFieldSubmitted: (value) {
+        // login when Enter key is pressed
+        if (_formKey.currentState!.validate()) {
+          _attemptLogin(context);
+        }
+      },
     );
   }
 
@@ -151,11 +193,15 @@ class _LoginPageState extends State<LoginPage> {
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({'email': _emailController.text, 'password': _passwordController.text}),
+      body: jsonEncode({
+        'email': _emailController.text.replaceAll(' ', ''),
+        'password': _passwordController.text
+      }),
     );
 
     if (response.statusCode == 200) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       String errorMessage = 'Login failed';
       if (response.statusCode == 401) {

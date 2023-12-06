@@ -127,7 +127,7 @@ class _SelectStoreDialogState extends State<SelectStoreDialog> {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(height: 40),
+                  // SizedBox(height: 50),
                   // stores grid view ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Expanded(
                     child: GridView.count(
@@ -221,22 +221,22 @@ class _StoreGridItemState extends State<StoreGridItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(storeInfo['name'],
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  storeInfo['name'],
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 Text(storeInfo['location'], style: TextStyle(fontSize: 16)),
                 SizedBox(height: 10),
-                Center(
-                  child: Container(
-                    // width: 50,
-                    // height: 50,
+                Expanded(
+                  // Use Expanded here
+                  child: Center(
                     child: Image.asset(
                       'stores/${storeInfo['name'].replaceAll(' ', '')}.png',
                       fit: BoxFit
                           .contain, // BoxFit.contain to fit the image within the container
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
