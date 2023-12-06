@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/select_product_dialog.dart';
+import 'package:penny/utils/loading.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -56,7 +57,7 @@ class _SelectStoreDialogState extends State<SelectStoreDialog> {
       future: storeData,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // loading indicator
+          return MovingCartAnimation(); // loading indicator
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}'); // error
         } else {

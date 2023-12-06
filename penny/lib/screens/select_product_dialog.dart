@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/select_store_dialog.dart';
 import 'package:penny/screens/share_price_dialog.dart';
+import 'package:penny/utils/loading.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -54,7 +55,7 @@ class SelectProductDialog extends StatelessWidget {
       future: getProductData(storeIndex), // get prod data
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // loading indicator
+          return MovingCartAnimation(); // loading indicator
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
@@ -241,11 +242,24 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 ),
                 // Text('Product details', style: TextStyle(fontSize: 14)),
                 SizedBox(height: 10),
-                Expanded(
+                Flexible(
+                  // Added Flexible widget here
                   child: Center(
-                    child: Icon(Icons.apple, size: 50),
+                    child: Image.network(
+                      '', // Replace with your image URL
+                      fit: BoxFit
+                          .contain, // This should scale the image to fit within the container
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Icon(
+                          Icons.local_grocery_store,
+                          size: 100,
+                          color: Colors.amber,
+                        );
+                      },
+                    ),
                   ),
-                ), // TODO: replace with actual logo
+                )
               ],
             ),
           ),

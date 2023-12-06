@@ -286,7 +286,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                       productName: widget.prodName,
                       productDetails:
                           '${widget.store['name']}, ${widget.store['location']}',
-                      imagePath: 'assets/products/1.png',
+                      imagePath: '', // TODO: Replace w/ image url
                       price: enteredPrice,
                       unit: selectedUnit,
                       isByUnit: howIsPricedSelected[1],
@@ -339,7 +339,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
   Widget _buildProductCard({
     required String productName,
     String productDetails = 'Product details\nGrocery Store, Address',
-    String imagePath = "assets/products/1.png",
+    String imagePath = "",
     double price = 10.0,
     required String unit,
     required bool isByUnit,
@@ -369,14 +369,21 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
             ),
             SizedBox(height: 8),
             // product image ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            InkWell(
-              child: Container(
-                margin: EdgeInsets.all(10),
-                child: Image.asset(
-                  imagePath,
-                  height: 120,
-                  width: 120,
-                ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Image.network(
+                imagePath,
+                height: 120,
+                width: 120,
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return Icon(
+                    Icons.local_grocery_store,
+                    size: 100,
+                    color: Colors.amber,
+                  );
+                },
               ),
             ),
             // product price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
