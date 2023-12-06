@@ -14,10 +14,11 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from rest_framework import status
 from django.http import Http404
+from django.db import connection
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 1000
     page_size_query_param = "page_size"
     max_page_size = 10
 
@@ -27,18 +28,38 @@ class ItemView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ['price', 'location']  # Sort by Price and Location
-    filterset_fields = ['name']  # Search by name or store
+    # filterset_fields = ['name']  # Search by name or store
     permission_classes = [AllowAny]
 
     def get_queryset(self):
         search_term = self.request.query_params.get('name')
         queryset = Item.objects.all()
 
-        # Filter by name if a search term is provided
-        if search_term:
-            queryset = queryset.filter(name__icontains=search_term)
+        try:
+            if search_term:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT id FROM Items_item WHERE LOWER(name) ILIKE LOWER(%s)",
+                        [f"%{search_term.lower()}%"]
+                    )
+                    results = [row[0] for row in cursor.fetchall()]
+
+                # Filter the queryset based on the IDs from the SQL query
+                queryset = queryset.filter(id__in=results)
+        except:
+            return queryset.filter(id__in=[])
 
         return queryset
+
+    # def get_queryset(self):
+    #     search_term = self.request.query_params.get('name')
+
+    #     queryset = Item.objects.all()
+
+    #     if search_term:
+    #         queryset = queryset.filter(name__icontains=search_term)
+
+    #     return queryset
 
 
 class ItemDetailView(ListAPIView):
