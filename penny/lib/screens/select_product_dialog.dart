@@ -44,23 +44,21 @@ class SelectProductDialog extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) => SelectStoreDialog(),
-      barrierDismissible:
-          true, // Set to false if you do not want to dismiss the dialog by tapping outside of it.
+      barrierDismissible: true,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getProductData(storeIndex), // Call the function with the index
+      future: getProductData(storeIndex), // get prod data
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Show a loading indicator while waiting for the response
+          return CircularProgressIndicator(); // loading indicator
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          // Data is available, you can use snapshot.data to access it
-          final productData = snapshot.data;
+          final productData = snapshot.data; // access data
 
           return Dialog(
             shape: RoundedRectangleBorder(
@@ -137,7 +135,7 @@ class SelectProductDialog extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 40),
                   // stores grid view ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Expanded(
                     child: GridView.count(
@@ -148,10 +146,11 @@ class SelectProductDialog extends StatelessWidget {
                       padding: EdgeInsets.all(20), // padding
                       children: List.generate(productData.length, (index) {
                         return ProductGridItem(
-                            index: index,
-                            storeIndex: storeIndex,
-                            store: store,
-                            items: productData);
+                          index: index,
+                          storeIndex: storeIndex,
+                          store: store,
+                          items: productData,
+                        );
                       }),
                     ),
                   ),
@@ -236,14 +235,15 @@ class _ProductGridItemState extends State<ProductGridItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(itemInfo['name'],
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  itemInfo['name'],
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 // Text('Product details', style: TextStyle(fontSize: 14)),
                 SizedBox(height: 10),
                 Center(
-                    child: Icon(Icons.apple,
-                        size: 50)), // TODO: replace with actual logo
+                  child: Icon(Icons.apple, size: 50),
+                ), // TODO: replace with actual logo
               ],
             ),
           ),

@@ -25,27 +25,29 @@ class SharePriceDialog extends StatefulWidget {
 class _SharePriceDialogState extends State<SharePriceDialog> {
   List<bool> isOnSaleSelected = [
     false,
-    true
-  ]; // Assuming 'No' is initially selected
+    true // no default
+  ];
   List<bool> howIsPricedSelected = [
-    true,
+    true, // total default
     false
-  ]; // Assuming 'total' is initially selected
+  ];
   List<bool> howIsMeasuredSelected = [
     false,
     false,
-    true
-  ]; // Assuming 'per lb' is initially selected
+    true // per lb default
+  ];
 
   TextEditingController priceController = TextEditingController();
-  double enteredPrice = 0.0; // Updated price variable
-  String selectedUnit = '/lb'; // Initialize with a default unit
+  double enteredPrice = 0.0;
+  String selectedUnit = '/lb';
 
   Future<void> updatePrice(int id, double price, String unit) async {
     try {
+      // print(id);
+      // print(price);
+      // print(unit);
       final response = await http.patch(
-        Uri.parse(
-            'http://127.0.0.1:8000/items/$id/'), // Update the URL with your endpoint
+        Uri.parse('http://127.0.0.1:8000/items/$id/'),
         body: {
           'price': price.toString(),
           'unit_system': unit,
@@ -63,9 +65,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
   }
 
   void _navigateBack(BuildContext context) {
-    // Pop the current dialog
-    Navigator.pop(context);
-    // Show the ItemIndexDialog again
+    Navigator.pop(context); // pop current dialog
     showDialog(
       context: context,
       builder: (BuildContext context) => SelectProductDialog(
@@ -74,7 +74,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
     );
   }
 
-  // Methods to handle toggle button selection changes
+  // toggle button selection
   void _handleIsOnSaleToggle(int index) {
     setState(() {
       isOnSaleSelected = isOnSaleSelected.map((e) => false).toList();
@@ -87,7 +87,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
       howIsPricedSelected = howIsPricedSelected.map((e) => false).toList();
       howIsPricedSelected[index] = true;
 
-      // Show/hide the "How is it measured" text and toggle based on the selection
+      // show/hide the "how is it measured"
       if (index == 0) {
         howIsMeasuredSelected = [false, false, false];
       } else {
@@ -101,7 +101,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
       howIsMeasuredSelected = howIsMeasuredSelected.map((e) => false).toList();
       howIsMeasuredSelected[index] = true;
 
-      // Update the selected unit based on the index
+      // update the selected unit
       if (index == 0) {
         selectedUnit = '/g';
       } else if (index == 1) {
@@ -115,7 +115,6 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
   @override
   void initState() {
     super.initState();
-    // Listen to changes in the text field and update enteredPrice accordingly
     priceController.addListener(() {
       setState(() {
         enteredPrice = double.tryParse(priceController.text) ?? 0.0;
@@ -125,7 +124,6 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
 
   @override
   void dispose() {
-    // Dispose the controller to avoid memory leaks
     priceController.dispose();
     super.dispose();
   }
@@ -137,13 +135,11 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Container(
-        width: MediaQuery.of(context).size.width *
-            0.9, // Adjust the dialog width if necessary
+        width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(20.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Top bar with back arrow, title, and close button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -167,20 +163,15 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
             ),
             // SizedBox for spacing
             SizedBox(height: 20),
-// Main content with toggles/actions on the left and product card on the right
             IntrinsicHeight(
-              // Wrap with IntrinsicHeight to match the card's height with the left column
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment
-                    .stretch, // Stretch the children to fill the height
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Left side elements (toggles, buttons)
                   Expanded(
                     flex: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // New text and text box for entering price
                         Text('Enter price:'),
                         SizedBox(height: 8), // Spacing
                         Container(
@@ -261,21 +252,15 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                             },
                             child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 15.0,
-                                    vertical:
-                                        10.0), // Increase vertical padding for more height
+                                    horizontal: 15.0, vertical: 10.0),
                                 child: Text('Update!',
-                                    style: TextStyle(
-                                        fontSize:
-                                            16)) // Optional: Adjust font size if needed
-                                ),
+                                    style: TextStyle(fontSize: 16))),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.black, // Button color
                               onPrimary: Colors.white, // Text color
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
-                              // ElevatedButton has a default elevation and padding which you can override here
                               elevation: 5, // Optional: Adjust elevation
                             ),
                           ),
@@ -283,9 +268,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                       ],
                     ),
                   ),
-                  // SizedBox for spacing between columns
                   SizedBox(width: 20),
-                  // Right side - Product card
                   Expanded(
                     flex: 1,
                     child: _buildProductCard(
@@ -293,9 +276,9 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                       productDetails:
                           '${widget.store['name']}, ${widget.store['location']}',
                       imagePath: 'assets/products/1.png',
-                      price: enteredPrice, // Use the updated enteredPrice
+                      price: enteredPrice,
                       unit: selectedUnit,
-                      isByUnit: howIsPricedSelected[1], // Pass the value here
+                      isByUnit: howIsPricedSelected[1],
                     ),
                   ),
                 ],
@@ -311,7 +294,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
     required List<bool> isSelected,
     required List<String> labels,
     required void Function(int) onPressed,
-    bool showToggle = true, // Add a parameter to control visibility
+    bool showToggle = true,
   }) {
     List<Widget> children = labels
         .map((label) => Padding(
@@ -322,24 +305,23 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: showToggle // Check if the toggle should be displayed
+      child: showToggle // check if the toggle should be displayed
           ? ToggleButtons(
               children: children,
               isSelected: isSelected,
               onPressed: onPressed,
               borderRadius: BorderRadius.circular(20),
-              color: Colors.black, // Text color
-              fillColor: Colors.black, // Background color when selected
-              selectedColor: Colors.white, // Text color when selected
-              borderColor: Colors.black, // Border color
-              selectedBorderColor: Colors.black, // Border color when selected
-              borderWidth: 1, // Border width
+              color: Colors.black,
+              fillColor: Colors.black, // bkgd colour when selected
+              selectedColor: Colors.white, // text colour when selected
+              borderColor: Colors.black,
+              selectedBorderColor: Colors.black,
+              borderWidth: 1,
               constraints: BoxConstraints(
-                minHeight: 36.0, // Adjust the height here
-                // minWidth: 88.0, // Minimum width for each toggle button
+                minHeight: 36.0,
               ),
             )
-          : Container(), // If not, return an empty container
+          : Container(), // if not, return  empty container
     );
   }
 
@@ -349,7 +331,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
     String imagePath = "assets/products/1.png",
     double price = 10.0,
     required String unit,
-    required bool isByUnit, // Add a parameter to track if "by unit" is selected
+    required bool isByUnit,
   }) {
     return Card(
       elevation: 5,
@@ -396,7 +378,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                       color: Colors.black,
                     ),
                   ),
-                  if (isByUnit) // Display the unit only if "by unit" is selected
+                  if (isByUnit) // display the unit only if "by unit" is selected
                     Text(
                       unit,
                       style: TextStyle(fontSize: 12, color: Colors.black),
