@@ -5,6 +5,9 @@ import 'package:penny/widgets/shopping_list.dart';
 import 'package:penny/screens/login_page.dart'; // Ensure this is the correct path
 
 class NavBar extends StatelessWidget implements PreferredSizeWidget {
+  final bool showBackButton;
+  NavBar({this.showBackButton = false});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -13,57 +16,63 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: _CircularButton(
-          icon: Icons.menu,
-          onPressed: () {
-            showMenu(
-              context: context,
-              position: RelativeRect.fromLTRB(
-                  0.0, AppBar().preferredSize.height, 0.0, 0.0),
-              items: [
-                PopupMenuItem<String>(
-                  child: Text('View Profile'),
-                  value: 'profile',
-                ),
-                PopupMenuItem<String>(
-                  child: Text('Log Out'),
-                  value: 'logout',
-                ),
-              ],
-            ).then((value) async {
-              if (value != null) {
-                switch (value) {
-                  case 'profile':
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        // Call the UserProfile as a dialog
-                        return UserProfile();
-                      },
-                    );
-                    break;
-                  case 'logout':
-                    // Add POST request here for logout
-                    var response = await http.post(
-                      Uri.parse('https://boolean-boos.onrender.com/accounts/logout/'),
-                    );
-                    if (response.statusCode == 200) {
-                      // Handle successful logout
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                    } else {
-                      // Handle error in logout
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Logout failed')),
-                      );
+            icon: showBackButton ? Icons.arrow_back : Icons.menu,
+            onPressed: () {
+              if (showBackButton) {
+                Navigator.of(context).pop(); // Go back if on the search page
+              } else {
+                showMenu(
+                  context: context,
+                  position: RelativeRect.fromLTRB(
+                      0.0, AppBar().preferredSize.height, 0.0, 0.0),
+                  items: [
+                    PopupMenuItem<String>(
+                      child: Text('View Profile'),
+                      value: 'profile',
+                    ),
+                    PopupMenuItem<String>(
+                      child: Text('Log Out'),
+                      value: 'logout',
+                    ),
+                  ],
+                ).then((value) async {
+                  if (value != null) {
+                    switch (value) {
+                      case 'profile':
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            // Call the UserProfile as a dialog
+                            return UserProfile();
+                          },
+                        );
+                        break;
+                      case 'logout':
+                        // Add POST request here for logout
+                        var response = await http.post(
+                          Uri.parse(
+                              'https://boolean-boos.onrender.com/accounts/logout/'),
+                        );
+                        if (response.statusCode == 200) {
+                          // Handle successful logout
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
+                          );
+                        } else {
+                          // Handle error in logout
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Logout failed')),
+                          );
+                        }
+                        break;
                     }
-                    break;
-                }
+                  }
+                });
               }
-            });
-          },
-        ),
+              ;
+            }),
       ),
       actions: <Widget>[
         Padding(
