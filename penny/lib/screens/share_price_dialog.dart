@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class SharePriceDialog extends StatefulWidget {
-  final int prodId;
+  final String prodId;
   final String prodName;
   final int storeIndex;
   final store;
@@ -43,7 +43,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
   double enteredPrice = 0.0;
   String selectedUnit = '/lb';
 
-  Future<void> updatePrice(int id, double price, String unit) async {
+  Future<void> updatePrice(String id, double price, String unit) async {
     try {
       // print(id);
       // print(price);

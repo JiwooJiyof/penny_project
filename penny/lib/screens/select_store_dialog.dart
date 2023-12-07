@@ -207,7 +207,7 @@ class _StoreGridItemState extends State<StoreGridItem> {
             context: context,
             builder: (BuildContext context) {
               return SelectProductDialog(
-                  storeIndex: widget.index, store: storeInfo);
+                  storeIndex: widget.index + 1, store: storeInfo);
             },
           );
         },
