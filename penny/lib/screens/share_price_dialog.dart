@@ -5,15 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class SharePriceDialog extends StatefulWidget {
-  final String prodId;
-  final String prodName;
+  // final String prodId;
+  // final String prodName;
   final int storeIndex;
+  final product;
   final store;
 
   const SharePriceDialog(
       {Key? key,
-      required this.prodId,
-      required this.prodName,
+      // required this.prodId,
+      // required this.prodName,
+      required this.product,
       required this.storeIndex,
       required this.store})
       : super(key: key);
@@ -24,6 +26,7 @@ class SharePriceDialog extends StatefulWidget {
 
 class _SharePriceDialogState extends State<SharePriceDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isUpdated = false; // New state variable
 
   List<bool> isOnSaleSelected = [
     false,
@@ -41,9 +44,9 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
 
   TextEditingController priceController = TextEditingController();
   double enteredPrice = 0.0;
-  String selectedUnit = '/lb';
+  String selectedUnit = 'lb';
 
-  Future<void> updatePrice(String id, double price, String unit) async {
+  Future<void> updatePrice(String id, String price, String unit) async {
     try {
       // print(id);
       // print(price);
@@ -51,7 +54,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
       final response = await http.patch(
         Uri.parse('http://127.0.0.1:8000/items/$id/'),
         body: {
-          'price': price.toString(),
+          'price': price,
           'unit_system': unit,
         },
       );
@@ -92,8 +95,10 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
       // show/hide the "how is it measured"
       if (index == 0) {
         howIsMeasuredSelected = [false, false, false];
+        selectedUnit = 'ea';
       } else {
         howIsMeasuredSelected = [false, false, true];
+        selectedUnit = 'lb';
       }
     });
   }
@@ -105,11 +110,11 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
 
       // update the selected unit
       if (index == 0) {
-        selectedUnit = '/g';
+        selectedUnit = '100g';
       } else if (index == 1) {
-        selectedUnit = '/kg';
+        selectedUnit = 'kg';
       } else if (index == 2) {
-        selectedUnit = '/lb';
+        selectedUnit = 'lb';
       }
     });
   }
@@ -257,7 +262,9 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                               if (_formKey.currentState!.validate()) {
                                 // check if form is valid
                                 updatePrice(
-                                    widget.prodId, enteredPrice, selectedUnit);
+                                    widget.product['id'],
+                                    enteredPrice.toStringAsFixed(2),
+                                    selectedUnit);
                               }
                             },
                             child: Padding(
@@ -283,10 +290,11 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                   Expanded(
                     flex: 1,
                     child: _buildProductCard(
-                      productName: widget.prodName,
+                      productName: widget.product['name'],
                       productDetails:
                           '${widget.store['name']}, ${widget.store['location']}',
-                      imagePath: '', // TODO: Replace w/ image url
+                      imagePath: widget
+                          .product['image_url'], // TODO: Replace w/ image url
                       price: enteredPrice,
                       unit: selectedUnit,
                       isByUnit: howIsPricedSelected[1],
@@ -393,7 +401,9 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "\$$price",
+                    "\$" +
+                        price.toStringAsFixed(
+                            2), // format price to 2 decimal places
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -402,7 +412,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
                   ),
                   if (isByUnit) // display the unit only if "by unit" is selected
                     Text(
-                      unit,
+                      '/' + unit,
                       style: TextStyle(fontSize: 12, color: Colors.black),
                     ),
                 ],

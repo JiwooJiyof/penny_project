@@ -217,9 +217,10 @@ class _ProductGridItemState extends State<ProductGridItem> {
             context: context,
             builder: (BuildContext context) {
               return SharePriceDialog(
-                  prodId: itemInfo['id'],
-                  prodName: itemInfo['name'],
+                  // prodId: itemInfo['id'],
+                  // prodName: itemInfo['name'],
                   storeIndex: widget.storeIndex,
+                  product: itemInfo,
                   store: widget.store);
             },
           );
