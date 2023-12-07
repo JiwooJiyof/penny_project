@@ -13,8 +13,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from rest_framework import status
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.db import connection
+import requests
+from requests.exceptions import RequestException
+
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -140,3 +143,19 @@ class ItemUpdateView(RetrieveUpdateAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No image URL provided', status=400)
+
+    try:
+        response = requests.get(image_url, stream=True)
+        response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
+        return HttpResponse(response.content, content_type=response.headers['Content-Type'])
+    except requests.HTTPError as e:
+        # If the image URL is incorrect or the image is not accessible
+        return HttpResponse('Image not found or access denied', status=e.response.status_code)
+    except requests.RequestException as e:
+        # For any other exceptions that may occur
+        return HttpResponse('An error occurred while fetching the image', status=500)
