@@ -47,6 +47,13 @@ The stores folder handles all of the store location related queries. It contains
 This is responsible for running the server and connecting to the database.
 
 ### frontend
-The frontend is stored in "Penny/lib" and is written in dart. It utilizes the flutter framework. 
+The frontend is stored in "Penny/lib" and is written in dart. It utilizes the flutter framework.
+There are two main folders. Pages and widgets. With each folder containing the respective pages and widgets.
+The main pages are the home page, login page, sign up page, as well as the select product page.
 
 
+
+
+# Accessing the project
+We will give full access to our github repository to our partner. Our partner is an experianced
+developer with lots of experience with all of these technologies.
