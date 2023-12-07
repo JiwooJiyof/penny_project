@@ -103,6 +103,36 @@ class SelectProductDialog extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: 20),
+                  // store ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.store, color: Colors.black),
+                        SizedBox(width: 8),
+                        Text(
+                          '${store['name']}, ${store['location']}',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                              fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 25),
                   // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   // Container(
@@ -247,11 +277,14 @@ class _ProductGridItemState extends State<ProductGridItem> {
                   // Added Flexible widget here
                   child: Center(
                     child: Image.network(
-                      '', // Replace with your image URL
-                      fit: BoxFit
-                          .contain, // This should scale the image to fit within the container
+                      'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(itemInfo['image_url'])}',
+                      fit: BoxFit.contain,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
+                        print('Image load error: $exception');
+                        if (stackTrace != null) {
+                          print('Stack trace: $stackTrace');
+                        }
                         return Icon(
                           Icons.local_grocery_store,
                           size: 100,

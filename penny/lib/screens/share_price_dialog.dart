@@ -436,12 +436,16 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
               margin: EdgeInsets.all(10),
               child: Center(
                 child: Image.network(
-                  imagePath,
-                  height: 120,
-                  width: 120,
-                  fit: BoxFit.cover,
+                  'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(imagePath)}',
+                  height: 150,
+                  width: 150,
+                  fit: BoxFit.contain,
                   errorBuilder: (BuildContext context, Object exception,
                       StackTrace? stackTrace) {
+                    print('Image load error: $exception');
+                    if (stackTrace != null) {
+                      print('Stack trace: $stackTrace');
+                    }
                     return Icon(
                       Icons.local_grocery_store,
                       size: 100,
