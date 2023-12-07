@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         result = json.decode(response.body)['results'];
         resultCount = result.length;
-        print(result);
+        // print(result);
       });
     } else {
       print('Request failed with status: ${response.statusCode}.');

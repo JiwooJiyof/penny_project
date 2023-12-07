@@ -22,7 +22,7 @@ class _SelectStoreDialogState extends State<SelectStoreDialog> {
   Future<List<dynamic>> getStores() async {
     try {
       final response = await http.get(
-        Uri.parse('http://127.0.0.1:8000/stores/'),
+        Uri.parse('https://boolean-boos.onrender.com/stores/'),
       );
 
       if (response.statusCode == 200) {

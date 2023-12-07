@@ -52,7 +52,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
       // print(price);
       // print(unit);
       final response = await http.patch(
-        Uri.parse('http://127.0.0.1:8000/items/$id/'),
+        Uri.parse('https://boolean-boos.onrender.com/items/$id/'),
         body: {
           'price': price,
           'unit_system': unit,
@@ -168,7 +168,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
             ),
             Expanded(
               child: Text(
-                'Price updated!',
+                'Price updated',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.phudu(
                     fontSize: 30, fontWeight: FontWeight.bold),
@@ -436,7 +436,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
               margin: EdgeInsets.all(10),
               child: Center(
                 child: Image.network(
-                  'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(imagePath)}',
+                  'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(imagePath)}',
                   height: 150,
                   width: 150,
                   fit: BoxFit.contain,
