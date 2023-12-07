@@ -187,10 +187,10 @@ void showProductDetailsDialog(
                                           // Set the ordering variable based on the selected option
                                           if (selectedSortOption ==
                                               'lowToHigh') {
-                                            ordering = 'price';
+                                            ordering = '-price';
                                           } else if (selectedSortOption ==
                                               'highToLow') {
-                                            ordering = '-price';
+                                            ordering = 'price';
                                           } else if (selectedSortOption ==
                                               'distance') {
                                             ordering = 'distance';
