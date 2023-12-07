@@ -33,7 +33,7 @@ class _ProductWidgetState extends State<ProductWidget> {
       itemBuilder: (context, index) {
         dynamic product = widget.result[index];
         // Print the image URL here
-        print("Product Image URL: ${product['image_url']}");
+        // print("Product Image URL: ${product['image_url']}");
 
         return MouseRegion(
           onEnter: (_) {
@@ -98,11 +98,12 @@ class _ProductWidgetState extends State<ProductWidget> {
                   Container(
                     margin: EdgeInsets.all(10),
                     child: Image.network(
-                      'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
+                      'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
                       height: 120,
                       width: 120,
-                      fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                      fit: BoxFit.contain,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
                         print('Image load error: $exception');
                         if (stackTrace != null) {
                           print('Stack trace: $stackTrace');
@@ -133,7 +134,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "\$${product['price']}",
+                          _formatCurrency(product['price']),
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -153,5 +154,18 @@ class _ProductWidgetState extends State<ProductWidget> {
         );
       },
     );
+  }
+
+  String _formatCurrency(String? priceString) {
+    if (priceString == null) {
+      return '-';
+    }
+
+    double? price = double.tryParse(priceString);
+    if (price == null) {
+      return '-';
+    }
+
+    return '\$${price.toStringAsFixed(2)}';
   }
 }

@@ -75,9 +75,10 @@ class StoreWidget extends StatelessWidget {
                 Expanded(
                   child: InkWell(
                     onTap: () {},
-                    child: Icon(
-                      Icons.store,
-                      size: 80,
+                    child: Image.asset(
+                      'stores/${store['store_name'].replaceAll(' ', '')}.png',
+                      fit: BoxFit
+                          .contain, // BoxFit.contain to fit the image within the container
                     ),
                     // child: Image.asset(
                     //   "assets/products/$path${index + 1}.png",
