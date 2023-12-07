@@ -61,6 +61,9 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
 
       if (response.statusCode == 200) {
         print('Price updated successfully');
+        setState(() {
+          isUpdated = true; // update the state to show success msg
+        });
       } else {
         print('Request failed with status: ${response.statusCode}');
       }
@@ -144,168 +147,220 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: isUpdated ? _buildSuccessContent() : _buildFormContent(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSuccessContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackButton(
-                  color: Colors.black,
-                  onPressed: () => _navigateBack(context),
-                ),
-                Expanded(
-                  child: Text(
-                    'Share your price!',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.phudu(
-                        fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.close, color: Colors.black),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
+            BackButton(
+              color: Colors.black,
+              onPressed: () => _navigateBack(context),
             ),
-            // SizedBox for spacing
-            SizedBox(height: 20),
-            IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // enter price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                        Form(
-                          key: _formKey,
-                          child: TextFormField(
-                            controller: priceController,
-                            cursorColor: Colors.amber,
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d*\.?\d{0,2}')),
-                            ],
-                            decoration: InputDecoration(
-                              labelText: 'Enter price',
-                              labelStyle: TextStyle(
-                                  color: Colors.black), // black label style
-                              focusedBorder: OutlineInputBorder(
-                                // amber focused border
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color: Colors.amber),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                // style when TextField is enabled
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                              prefixIcon: Padding(
-                                padding: EdgeInsets.all(15),
-                                child: Text('\$',
-                                    style: TextStyle(color: Colors.black)),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a price';
-                              }
-                              if (double.tryParse(value) == null) {
-                                return 'Please enter a valid number';
-                              }
-                              return null; // null if the input is valid
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 16), // Spacing
-                        // Text('Is this on sale?'),
-                        // _buildToggleButtons(
-                        //   isSelected: isOnSaleSelected,
-                        //   labels: ['Yes', 'No'],
-                        //   onPressed: _handleIsOnSaleToggle,
-                        // ),
-                        // SizedBox(height: 8), // Spacing
-                        // unit system ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                        Text('How is it priced?'),
-                        _buildToggleButtons(
-                          isSelected: howIsPricedSelected,
-                          labels: ['total', 'by unit'],
-                          onPressed: _handleHowIsPricedToggle,
-                        ),
-                        if (howIsPricedSelected[
-                            1]) // Show only if "by unit" is selected
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 8),
-                              Text('How is it measured?'),
-                              _buildToggleButtons(
-                                isSelected: howIsMeasuredSelected,
-                                labels: ['per g', 'per kg', 'per lb'],
-                                onPressed: _handleHowIsMeasuredToggle,
-                              ),
-                            ],
-                          ),
-                        SizedBox(height: 16), // Spacing
-                        // "Update" button
-                        // update button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // check if form is valid
-                                updatePrice(
-                                    widget.product['id'],
-                                    enteredPrice.toStringAsFixed(2),
-                                    selectedUnit);
-                              }
-                            },
-                            child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15.0, vertical: 10.0),
-                                child: Text('Update!',
-                                    style: TextStyle(fontSize: 16))),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.black, // Button color
-                              onPrimary: Colors.white, // Text color
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                              elevation: 5, // Optional: Adjust elevation
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  // product card ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                  Expanded(
-                    flex: 1,
-                    child: _buildProductCard(
-                      productName: widget.product['name'],
-                      productDetails:
-                          '${widget.store['name']}, ${widget.store['location']}',
-                      imagePath: widget
-                          .product['image_url'], // TODO: Replace w/ image url
-                      price: enteredPrice,
-                      unit: selectedUnit,
-                      isByUnit: howIsPricedSelected[1],
-                    ),
-                  ),
-                ],
+            Expanded(
+              child: Text(
+                'Price updated!',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.phudu(
+                    fontSize: 30, fontWeight: FontWeight.bold),
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.close, color: Colors.black),
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ],
         ),
-      ),
+        Text(
+          'Thanks for your contribution!',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.inter(fontSize: 16),
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50.0),
+          child: _buildProductCard(
+            productName: widget.product['name'],
+            productDetails:
+                '${widget.store['name']}, ${widget.store['location']}',
+            imagePath:
+                widget.product['image_url'], // TODO: Replace w/ image url
+            price: enteredPrice,
+            unit: selectedUnit,
+            isByUnit: howIsPricedSelected[1],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFormContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            BackButton(
+              color: Colors.black,
+              onPressed: () => _navigateBack(context),
+            ),
+            Expanded(
+              child: Text(
+                'Share your price!',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.phudu(
+                    fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.close, color: Colors.black),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+        SizedBox(height: 20), // spacing
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // enter price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        controller: priceController,
+                        cursorColor: Colors.amber,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d*\.?\d{0,2}')),
+                        ],
+                        decoration: InputDecoration(
+                          labelText: 'Enter price',
+                          labelStyle: TextStyle(
+                              color: Colors.black), // black label style
+                          focusedBorder: OutlineInputBorder(
+                            // amber focused border
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.amber),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            // style when TextField is enabled
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(15),
+                            child: Text('\$',
+                                style: TextStyle(color: Colors.black)),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a price';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'Please enter a valid number';
+                          }
+                          return null; // null if the input is valid
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 16), // Spacing
+                    // Text('Is this on sale?'),
+                    // _buildToggleButtons(
+                    //   isSelected: isOnSaleSelected,
+                    //   labels: ['Yes', 'No'],
+                    //   onPressed: _handleIsOnSaleToggle,
+                    // ),
+                    // SizedBox(height: 8), // Spacing
+                    // unit system ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    Text('How is it priced?'),
+                    _buildToggleButtons(
+                      isSelected: howIsPricedSelected,
+                      labels: ['total', 'by unit'],
+                      onPressed: _handleHowIsPricedToggle,
+                    ),
+                    if (howIsPricedSelected[
+                        1]) // Show only if "by unit" is selected
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 8),
+                          Text('How is it measured?'),
+                          _buildToggleButtons(
+                            isSelected: howIsMeasuredSelected,
+                            labels: ['per g', 'per kg', 'per lb'],
+                            onPressed: _handleHowIsMeasuredToggle,
+                          ),
+                        ],
+                      ),
+                    SizedBox(height: 16), // Spacing
+                    // "Update" button
+                    // update button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            // check if form is valid
+                            updatePrice(widget.product['id'],
+                                enteredPrice.toStringAsFixed(2), selectedUnit);
+                          }
+                        },
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 10.0),
+                            child: Text('Update!',
+                                style: TextStyle(fontSize: 16))),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.black, // Button color
+                          onPrimary: Colors.white, // Text color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          elevation: 5, // Optional: Adjust elevation
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 20),
+              // product card ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Expanded(
+                flex: 1,
+                child: _buildProductCard(
+                  productName: widget.product['name'],
+                  productDetails:
+                      '${widget.store['name']}, ${widget.store['location']}',
+                  imagePath:
+                      widget.product['image_url'], // TODO: Replace w/ image url
+                  price: enteredPrice,
+                  unit: selectedUnit,
+                  isByUnit: howIsPricedSelected[1],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -379,19 +434,21 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
             // product image ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Container(
               margin: EdgeInsets.all(10),
-              child: Image.network(
-                imagePath,
-                height: 120,
-                width: 120,
-                fit: BoxFit.cover,
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
-                  return Icon(
-                    Icons.local_grocery_store,
-                    size: 100,
-                    color: Colors.amber,
-                  );
-                },
+              child: Center(
+                child: Image.network(
+                  imagePath,
+                  height: 120,
+                  width: 120,
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Icon(
+                      Icons.local_grocery_store,
+                      size: 100,
+                      color: Colors.amber,
+                    );
+                  },
+                ),
               ),
             ),
             // product price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
