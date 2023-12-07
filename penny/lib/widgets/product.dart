@@ -32,6 +32,8 @@ class _ProductWidgetState extends State<ProductWidget> {
       itemCount: widget.result.length,
       itemBuilder: (context, index) {
         dynamic product = widget.result[index];
+        // Print the image URL here
+        print("Product Image URL: ${product['image_url']}");
 
         return MouseRegion(
           onEnter: (_) {
@@ -96,12 +98,15 @@ class _ProductWidgetState extends State<ProductWidget> {
                   Container(
                     margin: EdgeInsets.all(10),
                     child: Image.network(
-                      product['image_url'] ?? '',
+                      'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
                       height: 120,
                       width: 120,
                       fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        print('Image load error: $exception');
+                        if (stackTrace != null) {
+                          print('Stack trace: $stackTrace');
+                        }
                         return Icon(
                           Icons.local_grocery_store,
                           size: 100,
