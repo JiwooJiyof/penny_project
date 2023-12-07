@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:penny/screens/home_page.dart';
 import 'package:penny/widgets/nav_bar.dart';
+import 'package:penny/widgets/search_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -133,35 +134,11 @@ class _SearchPageState extends State<SearchPage> {
 
                       SizedBox(height: 50),
                       // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 100),
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: TextField(
-                          controller: _searchController,
-                          cursorColor: Colors.amber,
-                          decoration: InputDecoration(
-                            suffixIcon: InkWell(
-                              onTap: () => _executeSearch(),
-                              child: Icon(Icons.search, color: Colors.amber),
-                            ),
-                            hintText: 'Search for a product...',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(20),
-                          ),
-                          onSubmitted: (value) => _executeSearch(),
-                        ),
+                      Search(
+                        controller: _searchController,
+                        onSearch: (searchTerm) {
+                          _executeSearch();
+                        },
                       ),
                       SizedBox(height: 60),
 
@@ -172,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
-                              '${resultCount} results found',
+                              '${resultCount} results found for "${searchText}"',
                               style: GoogleFonts.phudu(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
@@ -271,15 +248,14 @@ class _SearchPageState extends State<SearchPage> {
 
     await _performSearch(ordering); // search
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => SearchPage(
+        pageBuilder: (context, animation1, animation2) => SearchPage(
           searchText: _searchController.text,
         ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return child; // no animation, just return the child
-        },
+        transitionDuration: Duration.zero, // No animation
+        reverseTransitionDuration: Duration.zero,
       ),
     );
   }
