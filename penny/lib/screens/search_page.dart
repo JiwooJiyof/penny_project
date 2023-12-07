@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:penny/screens/home_page.dart';
 import 'package:penny/widgets/nav_bar.dart';
+import 'package:penny/widgets/search_bar.dart';
 import 'package:penny/widgets/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -80,7 +82,7 @@ class _SearchPageState extends State<SearchPage> {
             top: 0,
             left: 0,
             right: 0,
-            child: NavBar(),
+            child: NavBar(showBackButton: true),
           ),
           // Positioned.fill(
           //   child: Image.asset(
@@ -101,55 +103,42 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   child: Column(
                     children: [
-                      // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 100),
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3),
+                      SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.center,
+                        child: InkWell(
+                          onTap: () {
+                            // Replace with your navigation logic
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        HomePage(),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return child; // no animation, just return the child
+                                },
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Penny',
+                            style: GoogleFonts.phudu(
+                              fontSize: 80,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
-                        child: TextField(
-                          controller: _searchController,
-                          cursorColor: Colors.amber,
-                          decoration: InputDecoration(
-                            suffixIcon: InkWell(
-                              onTap: () async {
-                                searchText =
-                                    _searchController.text; // user input
-
-                                await _performSearch(ordering); // search
-
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        SearchPage(
-                                      searchText: _searchController.text,
-                                    ),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      return child; // no animation, just return the child
-                                    },
-                                  ),
-                                );
-                              },
-                              child: Icon(Icons.search, color: Colors.amber),
-                            ),
-                            hintText: 'Search for a product...',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(20),
                           ),
                         ),
+                      ),
+
+                      SizedBox(height: 50),
+                      // search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      Search(
+                        controller: _searchController,
+                        onSearch: (searchTerm) {
+                          _executeSearch();
+                        },
                       ),
                       SizedBox(height: 60),
 
@@ -160,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
-                              '${resultCount} results found',
+                              '${resultCount} results found for "${searchText}"',
                               style: GoogleFonts.phudu(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
@@ -250,6 +239,23 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _executeSearch() async {
+    searchText = _searchController.text; // user input
+
+    await _performSearch(ordering); // search
+
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => SearchPage(
+          searchText: _searchController.text,
+        ),
+        transitionDuration: Duration.zero, // No animation
+        reverseTransitionDuration: Duration.zero,
       ),
     );
   }
