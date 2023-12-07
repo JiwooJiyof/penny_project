@@ -80,7 +80,7 @@ void showProductDetailsDialog(
                                 child: Container(
                                   margin: EdgeInsets.all(10),
                                   child: Image.network(
-                                    product['image_url'] ?? '',
+                                    'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
                                     height: imageSize,
                                     width: imageSize,
                                     fit: BoxFit.cover,

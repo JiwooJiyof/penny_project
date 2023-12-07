@@ -98,7 +98,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   Container(
                     margin: EdgeInsets.all(10),
                     child: Image.network(
-                      'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
+                      'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
                       height: 120,
                       width: 120,
                       fit: BoxFit.cover,
