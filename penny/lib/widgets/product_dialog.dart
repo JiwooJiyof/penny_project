@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/widgets/store.dart';
+import 'package:penny/utils/network_image_loader.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -79,21 +80,23 @@ void showProductDetailsDialog(
                                 left: 20, // Fixed left position
                                 child: Container(
                                   margin: EdgeInsets.all(10),
-                                  child: Image.network(
-                                    'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
-                                    height: imageSize,
-                                    width: imageSize,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (BuildContext context,
-                                        Object exception,
-                                        StackTrace? stackTrace) {
-                                      return Icon(
-                                        Icons.local_grocery_store,
-                                        size: imageSize,
-                                        color: Colors.amber,
-                                      );
-                                    },
-                                  ),
+                                  child: buildNetworkImage(
+                                      product['image_url'], imageSize),
+                                  // child: Image.network(
+                                  //   'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
+                                  //   height: imageSize,
+                                  //   width: imageSize,
+                                  //   fit: BoxFit.cover,
+                                  //   errorBuilder: (BuildContext context,
+                                  //       Object exception,
+                                  //       StackTrace? stackTrace) {
+                                  //     return Icon(
+                                  //       Icons.local_grocery_store,
+                                  //       size: imageSize,
+                                  //       color: Colors.amber,
+                                  //     );
+                                  //   },
+                                  // ),
                                 ),
                               ),
                               // Positioned title text that scales down
