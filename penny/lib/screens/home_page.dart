@@ -25,6 +25,12 @@ class _HomePageState extends State<HomePage> {
   dynamic result;
   int resultCount = 0;
 
+  // pagination variables
+  int currentPage = 0;
+  int pageSize = 12;
+
+  List<dynamic> paginatedResult = [];
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +48,34 @@ class _HomePageState extends State<HomePage> {
       });
     } else {
       print('Request failed with status: ${response.statusCode}.');
+    }
+    paginateResult();
+  }
+
+  void paginateResult() {
+    int startIndex = currentPage * pageSize;
+    int endIndex = startIndex + pageSize;
+    setState(() {
+      paginatedResult =
+          result.sublist(startIndex, endIndex.clamp(0, result.length));
+    });
+  }
+
+  void nextPage() {
+    if ((currentPage + 1) * pageSize < result.length) {
+      setState(() {
+        currentPage++;
+      });
+      paginateResult();
+    }
+  }
+
+  void previousPage() {
+    if (currentPage > 0) {
+      setState(() {
+        currentPage--;
+      });
+      paginateResult();
     }
   }
 
@@ -140,7 +174,27 @@ class _HomePageState extends State<HomePage> {
                       ),
                       // products ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       ProductWidget(
-                        result: result,
+                        result: paginatedResult,
+                      ),
+                      // pagination controls ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.arrow_back),
+                            onPressed: previousPage,
+                            color: Colors.black,
+                          ),
+                          Text(
+                            'Page ${currentPage + 1}',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.arrow_forward),
+                            onPressed: nextPage,
+                            color: Colors.black,
+                          ),
+                        ],
                       ),
                     ],
                   ),
