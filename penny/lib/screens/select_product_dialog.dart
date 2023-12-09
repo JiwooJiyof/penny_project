@@ -278,22 +278,6 @@ class _ProductGridItemState extends State<ProductGridItem> {
                   // Added Flexible widget here
                   child: Center(
                     child: buildNetworkImage(itemInfo['image_url'], 0),
-                    // child: Image.network(
-                    //   'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(itemInfo['image_url'])}',
-                    //   fit: BoxFit.contain,
-                    //   errorBuilder: (BuildContext context, Object exception,
-                    //       StackTrace? stackTrace) {
-                    //     print('Image load error: $exception');
-                    //     if (stackTrace != null) {
-                    //       print('Stack trace: $stackTrace');
-                    //     }
-                    //     return Icon(
-                    //       Icons.local_grocery_store,
-                    //       size: 100,
-                    //       color: Colors.amber,
-                    //     );
-                    //   },
-                    // ),
                   ),
                 )
               ],

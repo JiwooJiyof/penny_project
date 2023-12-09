@@ -74,31 +74,14 @@ void showProductDetailsDialog(
                             children: [
                               // Positioned image on the left that scales down
                               Positioned(
-                                top: isCollapsed
-                                    ? (kToolbarHeight - imageSize) / 2
-                                    : top - imageSize - 20,
-                                left: 20, // Fixed left position
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: buildNetworkImage(
-                                      product['image_url'], imageSize),
-                                  // child: Image.network(
-                                  //   'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
-                                  //   height: imageSize,
-                                  //   width: imageSize,
-                                  //   fit: BoxFit.cover,
-                                  //   errorBuilder: (BuildContext context,
-                                  //       Object exception,
-                                  //       StackTrace? stackTrace) {
-                                  //     return Icon(
-                                  //       Icons.local_grocery_store,
-                                  //       size: imageSize,
-                                  //       color: Colors.amber,
-                                  //     );
-                                  //   },
-                                  // ),
-                                ),
-                              ),
+                                  top: isCollapsed
+                                      ? (kToolbarHeight - imageSize) / 2
+                                      : top - imageSize - 20,
+                                  left: 20, // Fixed left position
+                                  child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      child: buildNetworkImage(
+                                          product['image_url'], imageSize))),
                               // Positioned title text that scales down
                               Positioned(
                                 top: isCollapsed

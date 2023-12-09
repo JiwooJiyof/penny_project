@@ -98,32 +98,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   // product image ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Container(
                     margin: EdgeInsets.all(10),
-                    // child: Icon(
-                    //   Icons.local_grocery_store,
-                    //   size: 100,
-                    //   color: Colors.amber,
-                    // ),
                     child: buildNetworkImage(product['image_url'], 120),
-                    // child: _buildNetworkImage(product['image_url']),
-
-                    // child: Image.network(
-                    //   'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
-                    //   height: 120,
-                    //   width: 120,
-                    //   fit: BoxFit.contain,
-                    //   errorBuilder: (BuildContext context, Object exception,
-                    //       StackTrace? stackTrace) {
-                    //     print('Image load error: $exception');
-                    //     if (stackTrace != null) {
-                    //       print('Stack trace: $stackTrace');
-                    //     }
-                    //     return Icon(
-                    //       Icons.local_grocery_store,
-                    //       size: 100,
-                    //       color: Colors.amber,
-                    //     );
-                    //   },
-                    // ),
                   ),
                   // product description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   // Container(
@@ -164,41 +139,6 @@ class _ProductWidgetState extends State<ProductWidget> {
       },
     );
   }
-
-  // Widget _buildNetworkImage(String? imageUrl) {
-  //   if (imageUrl == null || imageUrl.isEmpty) {
-  //     // Return a default icon if the URL is null or empty
-  //     return Icon(
-  //       Icons.local_grocery_store,
-  //       size: 100,
-  //       color: Colors.amber,
-  //     );
-  //   }
-
-  //   // Construct the full URL for the image
-  //   String fullUrl =
-  //       'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(imageUrl)}';
-
-  //   return Image.network(
-  //     fullUrl,
-  //     height: 120,
-  //     width: 120,
-  //     fit: BoxFit.contain,
-  //     errorBuilder:
-  //         (BuildContext context, Object exception, StackTrace? stackTrace) {
-  //       print('Image load error: $exception');
-  //       if (stackTrace != null) {
-  //         print('Stack trace: $stackTrace');
-  //       }
-  //       // Return a default icon if there's an error loading the image
-  //       return Icon(
-  //         Icons.local_grocery_store,
-  //         size: 100,
-  //         color: Colors.amber,
-  //       );
-  //     },
-  //   );
-  // }
 
   String _formatCurrency(String? priceString) {
     if (priceString == null) {
