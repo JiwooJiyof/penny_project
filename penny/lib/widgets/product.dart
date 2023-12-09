@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:penny/widgets/product_dialog.dart';
+import 'package:penny/utils/network_image_loader.dart';
 
 class ProductWidget extends StatefulWidget {
   final dynamic result;
@@ -97,24 +98,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   // product image ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   Container(
                     margin: EdgeInsets.all(10),
-                    child: Image.network(
-                      'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(product['image_url'])}',
-                      height: 120,
-                      width: 120,
-                      fit: BoxFit.contain,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        print('Image load error: $exception');
-                        if (stackTrace != null) {
-                          print('Stack trace: $stackTrace');
-                        }
-                        return Icon(
-                          Icons.local_grocery_store,
-                          size: 100,
-                          color: Colors.amber,
-                        );
-                      },
-                    ),
+                    child: buildNetworkImage(product['image_url'], 120),
                   ),
                   // product description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   // Container(

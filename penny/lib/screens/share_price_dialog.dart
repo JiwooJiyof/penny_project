@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/select_product_dialog.dart';
+import 'package:penny/utils/network_image_loader.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
@@ -434,26 +435,7 @@ class _SharePriceDialogState extends State<SharePriceDialog> {
             // product image ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Container(
               margin: EdgeInsets.all(10),
-              child: Center(
-                child: Image.network(
-                  'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(imagePath)}',
-                  height: 150,
-                  width: 150,
-                  fit: BoxFit.contain,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    print('Image load error: $exception');
-                    if (stackTrace != null) {
-                      print('Stack trace: $stackTrace');
-                    }
-                    return Icon(
-                      Icons.local_grocery_store,
-                      size: 100,
-                      color: Colors.amber,
-                    );
-                  },
-                ),
-              ),
+              child: Center(child: buildNetworkImage(imagePath, 150)),
             ),
             // product price ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Padding(

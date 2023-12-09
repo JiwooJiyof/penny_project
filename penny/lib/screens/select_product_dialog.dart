@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:penny/screens/select_store_dialog.dart';
 import 'package:penny/screens/share_price_dialog.dart';
 import 'package:penny/utils/loading.dart';
+import 'package:penny/utils/network_image_loader.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -276,22 +277,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 Flexible(
                   // Added Flexible widget here
                   child: Center(
-                    child: Image.network(
-                      'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(itemInfo['image_url'])}',
-                      fit: BoxFit.contain,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        print('Image load error: $exception');
-                        if (stackTrace != null) {
-                          print('Stack trace: $stackTrace');
-                        }
-                        return Icon(
-                          Icons.local_grocery_store,
-                          size: 100,
-                          color: Colors.amber,
-                        );
-                      },
-                    ),
+                    child: buildNetworkImage(itemInfo['image_url'], 0),
                   ),
                 )
               ],
