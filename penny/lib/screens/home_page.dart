@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   dynamic result;
   int resultCount = 0;
 
-  // pagination variables
   int currentPage = 0;
   int pageSize = 12;
 
@@ -42,9 +41,9 @@ class _HomePageState extends State<HomePage> {
         await http.get(Uri.parse('https://boolean-boos.onrender.com/items/'));
     if (response.statusCode == 200) {
       setState(() {
-        result = json.decode(response.body)['results'];
+        var data = json.decode(response.body)['results'];
+        result = data.reversed.toList();
         resultCount = result.length;
-        // print(result);
       });
     } else {
       print('Request failed with status: ${response.statusCode}.');
@@ -187,7 +186,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Text(
                             'Page ${currentPage + 1}',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
                           ),
                           IconButton(
                             icon: Icon(Icons.arrow_forward),
