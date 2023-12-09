@@ -12,7 +12,7 @@ Widget buildNetworkImage(String? imageUrl, double size) {
 
   // Construct the full URL for the image
   String fullUrl =
-      'http://127.0.0.1:8000/items/proxy_image/?url=${Uri.encodeComponent(imageUrl)}';
+      'https://boolean-boos.onrender.com/items/proxy_image/?url=${Uri.encodeComponent(imageUrl)}';
 
   return Image.network(
     fullUrl,
